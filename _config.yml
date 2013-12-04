@@ -3,9 +3,9 @@
 # ----------------------- #
 
 url: i-chou.com
-title: i-chou's Tech Blog
+title: i-chou's tech blog
 subtitle: 
-author: Your Name
+author: i-chou
 simple_search: http://google.com/search
 description: Android iOS 台球 摇滚乐 喜静 多感
 
@@ -19,7 +19,7 @@ date_format: "ordinal"
 subscribe_rss: /atom.xml
 subscribe_email:
 # RSS feeds can list your email address if you like
-email:
+email: ios_develop@me.com
 
 # ----------------------- #
 #    Jekyll & Plugins     #
@@ -63,7 +63,7 @@ default_asides: [asides/recent_posts.html, asides/github.html, asides/delicious.
 # ----------------------- #
 
 # Github repositories
-github_user:
+github_user: passerbied
 github_repo_count: 0
 github_show_profile_link: true
 github_skip_forks: true
