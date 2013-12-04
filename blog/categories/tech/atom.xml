@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[Category: Tech | i-chou's Tech Blog]]></title>
+  <title><![CDATA[Category: Tech | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/tech/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-04T16:57:12+08:00</updated>
+  <updated>2013-12-04T17:04:21+08:00</updated>
   <id>i-chou.com/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
-    
+    <name><![CDATA[i-chou]]></name>
+    <email><![CDATA[ios_develop@me.com]]></email>
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
