@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 
-Sitemap: i-chou.com/sitemap.xml 
+Sitemap: http://passerbied.github.io/sitemap.xml 
