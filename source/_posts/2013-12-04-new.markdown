@@ -1,0 +1,8 @@
+---
+layout: post
+title: "hello blog"
+date: 2013-12-04 14:31:46 +0800
+comments: true
+categories: 
+---
+test for post
