@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[i-chou's Tech Blog]]></title>
-  <link href="i-chou.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: Tech | i-chou's Tech Blog]]></title>
+  <link href="i-chou.com/blog/categories/tech/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
   <updated>2013-12-04T16:57:12+08:00</updated>
   <id>i-chou.com/</id>
