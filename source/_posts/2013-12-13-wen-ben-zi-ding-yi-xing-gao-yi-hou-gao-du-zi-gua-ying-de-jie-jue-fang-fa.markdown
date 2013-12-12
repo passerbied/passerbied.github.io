@@ -6,7 +6,7 @@ comments: true
 categories: iOS
 ---
 
-本文要说的是，根据*Frame高度*对文本内容自适应，而非UITextView的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）
+本文要说的是，*Frame高度*根据文本内容自适应，而非UITextView的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）
 
 
 * iOS7以前的最佳解决方案：
