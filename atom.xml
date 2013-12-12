@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-13T00:13:01+08:00</updated>
+  <updated>2013-12-13T03:07:25+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -18,7 +18,7 @@
     <link href="i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/"/>
     <updated>2013-12-13T00:09:36+08:00</updated>
     <id>i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa</id>
-    <content type="html"><![CDATA[<p>本文要说的是，根据<em>Frame高度</em>对文本内容自适应，而非UITextView的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）</p>
+    <content type="html"><![CDATA[<p>本文要说的是，<em>Frame高度</em>根据文本内容自适应，而非UITextView的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）</p>
 
 <ul>
 <li><p>iOS7以前的最佳解决方案：</p>
