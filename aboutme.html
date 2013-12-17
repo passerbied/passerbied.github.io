@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>UIKit in Release Notes for iOS 7.1 Beta2 - i-chou's tech blog</title>
+  <title>i-chou's tech blog</title>
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="Known Issues If a UITextField or a UILabel that is baseline aligned with constraints has attributes that change after the constraints have been added &hellip;">
+  <meta name="description" content="Blog Archives Categories Android (3)
+Tech (1)
+iOS (2)
+产品 (1) Recent Posts UIKit in Release Notes for iOS 7.1 Beta2 文本自定义行高以后高度自适应的解决方法 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2">
+  <link rel="canonical" href="i-chou.com/aboutme.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
@@ -66,99 +69,15 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div>
-<article class="hentry" role="article">
+      <div class="blog-index">
   
-  <header>
-    
-      <h1 class="entry-title">UIKit in Release Notes for iOS 7.1 Beta2</h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
-
-
-<time datetime="2013-12-17T12:17:22+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
-        
-      </p>
+  <div class="pagination">
     
-  </header>
-
-
-<div class="entry-content"><p>Known Issues</p>
-
-<ul>
-<li><p>If a <code>UITextField</code> or a <code>UILabel</code> that is baseline aligned with constraints has attributes that change after the constraints have been added, the layout may be incorrect. The exception to this is <code>-setFont:</code> on <code>UILabel</code>, which should work as expected.</p>
-
-<p>  <strong>Workaround:</strong> Avoid making changes in <code>UITextField</code> or <code>UILabel</code> after adding baseline-alignment constraints. If you must make changes, you should remove the constraints and then reapply them afterward. Note that this is a performance hit, so don’t do it unless it is necessary.</p></li>
-<li><p>The <code>backIndicatorTransitionMask</code> from a storyboard or a xib will not be interpreted correctly at runtime.</p>
-
-<p>  <strong>Workaround:</strong> Set the <code>backIndicatorTransitionMask</code> in code.</p></li>
-</ul>
-
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
 </div>
-
-
-  <footer>
-    <p class="meta">
-      
-  
-
-<span class="byline author vcard">Posted by <span class="fn">i-chou</span></span>
-
-      
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-17T12:17:22+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/ios/'>iOS</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/" data-via="" data-counturl="i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/" >Tweet</a>
-  
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/" title="Previous Post: 文本自定义行高以后高度自适应的解决方法">&laquo; 文本自定义行高以后高度自适应的解决方法</a>
-      
-      
-    </p>
-  </footer>
-</article>
-
-</div>
-
 <aside class="sidebar">
   
     <section>
@@ -203,7 +122,6 @@
 
   
 </aside>
-
 
     </div>
   </div>
