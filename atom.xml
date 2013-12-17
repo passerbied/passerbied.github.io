@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-13T03:07:25+08:00</updated>
+  <updated>2013-12-17T12:21:03+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[UIKit in Release Notes for iOS 7.1 Beta2]]></title>
+    <link href="i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/"/>
+    <updated>2013-12-17T12:17:22+08:00</updated>
+    <id>i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2</id>
+    <content type="html"><![CDATA[<p>Known Issues</p>
+
+<ul>
+<li><p>If a <code>UITextField</code> or a <code>UILabel</code> that is baseline aligned with constraints has attributes that change after the constraints have been added, the layout may be incorrect. The exception to this is <code>-setFont:</code> on <code>UILabel</code>, which should work as expected.</p>
+
+<pre><code>  Workaround: Avoid making changes in UITextField or UILabel after adding baseline-alignment constraints. If you must make changes, you should remove the constraints and then reapply them afterward. Note that this is a performance hit, so don’t do it unless it is necessary.
+</code></pre></li>
+<li><p>The <code>backIndicatorTransitionMask</code> from a storyboard or a xib will not be interpreted correctly at runtime.</p>
+
+<pre><code>  Workaround: Set the backIndicatorTransitionMask in code.
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[文本自定义行高以后高度自适应的解决方法]]></title>

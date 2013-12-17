@@ -9,7 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="本文要说的是，Frame高度根据文本内容自适应，而非UITextView的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的） iOS7以前的最佳解决方案： 自定义TextView继承UITextView并加入以下方法。1.5em可修改 - (id) &hellip;">
+  <meta name="description" content="Known Issues If a UITextField or a UILabel that is baseline aligned with constraints has attributes that change after the constraints have been added &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,54 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-17T12:17:22+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Known Issues</p>
+
+<ul>
+<li><p>If a <code>UITextField</code> or a <code>UILabel</code> that is baseline aligned with constraints has attributes that change after the constraints have been added, the layout may be incorrect. The exception to this is <code>-setFont:</code> on <code>UILabel</code>, which should work as expected.</p>
+
+<pre><code>  Workaround: Avoid making changes in UITextField or UILabel after adding baseline-alignment constraints. If you must make changes, you should remove the constraints and then reapply them afterward. Note that this is a performance hit, so don’t do it unless it is necessary.
+</code></pre></li>
+<li><p>The <code>backIndicatorTransitionMask</code> from a storyboard or a xib will not be interpreted correctly at runtime.</p>
+
+<pre><code>  Workaround: Set the backIndicatorTransitionMask in code.
+</code></pre></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -332,6 +380,10 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a>
