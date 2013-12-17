@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-17T12:43:30+08:00</updated>
+  <updated>2013-12-17T12:52:55+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -14,10 +14,111 @@
 
   
   <entry>
+    <title type="html"><![CDATA[UIKit in Release Notes for iOS 7.1 Beta2]]></title>
+    <link href="i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/"/>
+    <updated>2013-12-17T12:17:22+08:00</updated>
+    <id>i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2</id>
+    <content type="html"><![CDATA[<p>Known Issues</p>
+
+<ul>
+<li><p>If a <code>UITextField</code> or a <code>UILabel</code> that is baseline aligned with constraints has attributes that change after the constraints have been added, the layout may be incorrect. The exception to this is <code>-setFont:</code> on <code>UILabel</code>, which should work as expected.</p>
+
+<p>  <strong>Workaround:</strong> Avoid making changes in <code>UITextField</code> or <code>UILabel</code> after adding baseline-alignment constraints. If you must make changes, you should remove the constraints and then reapply them afterward. Note that this is a performance hit, so don’t do it unless it is necessary.</p></li>
+<li><p>The <code>backIndicatorTransitionMask</code> from a storyboard or a xib will not be interpreted correctly at runtime.</p>
+
+<p>  <strong>Workaround:</strong> Set the <code>backIndicatorTransitionMask</code> in code.</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[文本自定义行高以后高度自适应的解决方法]]></title>
+    <link href="i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/"/>
+    <updated>2013-12-13T00:09:36+08:00</updated>
+    <id>i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa</id>
+    <content type="html"><![CDATA[<p>本文要说的是，<em>Frame高度</em>根据文本内容自适应，而非<code>UITextView</code>的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）</p>
+
+<ul>
+<li><p>iOS7以前的最佳解决方案：</p>
+
+<p>  自定义TextView继承<code>UITextView</code>并加入以下方法。<em>1.5em</em>可修改</p>
+
+<pre><code>  - (id)styleString {
+      return [[super styleString] stringByAppendingString:@"; line-height: 1.5em"];
+  }
+</code></pre>
+
+<p>  然后在通过下面方法给frame赋值</p>
+
+<pre><code>  CGRect frame = _textView.frame;
+  frame.size.height = _textView.contentSize.height;
+  _textView.frame = frame;
+</code></pre>
+
+<p>  需要注意的是<code>contentSize</code>只在<code>UITextView</code>被<strong>addSubview</strong>以后才有效，所以要先把它加到画面上再，给它一个初始的frame，让它先得以计算出自己的<code>contentSize</code>。</p></li>
+<li><p>iOS7的最佳解决方案是：</p>
+
+<p>  自定义TextView继承<code>UITextView</code>实现下面的<code>init</code>方法，给textView设定行高。</p>
+
+<pre><code>  - (id)initWithFrame:(CGRect)frame lineHeigth:(float)lineHeigth font:(UIFont *)font {
+
+       self = [super initWithFrame:frame];
+       if (self) {
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+
+                    paragraphStyle.lineHeightMultiple = lineHeigth;
+                    paragraphStyle.maximumLineHeight = lineHeigth;
+                    paragraphStyle.minimumLineHeight = lineHeigth;
+                    NSDictionary *ats = 
+                               @{NSFontAttributeName:font,NSParagraphStyleAttributeName : paragraphStyle};
+
+                    self.attributedText = [[NSAttributedString alloc] initWithString:@“ “ attributes:ats];
+                    self.lineHeight = lineHeigth;
+                  }
+        return self;
+  }
+</code></pre>
+
+<p>  然后通过以下方法计算出textView的实际高度，继而确定frame的height。
+因为之前有人说<code>UITextView</code>默认的上下左右padding均为8px，也就是下面16的由来。 所以在计算时要考虑进去才能保证文本显示完整。</p>
+
+<pre><code>  + (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText lineHeight:(float)height
+  {
+    float fPadding = 16.0;
+    CGSize constraint = CGSizeMake(textView.contentSize.width - fPadding, CGFLOAT_MAX);
+
+    CGSize size = [strText sizeWithFont:textView.font
+                      constrainedToSize:constraint
+                          lineBreakMode:UILineBreakModeWordWrap];
+
+    float fHeight = size.height*height/textView.font.lineHeight + 16.0;
+    return fHeight;
+  }
+</code></pre>
+
+<p>  需要注意的是，本文讲的是自定义行高，所以，在下面方法里加上个<strong>lineHeight</strong>参与计算。</p>
+
+<p>  其实从开发文档看，<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html">NSMutableParagraphStyle</a> 在iOS6.0及以后都是有效的，但是我不知道为什么在iOS7上计算很精确，在iOS6上，结果却不令人满意。原因仍在调查中。</p>
+
+<p>  不过，幸好有上面说的 &lt;iOS7以前的最佳解决方案> ，要不然就要用&lt;稍微差一点的解决方案>了，那么就顺带说一下&lt;稍微差一点的解决方案>是什么吧^_^</p></li>
+<li><p>稍微差一点的解决</p>
+
+<p>  使用开源控件 > <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a></p>
+
+<p>  这个控件之前由于性能问题一度被我遗弃过，后来版本更新以后，性能上来不少，但是仍然有些bug。我发现的bug就是当<em>字体小于12号，或者当行数过多，并且<strong>lineHeightMultiple</strong>>1</em>的时候，计算高度会存在偏差，行数越多偏差越大。</p>
+
+<p>  那么也就是说，如果你一个文本不需要显示数百行，在此基础上对文本其他属性有追求，并且苦逼的要考虑兼容iOS7以下用户的话，可以使用 <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a> ，因为这个控件在伴随有 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 的iOS7出来之前还是还是相当牛逼的，而更牛逼的 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 让我们在文本显示领域看见了曙光！顺便奉劝一句，要是你的iOS7用户群达到95%以上，就果断抛弃那些抱着3年前的iPhone4而不敢升级系统的陈旧用户吧。</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Android Canvas绘制文字 自动换行]]></title>
-    <link href="i-chou.com/blog/2013/12/17/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/"/>
-    <updated>2013-12-17T12:38:44+08:00</updated>
-    <id>i-chou.com/blog/2013/12/17/android-canvashui-zhi-wen-zi-zi-dong-huan-xing</id>
+    <link href="i-chou.com/blog/2012/04/14/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/"/>
+    <updated>2012-04-14T12:38:44+08:00</updated>
+    <id>i-chou.com/blog/2012/04/14/android-canvashui-zhi-wen-zi-zi-dong-huan-xing</id>
     <content type="html"><![CDATA[<pre><code>import java.util.Vector; 
 
 import android.graphics.Canvas; 
@@ -152,101 +253,63 @@ public boolean KeyDown(int keyCode, KeyEvent event) {
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[UIKit in Release Notes for iOS 7.1 Beta2]]></title>
-    <link href="i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/"/>
-    <updated>2013-12-17T12:17:22+08:00</updated>
-    <id>i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2</id>
-    <content type="html"><![CDATA[<p>Known Issues</p>
+    <title type="html"><![CDATA[AndroidManifest.xml部分属性说明]]></title>
+    <link href="i-chou.com/blog/2012/04/12/androidmanifest-dot-xmlbu-fen-shu-xing-shuo-ming/"/>
+    <updated>2012-04-12T19:44:38+08:00</updated>
+    <id>i-chou.com/blog/2012/04/12/androidmanifest-dot-xmlbu-fen-shu-xing-shuo-ming</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>android:allowTaskReparenting</p>
 
-<ul>
-<li><p>If a <code>UITextField</code> or a <code>UILabel</code> that is baseline aligned with constraints has attributes that change after the constraints have been added, the layout may be incorrect. The exception to this is <code>-setFont:</code> on <code>UILabel</code>, which should work as expected.</p>
+<p>  用法<code>&lt;application android:allowTaskReparenting="true/false"&gt;&lt;/application&gt;</code>
+  是否允许Activity更换从属的任务，比如从短信息任务 切换到浏览器任务。用来标记Activity能否从启动的Task移动到有着affinity的Task（当这个Task进入到前台时）—— “true”，表示能移动，“false”，表示它必须呆在启动时呆在的那个Task里。</p>
 
-<p>  <strong>Workaround:</strong> Avoid making changes in <code>UITextField</code> or <code>UILabel</code> after adding baseline-alignment constraints. If you must make changes, you should remove the constraints and then reapply them afterward. Note that this is a performance hit, so don’t do it unless it is necessary.</p></li>
-<li><p>The <code>backIndicatorTransitionMask</code> from a storyboard or a xib will not be interpreted correctly at runtime.</p>
+<p>  如果这个特性没有被设定，设定到<code>&lt;application&gt;</code>元素上的<code>allowTaskReparenting</code>特性的值会应用到<code>Activity</code>上。默认值为“false”。</p>
 
-<p>  <strong>Workaround:</strong> Set the <code>backIndicatorTransitionMask</code> in code.</p></li>
-</ul>
+<p>  一般来说，当Activity启动后，它就与启动它的Task关联，并且在那里耗尽它的整个生命周期。当当前的Task不再显示时，你可以使用这个特性来 强制Activity移动到有着<code>affinity</code>的Task中。典型用法是：把一个应用程序的Activity移到另一个应用程序的主Task中。</p>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[文本自定义行高以后高度自适应的解决方法]]></title>
-    <link href="i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/"/>
-    <updated>2013-12-13T00:09:36+08:00</updated>
-    <id>i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa</id>
-    <content type="html"><![CDATA[<p>本文要说的是，<em>Frame高度</em>根据文本内容自适应，而非<code>UITextView</code>的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）</p>
+<p>  例如，如果e－mail中包含一个web页的链接，点击它就会启动一个Activity来显示这个页面。这个Activity是由Browser应用程序 定义的，但是，现在它作为<code>e－mail Task</code>的一部分。如果它重新宿主到<code>Browser Task</code>里，当Browser下一次进入到前台时，它就能被看见，并且，当<code>e－mail Task</code>再次进入前台时，就看不到它了。</p>
 
-<ul>
-<li><p>iOS7以前的最佳解决方案：</p>
+<p>  Actvity的<code>affinity</code>是由<code>taskAffinity</code>特性定义的。Task的<code>affinity</code>是通过读取根Activity的<code>affinity</code> 决定。因此，根据定义，根Activity总是位于相同<code>affinity</code>的Task里。由于启动模式为“singleTask”和 “singleInstance”的Activity只能位于Task的底部，因此，重新宿主只能限于“standard”和“singleTop”模 式。</p></li>
+<li><p>android:alwaysRetainTaskState</p>
 
-<p>  自定义TextView继承<code>UITextView</code>并加入以下方法。<em>1.5em</em>可修改</p>
+<p>  用法<code>&lt;activity android:alwaysRetainTaskState="true/false"&gt;&lt;/activity&gt;</code>
+  用来标记Activity所在的Task的状态是否总是由系统来保持——“true”，表示总是；“false”，表示在某种情形下允许系统恢复Task 到它的初始化状态。默认值是“false”。这个特性只针对Task的根Activity有意义；对其它Activity来说，忽略之。
+  一般来说，特定的情形如当用户从主画面重新选择这个Task时，系统会对这个Task进行清理（从stack中删除位于根Activity之上的所有Activivity）。典型的情况，当用户有一段时间没有访问这个Task时也会这么做，例如30分钟。
+  然而，当这个特性设为“true”时，用户总是能回到这个Task的最新状态，无论他们是如何启动的。这非常有用，例如，像Browser应用程序，这里有很多的状态（例如多个打开的Tab），用户不想丢失这些状态。</p></li>
+<li><p>android:clearTaskOnLanunch</p>
 
-<pre><code>  - (id)styleString {
-      return [[super styleString] stringByAppendingString:@"; line-height: 1.5em"];
-  }
-</code></pre>
+<p>   用法<code>&lt;activity android:clearTaskOnLanunch=”true/false”&gt;&lt;/activity&gt;</code>
+   用来标记是否从Task中清除所有的Activity，除了根Activity外（每当从主画面重新启动时）——“true”，表示总是清除至它的 根 Activity，“false”表示不。默认值是“false”。这个特性只对启动一个新的Task的Activity（根Activity）有意义； 对Task中其它的Activity忽略。
+   当这个值为“true”，每次用户重新启动这个Task时，都会进入到它的根Activity中，不管这个Task最后在做些什么，也不管用户是使 用 BACK还是HOME离开的。当这个值为“false”时，可能会在一些情形下（参考alwaysRetainTaskState特性）清除Task的 Activity，但不总是。
+   假设，某人从主画面启动了Activity P，并从那里迁移至Activity Q。接下来用户按下HOME，然后返回Activity P。一般，用户可能见到的是Activity Q，因为它是P的Task中最后工作的内容。然而，如果P设定这个特性为“true”，当用户按下HOME并使这个Task再次进入前台时，其上的所有的 Activity(在这里是Q)都将被清除。因此，当返回到这个Task时，用户只能看到P。
+  如果这个特性和<code>allowTaskReparenting</code>都设定为“true”，那些能重新宿主的Activity会移动到共享<code>affinity</code>的Task中；剩下的Activity都将被抛弃，如上所述。</p></li>
+<li><p>android:configChanges</p>
 
-<p>  然后在通过下面方法给frame赋值</p>
+<p>  当配置list发生修改时， 是否调用 <code>onConfigurationChanged()</code> 方法 比如 &ldquo;locale|navigation|orientation&rdquo;.
+  举例：在按下power键时，直接在应用程序里onPause处理就好。当app是竖屏时，这样处理没问题。但是当app是横屏时，按下power 键，app会强制回到竖屏，并且会重新调用activity的<code>onCreate</code>。很多时候这不是预期结果，所以就会用到 <code>android:configChanges</code>。</p>
 
-<pre><code>  CGRect frame = _textView.frame;
-  frame.size.height = _textView.contentSize.height;
-  _textView.frame = frame;
-</code></pre>
+<p>  在配置文件里设置<code>android:configChanges＝”keyboardHidden|orientation”</code>，这样在屏幕方向改变的时候就 不会重新调用activity的<code>onCreate()</code>方法，而是调用<code>onConfigurationChanged()</code>,然后在activity里面重在 下。</p></li>
+<li><p>android:enabled</p>
 
-<p>  需要注意的是<code>contentSize</code>只在<code>UITextView</code>被<strong>addSubview</strong>以后才有效，所以要先把它加到画面上再，给它一个初始的frame，让它先得以计算出自己的<code>contentSize</code>。</p></li>
-<li><p>iOS7的最佳解决方案是：</p>
+<p>  activity 是否可以被实例化
+  用法：<code>&lt;activity android:enabled="true"&gt;&lt;/activity&gt;</code></p></li>
+<li><p>android:excludeFromRecents</p>
 
-<p>  自定义TextView继承<code>UITextView</code>实现下面的<code>init</code>方法，给textView设定行高。</p>
+<p>  是否可被显示在最近打开的activity列表里
+  用法：<code>&lt;activity android:excludeFromRecents="true"&gt;&lt;/activity&gt;</code></p></li>
+<li><p>android:exported</p>
 
-<pre><code>  - (id)initWithFrame:(CGRect)frame lineHeigth:(float)lineHeigth font:(UIFont *)font {
+<p>  是否允许activity被其它程序调用</p></li>
+<li><p>android:finishOnTaskLaunch</p>
 
-       self = [super initWithFrame:frame];
-       if (self) {
-                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+<p>  用来标记当用户再次启动它的Task（在主画面选择这个Task）时已经存在的Activity实例是否要关闭（结束）——“true”，表示应该关闭，“false”表示不关闭。默认值是“false”。
+  如果这个特性和<code>allowTaskReparenting</code>都设定为“true”，这个特性胜出。Activity的<code>affinity</code>忽略。这个 Activity不会重新宿主，但是会销毁。</p></li>
+<li><p>android.icon</p>
 
-                    paragraphStyle.lineHeightMultiple = lineHeigth;
-                    paragraphStyle.maximumLineHeight = lineHeigth;
-                    paragraphStyle.minimumLineHeight = lineHeigth;
-                    NSDictionary *ats = 
-                               @{NSFontAttributeName:font,NSParagraphStyleAttributeName : paragraphStyle};
+<p>  用法：<code>&lt;application android:icon="@drawable/xx_icon"&gt;&lt;/application&gt;</code>,加在应用程序图标</p></li>
+<li><p>android:label</p>
 
-                    self.attributedText = [[NSAttributedString alloc] initWithString:@“ “ attributes:ats];
-                    self.lineHeight = lineHeigth;
-                  }
-        return self;
-  }
-</code></pre>
-
-<p>  然后通过以下方法计算出textView的实际高度，继而确定frame的height。
-因为之前有人说<code>UITextView</code>默认的上下左右padding均为8px，也就是下面16的由来。 所以在计算时要考虑进去才能保证文本显示完整。</p>
-
-<pre><code>  + (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText lineHeight:(float)height
-  {
-    float fPadding = 16.0;
-    CGSize constraint = CGSizeMake(textView.contentSize.width - fPadding, CGFLOAT_MAX);
-
-    CGSize size = [strText sizeWithFont:textView.font
-                      constrainedToSize:constraint
-                          lineBreakMode:UILineBreakModeWordWrap];
-
-    float fHeight = size.height*height/textView.font.lineHeight + 16.0;
-    return fHeight;
-  }
-</code></pre>
-
-<p>  需要注意的是，本文讲的是自定义行高，所以，在下面方法里加上个<strong>lineHeight</strong>参与计算。</p>
-
-<p>  其实从开发文档看，<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html">NSMutableParagraphStyle</a> 在iOS6.0及以后都是有效的，但是我不知道为什么在iOS7上计算很精确，在iOS6上，结果却不令人满意。原因仍在调查中。</p>
-
-<p>  不过，幸好有上面说的 &lt;iOS7以前的最佳解决方案> ，要不然就要用&lt;稍微差一点的解决方案>了，那么就顺带说一下&lt;稍微差一点的解决方案>是什么吧^_^</p></li>
-<li><p>稍微差一点的解决</p>
-
-<p>  使用开源控件 > <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a></p>
-
-<p>  这个控件之前由于性能问题一度被我遗弃过，后来版本更新以后，性能上来不少，但是仍然有些bug。我发现的bug就是当<em>字体小于12号，或者当行数过多，并且<strong>lineHeightMultiple</strong>>1</em>的时候，计算高度会存在偏差，行数越多偏差越大。</p>
-
-<p>  那么也就是说，如果你一个文本不需要显示数百行，在此基础上对文本其他属性有追求，并且苦逼的要考虑兼容iOS7以下用户的话，可以使用 <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a> ，因为这个控件在伴随有 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 的iOS7出来之前还是还是相当牛逼的，而更牛逼的 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 让我们在文本显示领域看见了曙光！顺便奉劝一句，要是你的iOS7用户群达到95%以上，就果断抛弃那些抱着3年前的iPhone4而不敢升级系统的陈旧用户吧。</p></li>
+<p>  定义了每个title栏的名称，但是优先级低于activity中的<code>setTitle()</code></p></li>
 </ul>
 
 ]]></content>
