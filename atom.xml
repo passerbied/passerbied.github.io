@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-17T12:52:55+08:00</updated>
+  <updated>2013-12-17T14:05:58+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -111,6 +111,19 @@
 <p>  那么也就是说，如果你一个文本不需要显示数百行，在此基础上对文本其他属性有追求，并且苦逼的要考虑兼容iOS7以下用户的话，可以使用 <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a> ，因为这个控件在伴随有 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 的iOS7出来之前还是还是相当牛逼的，而更牛逼的 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 让我们在文本显示领域看见了曙光！顺便奉劝一句，要是你的iOS7用户群达到95%以上，就果断抛弃那些抱着3年前的iPhone4而不敢升级系统的陈旧用户吧。</p></li>
 </ul>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Google产品体验_前端设计]]></title>
+    <link href="i-chou.com/blog/2012/04/26/googlechan-pin-ti-yan-qian-duan-she-ji/"/>
+    <updated>2012-04-26T20:02:56+08:00</updated>
+    <id>i-chou.com/blog/2012/04/26/googlechan-pin-ti-yan-qian-duan-she-ji</id>
+    <content type="html"><![CDATA[<p>其实不仅仅是google，好多公司的产品体验都非常好，看似简单，但细微处让人舒服得很。</p>
+
+<p>最近不经意间发现drive.google宣传页的前端设计，每个功能点介绍正好占据一个页面，唯独首页最上面的视频没有占据整个画面，而特意露出下一节的一行字，我猜想这是让用户知道下方还有内容可以看。</p>
+
+<p>PS：因为是用mac版chrome体验，所以其他版本浏览器不清楚是不是这样。就算google不是刻意做成我理解的这样，我认为还是应该把这种用户体验考虑在自己以后的开发和设计理念中。</p>
 ]]></content>
   </entry>
   
