@@ -1,0 +1,340 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Android Canvas绘制文字 自动换行 - i-chou's tech blog</title>
+  <meta name="author" content="i-chou">
+
+  
+  <meta name="description" content="import java.util.Vector; import android.graphics.Canvas; import android.graphics.Color; import android.graphics.Paint; import android.graphics.Paint. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="i-chou.com/blog/2013/12/17/android-canvashui-zhi-wen-zi-zi-dong-huan-xing">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">i-chou's tech blog</a></h1>
+  
+    <h2>Android iOS 台球 摇滚乐 喜静 多感</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:i-chou.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Android Canvas绘制文字 自动换行</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-17T12:38:44+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><pre><code>import java.util.Vector; 
+
+import android.graphics.Canvas; 
+import android.graphics.Color; 
+import android.graphics.Paint; 
+import android.graphics.Paint.FontMetrics; 
+import android.view.KeyEvent; 
+
+public class TextUtil { 
+
+private float  mTextPosx = 0;// x坐标 
+private float  mTextPosy = 0;// y坐标 
+private float mTextWidth = 0;// 绘制宽度 
+private float mTextHeight = 0;// 绘制高度 
+private int mFontHeight = 0;// 绘制字体高度 
+private int mPageLineNum = 0;// 每一页显示的行数 
+private int mCanvasBGColor = 0;// 背景颜色 
+private int mFontColor = 0;// 字体颜色 
+private int mAlpha = 0;// Alpha值 
+private int mRealLine = 0;// 字符串真实的行数 
+private int mCurrentLine = 0;// 当前行 
+private int mTextSize = 0;// 字体大小 
+private String mStrText = ""; 
+private Vector mString = null; 
+private Paint mPaint = null; 
+
+public TextUtil(String StrText, float  x, float  y, float w, float h, int bgcolor, 
+      int textcolor, int alpha, int textsize) { 
+  mPaint = new Paint(); 
+  mString = new Vector(); 
+  this.mStrText = StrText; 
+  this.mTextPosx = x; 
+  this.mTextPosy = y; 
+  this.mTextWidth = w; 
+  this.mTextHeight = h; 
+  this.mCanvasBGColor = bgcolor; 
+  this.mFontColor = textcolor; 
+  this.mAlpha = alpha; 
+  this.mTextSize = textsize; 
+} 
+
+public void InitText() { 
+  mString.clear();// 清空Vector 
+  // 对画笔属性的设置 
+  // mPaint.setARGB(this.mAlpha, Color.red(this.mFontColor), Color 
+  // .green(this.mFontColor), Color.blue(this.mFontColor)); 
+  mPaint.setTextSize(this.mTextSize); 
+  mPaint.setColor(Color.BLUE); 
+  mPaint.setAntiAlias(true); 
+
+  this.GetTextIfon(); 
+ } 
+
+ /** 
+  * 得到字符串信息包括行数，页数等信息 
+  */ 
+ public void GetTextIfon() { 
+  char ch; 
+  int w = 0; 
+  int istart = 0; 
+  FontMetrics fm = mPaint.getFontMetrics();// 得到系统默认字体属性 
+  mFontHeight = (int) (Math.ceil(fm.descent - fm.top) + 2);// 获得字体高度 
+  mPageLineNum = (int) (mTextHeight / mFontHeight);// 获得行数 
+
+  int count = this.mStrText.length(); 
+  for (int i = 0; i &lt; count; i++) { 
+      ch = this.mStrText.charAt(i); 
+      float[] widths = new float[1]; 
+      String str = String.valueOf(ch); 
+      mPaint.getTextWidths(str, widths); 
+      if (ch == '/n') { 
+          mRealLine++;// 真实的行数加一 
+          mString.addElement(this.mStrText.substring(istart, i)); 
+          istart = i + 1; 
+          w = 0; 
+      } else { 
+          w += (int) Math.ceil(widths[0]); 
+          if (w &gt; this.mTextWidth) { 
+              mRealLine++;// 真实的行数加一 
+              mString.addElement(this.mStrText.substring(istart, i)); 
+              istart = i; 
+              i--; 
+              w = 0; 
+          } else { 
+              if (i == count - 1) { 
+                  mRealLine++;// 真实的行数加一 
+                  mString.addElement(this.mStrText.substring(istart, 
+                          count)); 
+              } 
+          } 
+      } 
+  } 
+} 
+
+/** 
+ * 绘制字符串 
+ * 
+ * @param canvas 
+ */ 
+public void DrawText(Canvas canvas) { 
+     for (int i = this.mCurrentLine, j = 0; i &lt; this.mRealLine; i++, j++) { 
+          if (j &gt; this.mPageLineNum) { 
+              break; 
+          } 
+       canvas.drawText((String) (mString.elementAt(i)), this.mTextPosx, 
+                this.mTextPosy + this.mFontHeight * j, mPaint); 
+     } 
+ } 
+
+/** 
+* 翻页等按键处理 
+* 
+* @param keyCode 
+* @param event 
+* @return 
+*/ 
+public boolean KeyDown(int keyCode, KeyEvent event) { 
+    if (keyCode == KeyEvent.KEYCODE_DPAD_UP) { 
+       if (this.mCurrentLine &gt; 0) { 
+            this.mCurrentLine--; 
+        } 
+    } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) { 
+        if ((this.mCurrentLine + this.mPageLineNum) &lt; (this.mRealLine - 1)) { 
+            this.mCurrentLine++; 
+        } 
+      } 
+      return false; 
+   } 
+}
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">i-chou</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-17T12:38:44+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/12/17/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/" data-via="" data-counturl="i-chou.com/blog/2013/12/17/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/" title="Previous Post: UIKit in Release Notes for iOS 7.1 beta2">&laquo; UIKit in Release Notes for iOS 7.1 beta2</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/17/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/">Android Canvas绘制文字 自动换行</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/07/androidying-yong-kai-fa-zhi-%28you-hua-bu-ju-ceng-ci-jie-gou-%29/">Android应用开发之（优化布局层次结构）</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/27/pcxie-mu-qu/">PC谢幕曲</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - i-chou -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
