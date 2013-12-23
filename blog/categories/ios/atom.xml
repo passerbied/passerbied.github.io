@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-23T20:58:28+08:00</updated>
+  <updated>2013-12-23T21:00:31+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -111,6 +111,142 @@
 <p>  那么也就是说，如果你一个文本不需要显示数百行，在此基础上对文本其他属性有追求，并且苦逼的要考虑兼容iOS7以下用户的话，可以使用 <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a> ，因为这个控件在伴随有 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 的iOS7出来之前还是还是相当牛逼的，而更牛逼的 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 让我们在文本显示领域看见了曙光！顺便奉劝一句，要是你的iOS7用户群达到95%以上，就果断抛弃那些抱着3年前的iPhone4而不敢升级系统的陈旧用户吧。</p></li>
 </ul>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[自定义返回按钮时，iOS7手势返回遇到的问题]]></title>
+    <link href="i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/"/>
+    <updated>2013-09-12T23:07:27+08:00</updated>
+    <id>i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-,ios7shou-shi-fan-hui-yu-dao-de-wen-ti</id>
+    <content type="html"><![CDATA[<p>从iOS7的Beta版开始，就着手做兼容工作，到Beta4的時候，应用已经基本兼容，只是偶然发现，iOS样式的手势返回，也就是用<code>interactivePopGestureRecognizer</code>返回的时候,出现下面一些列问题。各方调研，无果，史无前例（废话，刚出来的7，上哪有例去&mdash;#）。</p>
+
+<ul>
+<li><p>我的应用是自定义的返回按钮图标(默认返回按钮样式不会出现问题3)，为了保险，写了这句代码<code>[self.navigationItem setHidesBackButton:YES]</code>。
+由于自定义返回按钮，所以iOS7自带返回手势无效。在需要的页面加上<code>navigationController.interactivePopGestureRecognizer.delegate = self</code>
+返回手势好用了。</p></li>
+<li><p>于是出现了第二个问题。
+在一级视图中，iOS样式返回的手势滑动一下，然后进入二级视图，发现，画面卡住了，按Home键转入后台，再返回应用，发现并没有Crash掉，而是直接跳到了二级视图里，运行正常了，大家知道push和pop的原理是用进栈出栈完成的，可能因为在一级视图中滑动那一下，影响了视图在栈中的位置。
+好，先解决一下这个问题，一级视图中一定要加入<code>self.navigationController.interactivePopGestureRecognizer.enabled = NO;</code>，先把iOS7手势返回屏蔽掉，到二级视图再用<code>self.navigationController.interactivePopGestureRecognizer.enabled = YES</code>打开。就Ok了。</p></li>
+<li><p>好，第三个问题相继出现（其实是跟第二个一起出来的）。
+手势返回拖动一半，放手，<code>navigationBar</code>上会出现三个小蓝点，而且位置不规律，可以肯定这个不是项目代码或者图片搞出来的东西，一定是SDK自己蹦出來的。
+后台尝试发现<code>UIBarButtonItem</code>的<code>title</code>如果是nil的话，就会有这个问题。
+解决方案：把<code>[self.navigationItem setHidesBackButton:YES];</code>去掉，然後把假装成返回按钮的<code>UIBarButtonItem</code>的<code>title</code>设置成<code>@""</code>。</p></li>
+<li><p>大功告成。可见设计要是不按苹果规范来的话，就会遇到各种坑啊。</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Objective-C常用數學常量宏及函數]]></title>
+    <link href="i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/"/>
+    <updated>2013-08-28T12:12:27+08:00</updated>
+    <id>i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>数学常量：</p>
+
+<p>  #define M_E         2.71828182845904523536028747135266250   // e</p>
+
+<p>  #define M_LOG2E     1.44269504088896340735992468100189214   // log 2e</p>
+
+<p>  #define M_LOG10E    0.434294481903251827651128918916605082  // log 10e</p>
+
+<p>  #define M_LN2       0.693147180559945309417232121458176568  // log e2</p>
+
+<p>  #define M_LN10      2.30258509299404568401799145468436421   // log e10</p>
+
+<p>  #define M_PI        3.14159265358979323846264338327950288   // pi</p>
+
+<p>  #define M_PI_2      1.57079632679489661923132169163975144   // pi/2</p>
+
+<p>  #define M_PI_4      0.785398163397448309615660845819875721  // pi/4</p>
+
+<p>  #define M_1_PI      0.318309886183790671537767526745028724  // 1/pi</p>
+
+<p>  #define M_2_PI      0.636619772367581343075535053490057448  // 2/pi</p>
+
+<p>  #define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)</p>
+
+<p>  #define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)</p>
+
+<p>  #define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)</p>
+
+<p>  </br></p></li>
+<li><p>常用函数：</p>
+
+<p>  //指数运算</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,2) ); //result 9</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,3) ); //result 27</p>
+
+<p>  </br>
+  //开平方运算</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(16) ); //result 4</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(81) ); //result 9</p>
+
+<p>  </br>
+  //上舍入</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.000000000001)); //result 4</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.00)); //result 3</p>
+
+<p>  </br>
+  //下舍入</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.000000000001)); //result 3</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.9999999)); //result 3</p>
+
+<p>  </br>
+  //四舍五入</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.5)); //result 4</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.46)); //result 3</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(-3.5)); //NB: this one returns -4</p>
+
+<p>  </br>
+  //最小值</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmin(5,10)); //result 5</p>
+
+<p>  </br>
+  //最大值</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmax(5,10)); //result 10</p>
+
+<p>  </br> <br/>
+  //绝对值</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(10)); //result 10</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(-10)); //result 10</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iPhone应用开发中emoji带来的问题小结]]></title>
+    <link href="i-chou.com/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie/"/>
+    <updated>2013-08-15T20:36:32+08:00</updated>
+    <id>i-chou.com/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie</id>
+    <content type="html"><![CDATA[<p>如果是iPhone自带字体，emoji和文字的高度是不同的，有些细节的地方会造成布局出现瑕疵，我之前的做法是在</p>
+
+<pre><code>- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+</code></pre>
+
+<p>方法里对输入内容进行判断，采取屏蔽emoji输入的方式，具体屏蔽办法请参见： <a href="https://gist.github.com/cihancimen/4146056">https://gist.github.com/cihancimen/4146056</a></p>
+
+<p>但iOS7出来以后，通过测试发现7中修改和增加了一些emojide的编码。上述办法对于一些emoji的屏蔽失效。解决办法是找到合适的第三方字体包。同时，需要考虑iOS和PHP之前通信以及和其他平台通信时产生的问题。于是找到如下文章。</p>
+
+<p><a href="http://wpceo.com/supporting-emoji-on-php-mysql/">http://wpceo.com/supporting-emoji-on-php-mysql/</a></p>
 ]]></content>
   </entry>
   
