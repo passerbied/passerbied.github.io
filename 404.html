@@ -5,11 +5,14 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Hide statusBar (Also Work on Ios7) - i-chou's tech blog</title>
+  <title>404 Error - i-chou's tech blog</title>
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="//viewDidload if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) { // iOS 7 [self prefersStatusBarHidden]; [self &hellip;">
+  <meta name="description" content="404 Error Dec 25th, 2013 Categories Android (4)
+Tech (1)
+iOS (11)
+产品 (1) Recent Posts UIKit in Release Notes for iOS 7.1 Beta2 文本自定义行高以后高度自适应的解决方法 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +21,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="i-chou.com/blog/2013/08/13/hide-statusbar-also-work-on-ios7">
+  <link rel="canonical" href="i-chou.com/404.html">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
@@ -67,15 +70,11 @@
   <div id="main">
     <div id="content">
       <div>
-<article class="hentry" role="article">
+<article role="article">
   
   <header>
-    
-      <h1 class="entry-title">Hide statusBar (Also Work on Ios7)</h1>
-    
-    
-      <p class="meta">
-        
+    <h1 class="entry-title">404 Error</h1>
+    <p class="meta">
 
 
 
@@ -87,114 +86,15 @@
   
 
 
-<time datetime="2013-08-13T20:40:06+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2013</time>
-        
-        
-          | <a href="#comments">Comments</a>
-         
-      </p>
-    
+<time datetime="2013-12-25T13:02:14+08:00" pubdate data-updated="true">Dec 25<span>th</span>, 2013</time></p>
   </header>
-
-
-<div class="entry-content"><pre><code>//viewDidload
-
-if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-
-    // iOS 7
-
-    [self prefersStatusBarHidden];
-
-    [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
-
-} else {
-
-    // iOS 6
-
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-
-}
-
-// Add this Method
-
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-</code></pre>
-</div>
-
-
-  <footer>
-    <p class="meta">
-      
   
-
-<span class="byline author vcard">Posted by <span class="fn">i-chou</span></span>
-
-      
-
-
-
-
-
-
+  <script type="text/javascript" src="http://www.qq.com/404/search_children,js" charset="utf-8></script>
 
 
   
-
-
-<time datetime="2013-08-13T20:40:06+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2013</time>
-      
-
-<span class="categories">
-  
-    <a class='category' href='/blog/categories/ios/'>iOS</a>
-  
-</span>
-
-
-    </p>
-    
-      <div class="sharing">
-  
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/08/13/hide-statusbar-also-work-on-ios7/" data-via="" data-counturl="i-chou.com/blog/2013/08/13/hide-statusbar-also-work-on-ios7/" >Tweet</a>
-  
-  
-  
-</div>
-
-    
-    <p class="meta">
-      
-        <a class="basic-alignment left" href="/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/" title="Previous Post: iOS获取当前系统语言">&laquo; iOS获取当前系统语言</a>
-      
-      
-        <a class="basic-alignment right" href="/blog/2013/08/15/xcode5dai-lai-de-%5B%3F%5D-ge-xiao-wen-ti/" title="Next Post: Xcode5带来的一个小问题">Xcode5带来的一个小问题 &raquo;</a>
-      
-    </p>
-  </footer>
 </article>
 
-
-
-  <section>
-    <h1>Comments</h1>
-    <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
-<div class="ds-thread"></div>
-<script type="text/javascript">
-  var duoshuoQuery = {short_name:"i-chou"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = 'http://static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] 
-    || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-</script>
-<!-- Duoshuo Comment END --></div>
-  </section>
 
 </div>
 
