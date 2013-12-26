@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Objective-C常用數學常量宏及函數 - i-chou's tech blog</title>
+  <meta name="author" content="i-chou">
+
+  
+  <meta name="description" content="数学常量： #define M_E 2.71828182845904523536028747135266250 // e #define M_LOG2E 1.44269504088896340735992468100189214 // log 2e #define M_LOG10E 0. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">i-chou's tech blog</a></h1>
+  
+    <h2>Android iOS</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:i-chou.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Objective-C常用數學常量宏及函數</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-28T12:12:27+08:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time>
+        
+        
+          | <a href="#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><ul>
+<li><p>数学常量：</p>
+
+<p>  #define M_E         2.71828182845904523536028747135266250   // e</p>
+
+<p>  #define M_LOG2E     1.44269504088896340735992468100189214   // log 2e</p>
+
+<p>  #define M_LOG10E    0.434294481903251827651128918916605082  // log 10e</p>
+
+<p>  #define M_LN2       0.693147180559945309417232121458176568  // log e2</p>
+
+<p>  #define M_LN10      2.30258509299404568401799145468436421   // log e10</p>
+
+<p>  #define M_PI        3.14159265358979323846264338327950288   // pi</p>
+
+<p>  #define M_PI_2      1.57079632679489661923132169163975144   // pi/2</p>
+
+<p>  #define M_PI_4      0.785398163397448309615660845819875721  // pi/4</p>
+
+<p>  #define M_1_PI      0.318309886183790671537767526745028724  // 1/pi</p>
+
+<p>  #define M_2_PI      0.636619772367581343075535053490057448  // 2/pi</p>
+
+<p>  #define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)</p>
+
+<p>  #define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)</p>
+
+<p>  #define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)</p>
+
+<p>  </br></p></li>
+<li><p>常用函数：</p>
+
+<p>  //指数运算</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,2) ); //result 9</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,3) ); //result 27</p>
+
+<p>  </br>
+  //开平方运算</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(16) ); //result 4</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(81) ); //result 9</p>
+
+<p>  </br>
+  //上舍入</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.000000000001)); //result 4</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.00)); //result 3</p>
+
+<p>  </br>
+  //下舍入</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.000000000001)); //result 3</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.9999999)); //result 3</p>
+
+<p>  </br>
+  //四舍五入</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.5)); //result 4</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.46)); //result 3</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(-3.5)); //NB: this one returns -4</p>
+
+<p>  </br>
+  //最小值</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmin(5,10)); //result 5</p>
+
+<p>  </br>
+  //最大值</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmax(5,10)); //result 10</p>
+
+<p>  </br> <br/>
+  //绝对值</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(10)); //result 10</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(-10)); //result 10</p></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">i-chou</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-28T12:12:27+08:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ios/'>iOS</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/" data-via="" data-counturl="i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie/" title="Previous Post: iPhone应用开发中emoji带来的问题小结">&laquo; iPhone应用开发中emoji带来的问题小结</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/" title="Next Post: 自定义返回按钮时，iOS7手势返回遇到的问题">自定义返回按钮时，iOS7手势返回遇到的问题 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"i-chou"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/android/'>Android (4)</a></li>
+<li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
+<li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (12)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/25/hide-statusbar-on-ios/">Hide StatusBar on iOS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/">自定义返回按钮时，iOS7手势返回遇到的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/">Objective-C常用數學常量宏及函數</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>新浪微薄: <a href="http://weibo.com/passerbied">@Bluethroat</a><br/>
+  	 Tumblr: <a href="http://passerbied.tumblr.com/">@Passerbied</a>
+  </p>
+</section>
+
+<section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - i-chou -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

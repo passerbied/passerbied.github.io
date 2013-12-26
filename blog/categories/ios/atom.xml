@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
+  <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
+  <link href="i-chou.com/"/>
+  <updated>2013-12-26T14:31:55+08:00</updated>
+  <id>i-chou.com/</id>
+  <author>
+    <name><![CDATA[i-chou]]></name>
+    <email><![CDATA[ios_develop@me.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Hide StatusBar on iOS]]></title>
+    <link href="i-chou.com/blog/2013/12/25/hide-statusbar-on-ios/"/>
+    <updated>2013-12-25T18:49:05+08:00</updated>
+    <id>i-chou.com/blog/2013/12/25/hide-statusbar-on-ios</id>
+    <content type="html"><![CDATA[<p>在<code>Info.plist</code>中添加如下两行键值对:</p>
+
+<ol>
+<li><p><code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
+<li><p><code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[UIKit in Release Notes for iOS 7.1 Beta2]]></title>
+    <link href="i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/"/>
+    <updated>2013-12-17T12:17:22+08:00</updated>
+    <id>i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2</id>
+    <content type="html"><![CDATA[<p>Known Issues</p>
+
+<ul>
+<li><p>If a <code>UITextField</code> or a <code>UILabel</code> that is baseline aligned with constraints has attributes that change after the constraints have been added, the layout may be incorrect. The exception to this is <code>-setFont:</code> on <code>UILabel</code>, which should work as expected.</p>
+
+<p>  <strong>Workaround:</strong> Avoid making changes in <code>UITextField</code> or <code>UILabel</code> after adding baseline-alignment constraints. If you must make changes, you should remove the constraints and then reapply them afterward. Note that this is a performance hit, so don’t do it unless it is necessary.</p></li>
+<li><p>The <code>backIndicatorTransitionMask</code> from a storyboard or a xib will not be interpreted correctly at runtime.</p>
+
+<p>  <strong>Workaround:</strong> Set the <code>backIndicatorTransitionMask</code> in code.</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[文本自定义行高以后高度自适应的解决方法]]></title>
+    <link href="i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/"/>
+    <updated>2013-12-13T00:09:36+08:00</updated>
+    <id>i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa</id>
+    <content type="html"><![CDATA[<p>本文要说的是，<em>Frame高度</em>根据文本内容自适应，而非<code>UITextView</code>的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）</p>
+
+<ul>
+<li><p>iOS7以前的最佳解决方案：</p>
+
+<p>  自定义TextView继承<code>UITextView</code>并加入以下方法。<em>1.5em</em>可修改</p>
+
+<pre><code>  - (id)styleString {
+      return [[super styleString] stringByAppendingString:@"; line-height: 1.5em"];
+  }
+</code></pre>
+
+<p>  然后在通过下面方法给frame赋值</p>
+
+<pre><code>  CGRect frame = _textView.frame;
+  frame.size.height = _textView.contentSize.height;
+  _textView.frame = frame;
+</code></pre>
+
+<p>  需要注意的是<code>contentSize</code>只在<code>UITextView</code>被<strong>addSubview</strong>以后才有效，所以要先把它加到画面上再，给它一个初始的frame，让它先得以计算出自己的<code>contentSize</code>。</p></li>
+<li><p>iOS7的最佳解决方案是：</p>
+
+<p>  自定义TextView继承<code>UITextView</code>实现下面的<code>init</code>方法，给textView设定行高。</p>
+
+<pre><code>  - (id)initWithFrame:(CGRect)frame lineHeigth:(float)lineHeigth font:(UIFont *)font {
+
+       self = [super initWithFrame:frame];
+       if (self) {
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+
+                    paragraphStyle.lineHeightMultiple = lineHeigth;
+                    paragraphStyle.maximumLineHeight = lineHeigth;
+                    paragraphStyle.minimumLineHeight = lineHeigth;
+                    NSDictionary *ats = 
+                               @{NSFontAttributeName:font,NSParagraphStyleAttributeName : paragraphStyle};
+
+                    self.attributedText = [[NSAttributedString alloc] initWithString:@“ “ attributes:ats];
+                    self.lineHeight = lineHeigth;
+                  }
+        return self;
+  }
+</code></pre>
+
+<p>  然后通过以下方法计算出textView的实际高度，继而确定frame的height。
+因为之前有人说<code>UITextView</code>默认的上下左右padding均为8px，也就是下面16的由来。 所以在计算时要考虑进去才能保证文本显示完整。</p>
+
+<pre><code>  + (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText lineHeight:(float)height
+  {
+    float fPadding = 16.0;
+    CGSize constraint = CGSizeMake(textView.contentSize.width - fPadding, CGFLOAT_MAX);
+
+    CGSize size = [strText sizeWithFont:textView.font
+                      constrainedToSize:constraint
+                          lineBreakMode:UILineBreakModeWordWrap];
+
+    float fHeight = size.height*height/textView.font.lineHeight + 16.0;
+    return fHeight;
+  }
+</code></pre>
+
+<p>  需要注意的是，本文讲的是自定义行高，所以，在下面方法里加上个<strong>lineHeight</strong>参与计算。</p>
+
+<p>  其实从开发文档看，<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html">NSMutableParagraphStyle</a> 在iOS6.0及以后都是有效的，但是我不知道为什么在iOS7上计算很精确，在iOS6上，结果却不令人满意。原因仍在调查中。</p>
+
+<p>  不过，幸好有上面说的 &lt;iOS7以前的最佳解决方案> ，要不然就要用&lt;稍微差一点的解决方案>了，那么就顺带说一下&lt;稍微差一点的解决方案>是什么吧^_^</p></li>
+<li><p>稍微差一点的解决</p>
+
+<p>  使用开源控件 > <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a></p>
+
+<p>  这个控件之前由于性能问题一度被我遗弃过，后来版本更新以后，性能上来不少，但是仍然有些bug。我发现的bug就是当<em>字体小于12号，或者当行数过多，并且<strong>lineHeightMultiple</strong>>1</em>的时候，计算高度会存在偏差，行数越多偏差越大。</p>
+
+<p>  那么也就是说，如果你一个文本不需要显示数百行，在此基础上对文本其他属性有追求，并且苦逼的要考虑兼容iOS7以下用户的话，可以使用 <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a> ，因为这个控件在伴随有 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 的iOS7出来之前还是还是相当牛逼的，而更牛逼的 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 让我们在文本显示领域看见了曙光！顺便奉劝一句，要是你的iOS7用户群达到95%以上，就果断抛弃那些抱着3年前的iPhone4而不敢升级系统的陈旧用户吧。</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[自定义返回按钮时，iOS7手势返回遇到的问题]]></title>
+    <link href="i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/"/>
+    <updated>2013-09-12T23:07:27+08:00</updated>
+    <id>i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-,ios7shou-shi-fan-hui-yu-dao-de-wen-ti</id>
+    <content type="html"><![CDATA[<p>从iOS7的Beta版开始，就着手做兼容工作，到Beta4的時候，应用已经基本兼容，只是偶然发现，iOS样式的手势返回，也就是用<code>interactivePopGestureRecognizer</code>返回的时候,出现下面一些列问题。各方调研，无果，史无前例（废话，刚出来的7，上哪有例去&mdash;#）。</p>
+
+<ul>
+<li><p>我的应用是自定义的返回按钮图标(默认返回按钮样式不会出现问题3)，为了保险，写了这句代码<code>[self.navigationItem setHidesBackButton:YES]</code>。
+由于自定义返回按钮，所以iOS7自带返回手势无效。在需要的页面加上<code>navigationController.interactivePopGestureRecognizer.delegate = self</code>
+返回手势好用了。</p></li>
+<li><p>于是出现了第二个问题。
+在一级视图中，iOS样式返回的手势滑动一下，然后进入二级视图，发现，画面卡住了，按Home键转入后台，再返回应用，发现并没有Crash掉，而是直接跳到了二级视图里，运行正常了，大家知道push和pop的原理是用进栈出栈完成的，可能因为在一级视图中滑动那一下，影响了视图在栈中的位置。
+好，先解决一下这个问题，一级视图中一定要加入<code>self.navigationController.interactivePopGestureRecognizer.enabled = NO;</code>，先把iOS7手势返回屏蔽掉，到二级视图再用<code>self.navigationController.interactivePopGestureRecognizer.enabled = YES</code>打开。就Ok了。</p></li>
+<li><p>好，第三个问题相继出现（其实是跟第二个一起出来的）。
+手势返回拖动一半，放手，<code>navigationBar</code>上会出现三个小蓝点，而且位置不规律，可以肯定这个不是项目代码或者图片搞出来的东西，一定是SDK自己蹦出來的。
+后台尝试发现<code>UIBarButtonItem</code>的<code>title</code>如果是nil的话，就会有这个问题。
+解决方案：把<code>[self.navigationItem setHidesBackButton:YES];</code>去掉，然後把假装成返回按钮的<code>UIBarButtonItem</code>的<code>title</code>设置成<code>@""</code>。</p></li>
+<li><p>大功告成。可见设计要是不按苹果规范来的话，就会遇到各种坑啊。</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Objective-C常用數學常量宏及函數]]></title>
+    <link href="i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/"/>
+    <updated>2013-08-28T12:12:27+08:00</updated>
+    <id>i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>数学常量：</p>
+
+<p>  #define M_E         2.71828182845904523536028747135266250   // e</p>
+
+<p>  #define M_LOG2E     1.44269504088896340735992468100189214   // log 2e</p>
+
+<p>  #define M_LOG10E    0.434294481903251827651128918916605082  // log 10e</p>
+
+<p>  #define M_LN2       0.693147180559945309417232121458176568  // log e2</p>
+
+<p>  #define M_LN10      2.30258509299404568401799145468436421   // log e10</p>
+
+<p>  #define M_PI        3.14159265358979323846264338327950288   // pi</p>
+
+<p>  #define M_PI_2      1.57079632679489661923132169163975144   // pi/2</p>
+
+<p>  #define M_PI_4      0.785398163397448309615660845819875721  // pi/4</p>
+
+<p>  #define M_1_PI      0.318309886183790671537767526745028724  // 1/pi</p>
+
+<p>  #define M_2_PI      0.636619772367581343075535053490057448  // 2/pi</p>
+
+<p>  #define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)</p>
+
+<p>  #define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)</p>
+
+<p>  #define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)</p>
+
+<p>  </br></p></li>
+<li><p>常用函数：</p>
+
+<p>  //指数运算</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,2) ); //result 9</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,3) ); //result 27</p>
+
+<p>  </br>
+  //开平方运算</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(16) ); //result 4</p>
+
+<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(81) ); //result 9</p>
+
+<p>  </br>
+  //上舍入</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.000000000001)); //result 4</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.00)); //result 3</p>
+
+<p>  </br>
+  //下舍入</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.000000000001)); //result 3</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.9999999)); //result 3</p>
+
+<p>  </br>
+  //四舍五入</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.5)); //result 4</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.46)); //result 3</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(-3.5)); //NB: this one returns -4</p>
+
+<p>  </br>
+  //最小值</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmin(5,10)); //result 5</p>
+
+<p>  </br>
+  //最大值</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmax(5,10)); //result 10</p>
+
+<p>  </br> <br/>
+  //绝对值</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(10)); //result 10</p>
+
+<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(-10)); //result 10</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

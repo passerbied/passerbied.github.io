@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Design | i-chou's tech blog]]></title>
+  <link href="i-chou.com/blog/categories/design/atom.xml" rel="self"/>
+  <link href="i-chou.com/"/>
+  <updated>2013-12-26T14:31:55+08:00</updated>
+  <id>i-chou.com/</id>
+  <author>
+    <name><![CDATA[i-chou]]></name>
+    <email><![CDATA[ios_develop@me.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Google产品体验_前端设计]]></title>
+    <link href="i-chou.com/blog/2012/04/26/googlechan-pin-ti-yan-qian-duan-she-ji/"/>
+    <updated>2012-04-26T20:02:56+08:00</updated>
+    <id>i-chou.com/blog/2012/04/26/googlechan-pin-ti-yan-qian-duan-she-ji</id>
+    <content type="html"><![CDATA[<p>其实不仅仅是google，好多公司的产品体验都非常好，看似简单，但细微处让人舒服得很。</p>
+
+<p>最近不经意间发现drive.google宣传页的前端设计，每个功能点介绍正好占据一个页面，唯独首页最上面的视频没有占据整个画面，而特意露出下一节的一行字，我猜想这是让用户知道下方还有内容可以看。</p>
+
+<p>PS：因为是用mac版chrome体验，所以其他版本浏览器不清楚是不是这样。就算google不是刻意做成我理解的这样，我认为还是应该把这种用户体验考虑在自己以后的开发和设计理念中。</p>
+]]></content>
+  </entry>
+  
+</feed>

@@ -1,0 +1,274 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Google API 方式制作饼状图 - i-chou's tech blog</title>
+  <meta name="author" content="i-chou">
+
+  
+  <meta name="description" content="最简单的一种方式，Android上面使用WebView控件加载即可，以下是GoogleAPI相关内容。 PS：需要添加网络访问权限。 URL:
+http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="i-chou.com/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">i-chou's tech blog</a></h1>
+  
+    <h2>Android iOS</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:i-chou.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Google API 方式制作饼状图</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-11T11:00:48+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
+        
+        
+          | <a href="#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>最简单的一种方式，Android上面使用<code>WebView</code>控件加载即可，以下是<code>GoogleAPI</code>相关内容。</p>
+
+<p>PS：需要添加网络访问权限。</p>
+
+<p>URL:
+<a href="http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp;chl=Hello%7CWorld">http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp;chl=Hello%7CWorld</a></p>
+
+<h4>Components</h4>
+
+<p><a href="https://chart.apis.google.com/chart?">https://chart.apis.google.com/chart?</a></p>
+
+<p>This is the base URL for all chart requests. (However, seeImproving Performance on Pages with Many Charts below for an optional variation for pages with multiple charts.)cht=p3The chart type: here, a 3D pie chart.chs=250x100The chart size (width xheight), in pixels. See the maximum valueshere.chd=t:60,40The chart data. This data is in simple text format, but there areother formats.chl=Hello|WorldTheslice labels.&amp;Parameters are separated by an ampersand.Note: When embedding an URL in HTML, for example as thesrc attribute of an <img> tag, you should replace the&amp; between parameters with the characters&amp; This includes when you generate page HTML with PHP or some other language. However, when typing a URL in the browser, or whencalling a URL in code, for example when fetching a URL in PHP or Perl, you should use the&amp; mark.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">i-chou</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-11T11:00:48+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/android/'>Android</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu/" data-via="" data-counturl="i-chou.com/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/04/26/googlechan-pin-ti-yan-qian-duan-she-ji/" title="Previous Post: google产品体验_前端设计">&laquo; google产品体验_前端设计</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/12/18/ioskai-fa-guan-yu-dao-ru-dai-you-shu-ju-de-sqlitewen-jian/" title="Next Post: [iOS开发]关于导入带有数据的SQLite文件">[iOS开发]关于导入带有数据的SQLite文件 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"i-chou"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/android/'>Android (4)</a></li>
+<li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
+<li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (12)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/25/hide-statusbar-on-ios/">Hide StatusBar on iOS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/">自定义返回按钮时，iOS7手势返回遇到的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/">Objective-C常用數學常量宏及函數</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>新浪微薄: <a href="http://weibo.com/passerbied">@Bluethroat</a><br/>
+  	 Tumblr: <a href="http://passerbied.tumblr.com/">@Passerbied</a>
+  </p>
+</section>
+
+<section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - i-chou -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

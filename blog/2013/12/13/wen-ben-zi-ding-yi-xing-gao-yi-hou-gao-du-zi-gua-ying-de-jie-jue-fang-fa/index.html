@@ -1,0 +1,335 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>文本自定义行高以后高度自适应的解决方法 - i-chou's tech blog</title>
+  <meta name="author" content="i-chou">
+
+  
+  <meta name="description" content="本文要说的是，Frame高度根据文本内容自适应，而非UITextView的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的） iOS7以前的最佳解决方案： 自定义TextView继承UITextView并加入以下方法。1.5em可修改 - (id) &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">i-chou's tech blog</a></h1>
+  
+    <h2>Android iOS</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:i-chou.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">文本自定义行高以后高度自适应的解决方法</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-13T00:09:36+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2013</time>
+        
+        
+          | <a href="#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>本文要说的是，<em>Frame高度</em>根据文本内容自适应，而非<code>UITextView</code>的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）</p>
+
+<ul>
+<li><p>iOS7以前的最佳解决方案：</p>
+
+<p>  自定义TextView继承<code>UITextView</code>并加入以下方法。<em>1.5em</em>可修改</p>
+
+<pre><code>  - (id)styleString {
+      return [[super styleString] stringByAppendingString:@"; line-height: 1.5em"];
+  }
+</code></pre>
+
+<p>  然后在通过下面方法给frame赋值</p>
+
+<pre><code>  CGRect frame = _textView.frame;
+  frame.size.height = _textView.contentSize.height;
+  _textView.frame = frame;
+</code></pre>
+
+<p>  需要注意的是<code>contentSize</code>只在<code>UITextView</code>被<strong>addSubview</strong>以后才有效，所以要先把它加到画面上再，给它一个初始的frame，让它先得以计算出自己的<code>contentSize</code>。</p></li>
+<li><p>iOS7的最佳解决方案是：</p>
+
+<p>  自定义TextView继承<code>UITextView</code>实现下面的<code>init</code>方法，给textView设定行高。</p>
+
+<pre><code>  - (id)initWithFrame:(CGRect)frame lineHeigth:(float)lineHeigth font:(UIFont *)font {
+
+       self = [super initWithFrame:frame];
+       if (self) {
+                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
+
+                    paragraphStyle.lineHeightMultiple = lineHeigth;
+                    paragraphStyle.maximumLineHeight = lineHeigth;
+                    paragraphStyle.minimumLineHeight = lineHeigth;
+                    NSDictionary *ats = 
+                               @{NSFontAttributeName:font,NSParagraphStyleAttributeName : paragraphStyle};
+
+                    self.attributedText = [[NSAttributedString alloc] initWithString:@“ “ attributes:ats];
+                    self.lineHeight = lineHeigth;
+                  }
+        return self;
+  }
+</code></pre>
+
+<p>  然后通过以下方法计算出textView的实际高度，继而确定frame的height。
+因为之前有人说<code>UITextView</code>默认的上下左右padding均为8px，也就是下面16的由来。 所以在计算时要考虑进去才能保证文本显示完整。</p>
+
+<pre><code>  + (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText lineHeight:(float)height
+  {
+    float fPadding = 16.0;
+    CGSize constraint = CGSizeMake(textView.contentSize.width - fPadding, CGFLOAT_MAX);
+
+    CGSize size = [strText sizeWithFont:textView.font
+                      constrainedToSize:constraint
+                          lineBreakMode:UILineBreakModeWordWrap];
+
+    float fHeight = size.height*height/textView.font.lineHeight + 16.0;
+    return fHeight;
+  }
+</code></pre>
+
+<p>  需要注意的是，本文讲的是自定义行高，所以，在下面方法里加上个<strong>lineHeight</strong>参与计算。</p>
+
+<p>  其实从开发文档看，<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html">NSMutableParagraphStyle</a> 在iOS6.0及以后都是有效的，但是我不知道为什么在iOS7上计算很精确，在iOS6上，结果却不令人满意。原因仍在调查中。</p>
+
+<p>  不过，幸好有上面说的 &lt;iOS7以前的最佳解决方案> ，要不然就要用&lt;稍微差一点的解决方案>了，那么就顺带说一下&lt;稍微差一点的解决方案>是什么吧^_^</p></li>
+<li><p>稍微差一点的解决</p>
+
+<p>  使用开源控件 > <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a></p>
+
+<p>  这个控件之前由于性能问题一度被我遗弃过，后来版本更新以后，性能上来不少，但是仍然有些bug。我发现的bug就是当<em>字体小于12号，或者当行数过多，并且<strong>lineHeightMultiple</strong>>1</em>的时候，计算高度会存在偏差，行数越多偏差越大。</p>
+
+<p>  那么也就是说，如果你一个文本不需要显示数百行，在此基础上对文本其他属性有追求，并且苦逼的要考虑兼容iOS7以下用户的话，可以使用 <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a> ，因为这个控件在伴随有 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 的iOS7出来之前还是还是相当牛逼的，而更牛逼的 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 让我们在文本显示领域看见了曙光！顺便奉劝一句，要是你的iOS7用户群达到95%以上，就果断抛弃那些抱着3年前的iPhone4而不敢升级系统的陈旧用户吧。</p></li>
+</ul>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">i-chou</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-13T00:09:36+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ios/'>iOS</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/" data-via="" data-counturl="i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/" title="Previous Post: 自定义返回按钮时，iOS7手势返回遇到的问题">&laquo; 自定义返回按钮时，iOS7手势返回遇到的问题</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/" title="Next Post: UIKit in Release Notes for iOS 7.1 beta2">UIKit in Release Notes for iOS 7.1 beta2 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"i-chou"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/android/'>Android (4)</a></li>
+<li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
+<li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (12)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/25/hide-statusbar-on-ios/">Hide StatusBar on iOS</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/">自定义返回按钮时，iOS7手势返回遇到的问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/">Objective-C常用數學常量宏及函數</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>新浪微薄: <a href="http://weibo.com/passerbied">@Bluethroat</a><br/>
+  	 Tumblr: <a href="http://passerbied.tumblr.com/">@Passerbied</a>
+  </p>
+</section>
+
+<section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - i-chou -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
