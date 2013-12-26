@@ -3,7 +3,7 @@ layout: post
 title: "google产品体验_前端设计"
 date: 2012-04-26 20:02:56 +0800
 comments: true
-categories: 产品
+categories: Design
 ---
 其实不仅仅是google，好多公司的产品体验都非常好，看似简单，但细微处让人舒服得很。
 

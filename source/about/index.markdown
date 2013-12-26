@@ -17,7 +17,7 @@ footer: true
 	
 	* SkypeID：wei.zhang0605
 	
-	* 博客：[i-chou.com](http://i-chou.com)
+	* 真相：[i-chou.com/about/photo](http://i-chou.com/about/photo)
 	
 
 - #####教育背景
