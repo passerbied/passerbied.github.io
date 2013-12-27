@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-26T14:31:55+08:00</updated>
+  <updated>2013-12-27T15:46:09+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,21 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Hide StatusBar on iOS]]></title>
-    <link href="i-chou.com/blog/2013/12/25/hide-statusbar-on-ios/"/>
-    <updated>2013-12-25T18:49:05+08:00</updated>
-    <id>i-chou.com/blog/2013/12/25/hide-statusbar-on-ios</id>
-    <content type="html"><![CDATA[<p>在<code>Info.plist</code>中添加如下两行键值对:</p>
-
-<ol>
-<li><p><code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
-<li><p><code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
-</ol>
-
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[UIKit in Release Notes for iOS 7.1 Beta2]]></title>
@@ -289,31 +274,49 @@ Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Int
     <link href="i-chou.com/blog/2013/08/13/hide-statusbar-also-work-on-ios7/"/>
     <updated>2013-08-13T20:40:06+08:00</updated>
     <id>i-chou.com/blog/2013/08/13/hide-statusbar-also-work-on-ios7</id>
-    <content type="html"><![CDATA[<pre><code>//viewDidload
+    <content type="html"><![CDATA[<ul>
+<li><p>代码方式隐藏</p>
 
-if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+<p>  好处是灵活，随时隐藏随时显示</p>
 
-    // iOS 7
+<pre><code>  //viewDidload
 
-    [self prefersStatusBarHidden];
+  if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
 
-    [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+      // iOS 7
 
-} else {
+      [self prefersStatusBarHidden];
 
-    // iOS 6
+      [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
 
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+  } else {
 
-}
+      // iOS 6
 
-// Add this Method
+      [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-</code></pre>
+  }
+
+  // Add this Method
+
+  - (BOOL)prefersStatusBarHidden
+  {
+      return YES;
+  }
+</code></pre></li>
+<li><p>在配置文件中设置</p>
+
+<p>  如果整个应用都不想显示状态栏，那么这个更方便一些</p>
+
+<p>  在<code>Info.plist</code>中添加如下两行键值对:</p>
+
+<ol>
+<li><p> <code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
+<li><p> <code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
+</ol>
+</li>
+</ul>
+
 ]]></content>
   </entry>
   

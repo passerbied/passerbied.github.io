@@ -9,8 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="在Info.plist中添加如下两行键值对: Status bar is initially hidden（值设置成YES）
-View controller-based status bar appearance（值设置成NO） ">
+  <meta name="description" content="Known Issues If a UITextField or a UILabel that is baseline aligned with constraints has attributes that change after the constraints have been added &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,51 +68,6 @@ View controller-based status bar appearance（值设置成NO） ">
     <div id="content">
       <div class="blog-index">
   
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/25/hide-statusbar-on-ios/">Hide StatusBar on iOS</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-25T18:49:05+08:00" pubdate data-updated="true">Dec 25<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/12/25/hide-statusbar-on-ios/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>在<code>Info.plist</code>中添加如下两行键值对:</p>
-
-<ol>
-<li><p><code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
-<li><p><code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
-</ol>
-
-</div>
-  
-  
-
-
-    </article>
   
   
     <article>
@@ -582,31 +536,49 @@ Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Int
   </header>
 
 
-  <div class="entry-content"><pre><code>//viewDidload
+  <div class="entry-content"><ul>
+<li><p>代码方式隐藏</p>
 
-if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+<p>  好处是灵活，随时隐藏随时显示</p>
 
-    // iOS 7
+<pre><code>  //viewDidload
 
-    [self prefersStatusBarHidden];
+  if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
 
-    [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+      // iOS 7
 
-} else {
+      [self prefersStatusBarHidden];
 
-    // iOS 6
+      [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
 
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+  } else {
 
-}
+      // iOS 6
 
-// Add this Method
+      [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-</code></pre>
+  }
+
+  // Add this Method
+
+  - (BOOL)prefersStatusBarHidden
+  {
+      return YES;
+  }
+</code></pre></li>
+<li><p>在配置文件中设置</p>
+
+<p>  如果整个应用都不想显示状态栏，那么这个更方便一些</p>
+
+<p>  在<code>Info.plist</code>中添加如下两行键值对:</p>
+
+<ol>
+<li><p> <code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
+<li><p> <code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
+</ol>
+</li>
+</ul>
+
 </div>
   
   
@@ -733,6 +705,58 @@ NSString *currentLanguage = [languages objectAtIndex:0];
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/03/07/uitableviewyin-cang-duo-yu-de-fen-ge-xian/">UITableView隐藏多余的分割线</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-03-07T15:18:45+08:00" pubdate data-updated="true">Mar 7<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/03/07/uitableviewyin-cang-duo-yu-de-fen-ge-xian/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><pre><code>- (void)setExtraCellLineHidden: (UITableView *)tableView
+{
+    UIView *view = [UIView new];
+    view.backgroundColor = [UIColor clearColor];
+    [tableView setTableFooterView:view];
+}
+</code></pre>
+
+<p>当tableview的dataSource为空时，也就是没有数据可显示时，该方法无效，只能在numberOfRowsInsection函数，通过判断dataSouce的数据个数，如果为零可以将tableview的
+separatorStyle设置为UITableViewCellSeparatorStyleNone去掉分割线，然后在大于零时将其设置为
+UITableViewCellSeparatorStyleSingleLine</p>
+
+<p>顺便，如果想仿造TableView的分割线默认样式，做个单条的分割线的话，
+可以自己创建一个高度为1.25,颜色值为0xe7e7e7的UIImageview来伪装一下。</p>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -749,16 +773,12 @@ NSString *currentLanguage = [languages objectAtIndex:0];
     <li class='category'><a href='/blog/categories/android/'>Android (4)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (12)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (11)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2013/12/25/hide-statusbar-on-ios/">Hide StatusBar on iOS</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a>
@@ -774,6 +794,10 @@ NSString *currentLanguage = [languages objectAtIndex:0];
     
       <li class="post">
         <a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/">Objective-C常用數學常量宏及函數</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie/">iPhone应用开发中emoji带来的问题小结</a>
       </li>
     
   </ul>

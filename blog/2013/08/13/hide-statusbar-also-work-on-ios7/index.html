@@ -9,7 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="//viewDidload if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) { // iOS 7 [self prefersStatusBarHidden]; [self &hellip;">
+  <meta name="description" content="代码方式隐藏 好处是灵活，随时隐藏随时显示 //viewDidload if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) { // iOS 7 [self &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -97,31 +97,49 @@
   </header>
 
 
-<div class="entry-content"><pre><code>//viewDidload
+<div class="entry-content"><ul>
+<li><p>代码方式隐藏</p>
 
-if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+<p>  好处是灵活，随时隐藏随时显示</p>
 
-    // iOS 7
+<pre><code>  //viewDidload
 
-    [self prefersStatusBarHidden];
+  if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
 
-    [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+      // iOS 7
 
-} else {
+      [self prefersStatusBarHidden];
 
-    // iOS 6
+      [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
 
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+  } else {
 
-}
+      // iOS 6
 
-// Add this Method
+      [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
 
-- (BOOL)prefersStatusBarHidden
-{
-    return YES;
-}
-</code></pre>
+  }
+
+  // Add this Method
+
+  - (BOOL)prefersStatusBarHidden
+  {
+      return YES;
+  }
+</code></pre></li>
+<li><p>在配置文件中设置</p>
+
+<p>  如果整个应用都不想显示状态栏，那么这个更方便一些</p>
+
+<p>  在<code>Info.plist</code>中添加如下两行键值对:</p>
+
+<ol>
+<li><p> <code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
+<li><p> <code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
+</ol>
+</li>
+</ul>
+
 </div>
 
 
@@ -206,16 +224,12 @@ if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
     <li class='category'><a href='/blog/categories/android/'>Android (4)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (12)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (11)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
-    
-      <li class="post">
-        <a href="/blog/2013/12/25/hide-statusbar-on-ios/">Hide StatusBar on iOS</a>
-      </li>
     
       <li class="post">
         <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a>
@@ -231,6 +245,10 @@ if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
     
       <li class="post">
         <a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/">Objective-C常用數學常量宏及函數</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie/">iPhone应用开发中emoji带来的问题小结</a>
       </li>
     
   </ul>
