@@ -712,7 +712,7 @@ CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descr
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./">iOS 7: 如何为iPhone 5S编译64位应用。</a></h1>
+      <h1 class="entry-title"><a href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./">iOS 7: 如何为iPhone 5S编译64位应用</a></h1>
     
     
       <p class="meta">
@@ -738,7 +738,7 @@ CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descr
   </header>
 
 
-  <div class="entry-content"><p><strong>随着iPhone 5S的推出，大家开始关心5S上所使用的64位CPU A7。</strong></p>
+  <div class="entry-content"><h5>随着iPhone 5S的推出，大家开始关心5S上所使用的64位CPU A7。</h5>
 
 <p>除了关心A7的性能以外，大家还会关心一个问题，那就是使用A7的64位系统对应用有没有什么要求。特别是应用开发者，大家都比较关心我们的应用如何迁移到64位的系统上来，以充分发挥A7的能力。其实这些问题都可以在苹果的官方文档<em>《64-Bit transition Guide for Cocoa Touch》</em>中找到答案。</p>
 
@@ -748,9 +748,7 @@ CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descr
 
 <p>这里需要强调的是，寄存器的增加大大提高了程序的运行速度。将CPU由32位提高到64位，最主要的改变增大了寻址能力，可以突破32位系统只能访问3G内存的限制（感谢 wanglang3081 指出这里的问题，32位系统在理论上可以访问4G内存，因为2的32次方约等于4 290 000 000，很多32位系统只能访问3G左右的内存是因为有一大部分地址被分配给I/O系统了，所以总体可用内存就不足4G了。），但是，32位到64位的改变并不一定意味着程序运行速度的提高，甚至有些情况下会因为64位系统中的数据占用内存变大而导致程序运行速度变慢。而寄存器数量的增加，则直接提高了程序运行速度，当然，前提是你的应用需要重新为64位系统编译一遍，让程序可以充分使用所有的寄存器。</p>
 
-<hr />
-
-<h6><strong><em>使用Xcode 5可以很方便地将以前的应用编译成64位程序，基本过程如下：</em></strong></h6>
+<h5>使用Xcode 5可以很方便地将以前的应用编译成64位程序，基本过程如下：</h5>
 
 <ol>
 <li><p>使用Xcode 5 打开原有项目。</p></li>
@@ -774,8 +772,6 @@ CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descr
 
 <p>如果一台64位的iOS设备上运行的所有程序都是为64位系统编译过的，iOS系统将只载入64位的FrameWork，这将节省好多内存。所以，<strong>如果大家都可以快速将程序传换成64位的，iOS将跑得更快。真的是“大家好才是真的好”。</strong></p>
 
-<hr />
-
 <p>后面我们来看看一些为64位系统调整程序的技术细节。</p>
 
 <p>32位的iOS系统和64位的iOS系统主要的差别有两个，一个是数据类型的差别，一个是过程调用方法的差别。</p>
@@ -784,7 +780,7 @@ CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descr
 
 <p>在过程调用方法上，因为ARM V8 和ARM V7具有不同数量的寄存器，具有不同的过程调用约定，所以32位系统和64位系统在汇编层级是不同的。</p>
 
-<h6><strong><em>根据以上两方面的变化，书中总结了以下要点，开发人员根据以下要点来检查原来的32位代码就差不多可以将应用移植到64位系统上了：</em></strong></h6>
+<h6>根据以上两方面的变化，书中总结了以下要点，开发人员根据以下要点来检查原来的32位代码就差不多可以将应用移植到64位系统上了：</h6>
 
 <ul>
 <li><p>不要将长整型数据(long)赋予整型(int)</p>
@@ -1219,7 +1215,7 @@ Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Int
       </li>
     
       <li class="post">
-        <a href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./">iOS 7: 如何为iPhone 5S编译64位应用。</a>
+        <a href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./">iOS 7: 如何为iPhone 5S编译64位应用</a>
       </li>
     
   </ul>
