@@ -8,8 +8,10 @@ footer: true
 ---
 - #####个人信息
 
+	<div style="float:right;width:200px;"><img width="200px" height="200px" src="qrcode.png"></img>	
+	</br><a>想把我保存到通讯录请扫二维码</a></div>
 	
-	* 姓名：张 伟
+	* 姓名：张 伟 
 	
 	* 邮箱：<a href="mailto:ios_develop@me.com">ios_develop@me.com</a>
 	
@@ -18,6 +20,7 @@ footer: true
 	* SkypeID：wei.zhang0605
 	
 	* 真相：[i-chou.com/about/photo](http://i-chou.com/about/photo)
+	
 	
 
 - #####教育背景
