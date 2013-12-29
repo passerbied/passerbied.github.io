@@ -10,7 +10,8 @@ categories: iOS
 那么就将搜集到的定制Eclipse快捷键的方法分享在这里，缺点是每次Xcode升级，需要重新配置，不过有些插件可以统一管理Xcode的配置文件和插件，这里就不讲了。
 
 首先找到Xcode中的自带的配置文件
-`/Applications/Xcode.app/Contents/Frameworks/IDEKit.framework/Versions/A/Resources/IDETextKeyBindingSet.plist` 这个文件里配置了一些可以设置快捷键的操作, 使用常用的编辑器打开它（需要root权限）。
+`/Applications/Xcode.app/Contents/Frameworks/IDEKit.framework/Versions/A/Resources/
+IDETextKeyBindingSet.plist` 这个文件里配置了一些可以设置快捷键的操作, 使用常用的编辑器打开它（需要root权限）。
 
 然后把这段配置
 
