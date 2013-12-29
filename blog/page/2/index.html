@@ -9,7 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="y 年 Year 1996; 96 M 年中的月份 Month July; Jul; 07 w 年中的周数 Number 27 W 月份中的周数 Number 2 D 年中的天数 Number 189 d 月份中的天数 Number 10 F 月份中的星期 Number 2 E 星期中的天数 &hellip;">
+  <meta name="description" content="添加如下代码： NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; NSArray *languages = [defaults objectForKey:@"AppleLanguages"]; NSString * &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,52 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/">iOS获取当前系统语言</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-18T15:40:14+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>添加如下代码：</p>
+
+<pre><code>NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
+NSArray *languages = [defaults objectForKey:@"AppleLanguages"]; 
+NSString *currentLanguage = [languages objectAtIndex:0];
+</code></pre>
+
+<p>取得设置好的语言。。日语是ja，英文是en，其他。。就设置以后log出来看看吧！</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -760,7 +806,7 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     <li class='category'><a href='/blog/categories/android/'>Android (4)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (13)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (14)</a></li>
 
   </ul>
 </section><section>
@@ -784,7 +830,7 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
       </li>
     
       <li class="post">
-        <a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/">自定义返回按钮时，iOS7手势返回遇到的问题</a>
+        <a href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./">iOS 7: 如何为iPhone 5S编译64位应用。</a>
       </li>
     
   </ul>
