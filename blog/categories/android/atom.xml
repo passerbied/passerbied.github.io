@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/android/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-29T14:32:09+08:00</updated>
+  <updated>2013-12-29T14:38:39+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -30,6 +30,17 @@
 <p><a href="https://chart.apis.google.com/chart?">https://chart.apis.google.com/chart?</a></p>
 
 <p>This is the base URL for all chart requests. (However, seeImproving Performance on Pages with Many Charts below for an optional variation for pages with multiple charts.)cht=p3The chart type: here, a 3D pie chart.chs=250x100The chart size (width xheight), in pixels. See the maximum valueshere.chd=t:60,40The chart data. This data is in simple text format, but there areother formats.chl=Hello|WorldTheslice labels.&amp;Parameters are separated by an ampersand.Note: When embedding an URL in HTML, for example as thesrc attribute of an <img> tag, you should replace the&amp; between parameters with the characters&amp; This includes when you generate page HTML with PHP or some other language. However, when typing a URL in the browser, or whencalling a URL in code, for example when fetching a URL in PHP or Perl, you should use the&amp; mark.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android PopupWindow的使用]]></title>
+    <link href="i-chou.com/blog/2012/06/20/android-popupwindowde-shi-yong/"/>
+    <updated>2012-06-20T16:36:24+08:00</updated>
+    <id>i-chou.com/blog/2012/06/20/android-popupwindowde-shi-yong</id>
+    <content type="html"><![CDATA[<p><a href="http://blog.csdn.net/Android_Tutor/article/details/5576533">Android PopupWindow的使用</a></p>
+
+<p>以上链接解决了画面初始化时直接弹出PopUpWindow的需求。测试有效。</p>
 ]]></content>
   </entry>
   
