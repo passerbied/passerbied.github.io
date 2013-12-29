@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-27T16:35:45+08:00</updated>
+  <updated>2013-12-29T14:05:45+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,6 +12,66 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Use Eclipse-Style ShortcutKey on Xcode]]></title>
+    <link href="i-chou.com/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/"/>
+    <updated>2013-12-29T13:51:56+08:00</updated>
+    <id>i-chou.com/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode</id>
+    <content type="html"><![CDATA[<p>相信有一些小伙伴即使用着高大上的Xcode，也还是习惯用Eclipse的一些更亲民的快捷键。
+那么就将搜集到的定制Eclipse快捷键的方法分享在这里，缺点是每次Xcode升级，需要重新配置，不过有些插件可以统一管理Xcode的配置文件和插件，这里就不讲了。</p>
+
+<p>首先找到Xcode中的自带的配置文件
+<code>/Applications/Xcode.app/Contents/Frameworks/IDEKit.framework/Versions/A/Resources/IDETextKeyBindingSet.plist</code> 这个文件里配置了一些可以设置快捷键的操作, 使用常用的编辑器打开它（需要root权限）。</p>
+
+<p>然后把这段配置</p>
+
+<pre><code>&lt;key&gt;GDI Commands&lt;/key&gt;
+    &lt;dict&gt;
+        &lt;key&gt;GDI Duplicate Current Line&lt;/key&gt;
+        &lt;string&gt;selectLine:, copy:, moveToEndOfLine:, insertNewline:, paste:, deleteBackward:&lt;/string&gt;
+        &lt;key&gt;GDI Delete Current Line&lt;/key&gt;
+        &lt;string&gt;moveToEndOfLine:, deleteToBeginningOfLine:, deleteBackward:, moveDown:, moveToEndOfLine:&lt;/string&gt;
+        &lt;key&gt;GDI Move Current Line Up&lt;/key&gt;
+        &lt;string&gt;selectLine:, cut:, moveUp:, moveToBeginningOfLine:, insertNewLine:, paste:, moveBackward:&lt;/string&gt;
+        &lt;key&gt;GDI Move Current Line Down&lt;/key&gt;
+        &lt;string&gt;selectLine:, cut:, moveDown:, moveToBeginningOfLine:, insertNewLine:, paste:, moveBackward:&lt;/string&gt;
+        &lt;key&gt;GDI Insert Line Above&lt;/key&gt;
+        &lt;string&gt;moveUp:, moveToEndOfLine:, insertNewline:&lt;/string&gt;
+        &lt;key&gt;GDI Insert Line Below&lt;/key&gt;
+        &lt;string&gt;moveToEndOfLine:, insertNewline:&lt;/string&gt;
+    &lt;/dict&gt;
+</code></pre>
+
+<p>放到上面提到的<code>IDETextKeyBindingSet.plist</code>里，放在文件的最后的这两行之前：</p>
+
+<pre><code>    &lt;/dict&gt;
+&lt;/plist&gt;
+</code></pre>
+
+<p>配置解读：</p>
+
+<p>key是名称，对应的string是对应的一组操作。</p>
+
+<ul>
+<li>GDI Duplicate Current Line 复制当前行到下面一行</li>
+<li>GDI Delete Current Line 删除当前行</li>
+<li>GDI Move Current Line Up 把当前行往上移动一行</li>
+<li>GDI Move Current Line Down 把当前行往下移动一行</li>
+<li>GDI Insert Line Above 在当前行上面增加一空行</li>
+<li>GDI Insert Line Below 在当前行下面增加一空行（不管光标是否在行尾）</li>
+</ul>
+
+
+<p>copy以后重启Xcode，在Xcode菜单中，打开Preferences，选中Key Binding，在右上方搜索GDI, 会出现类似下图的显示，如果没有的话，请检查上面的每步操作。</p>
+
+<p><img src="key_binding.png" alt="img" /></p>
+
+<p>双击右边的空白处，就可以为每个功能设置不同的快捷键。</p>
+
+<p>参考：<a href="http://joeyio.com/2013/07/22/xcode_key_binding_like_eclipse/">Xcode自定义Eclipse中常用的快捷键</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[UIKit in Release Notes for iOS 7.1 Beta2]]></title>
@@ -229,24 +289,6 @@
 <p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(-10)); //result 10</p></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[iPhone应用开发中emoji带来的问题小结]]></title>
-    <link href="i-chou.com/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie/"/>
-    <updated>2013-08-15T20:36:32+08:00</updated>
-    <id>i-chou.com/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie</id>
-    <content type="html"><![CDATA[<p>如果是iPhone自带字体，emoji和文字的高度是不同的，有些细节的地方会造成布局出现瑕疵，我之前的做法是在</p>
-
-<pre><code>- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-</code></pre>
-
-<p>方法里对输入内容进行判断，采取屏蔽emoji输入的方式，具体屏蔽办法请参见： <a href="https://gist.github.com/cihancimen/4146056">https://gist.github.com/cihancimen/4146056</a></p>
-
-<p>但iOS7出来以后，通过测试发现7中修改和增加了一些emojide的编码。上述办法对于一些emoji的屏蔽失效。解决办法是找到合适的第三方字体包。同时，需要考虑iOS和PHP之前通信以及和其他平台通信时产生的问题。于是找到如下文章。</p>
-
-<p><a href="http://wpceo.com/supporting-emoji-on-php-mysql/">http://wpceo.com/supporting-emoji-on-php-mysql/</a></p>
 ]]></content>
   </entry>
   
