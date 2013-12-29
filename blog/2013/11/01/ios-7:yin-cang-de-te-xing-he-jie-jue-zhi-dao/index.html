@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>i-chou's tech blog</title>
+  <title>iOS 7：隐藏的特性和解决之道 - i-chou's tech blog</title>
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="相信有一些小伙伴即使用着高大上的Xcode，也还是习惯用Eclipse的一些更亲民的快捷键。
-那么就将搜集到的定制Eclipse快捷键的方法分享在这里，缺点是每次Xcode升级，需要重新配置，不过有些插件可以统一管理Xcode的配置文件和插件，这里就不讲了。 首先找到Xcode中的自带的配置文件 &hellip;">
+  <meta name="description" content="当 iOS7 刚发布的时候，全世界的苹果开发人员都立马尝试着去编译他们的app，接着再花上数月的时间来修复任何出现的故障，甚至重建这个app。这样的结果，使得人们根本无暇去探究 iOS7 所带来的新思潮。一些明显而细微的更新，比如说[NSArray firstObject]，这个方法可追溯到 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="i-chou.com">
+  <link rel="canonical" href="i-chou.com/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
@@ -67,267 +66,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/">Use Eclipse-Style ShortcutKey on Xcode</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-29T13:51:56+08:00" pubdate data-updated="true">Dec 29<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>相信有一些小伙伴即使用着高大上的Xcode，也还是习惯用Eclipse的一些更亲民的快捷键。
-那么就将搜集到的定制Eclipse快捷键的方法分享在这里，缺点是每次Xcode升级，需要重新配置，不过有些插件可以统一管理Xcode的配置文件和插件，这里就不讲了。</p>
-
-<p>首先找到Xcode中的自带的配置文件
-<code>/Applications/Xcode.app/Contents/Frameworks/IDEKit.framework/Versions/A/Resources/
-IDETextKeyBindingSet.plist</code> 这个文件里配置了一些可以设置快捷键的操作, 使用常用的编辑器打开它（需要root权限）。</p>
-
-<p>然后把这段配置</p>
-
-<pre><code>&lt;key&gt;GDI Commands&lt;/key&gt;
-    &lt;dict&gt;
-        &lt;key&gt;GDI Duplicate Current Line&lt;/key&gt;
-        &lt;string&gt;selectLine:, copy:, moveToEndOfLine:, insertNewline:, paste:, deleteBackward:&lt;/string&gt;
-        &lt;key&gt;GDI Delete Current Line&lt;/key&gt;
-        &lt;string&gt;moveToEndOfLine:, deleteToBeginningOfLine:, deleteBackward:, moveDown:, moveToEndOfLine:&lt;/string&gt;
-        &lt;key&gt;GDI Move Current Line Up&lt;/key&gt;
-        &lt;string&gt;selectLine:, cut:, moveUp:, moveToBeginningOfLine:, insertNewLine:, paste:, moveBackward:&lt;/string&gt;
-        &lt;key&gt;GDI Move Current Line Down&lt;/key&gt;
-        &lt;string&gt;selectLine:, cut:, moveDown:, moveToBeginningOfLine:, insertNewLine:, paste:, moveBackward:&lt;/string&gt;
-        &lt;key&gt;GDI Insert Line Above&lt;/key&gt;
-        &lt;string&gt;moveUp:, moveToEndOfLine:, insertNewline:&lt;/string&gt;
-        &lt;key&gt;GDI Insert Line Below&lt;/key&gt;
-        &lt;string&gt;moveToEndOfLine:, insertNewline:&lt;/string&gt;
-    &lt;/dict&gt;
-</code></pre>
-
-<p>放到上面提到的<code>IDETextKeyBindingSet.plist</code>里，放在文件的最后的这两行之前：</p>
-
-<pre><code>    &lt;/dict&gt;
-&lt;/plist&gt;
-</code></pre>
-
-<p>配置解读：</p>
-
-<p>key是名称，对应的string是对应的一组操作。</p>
-
-<ul>
-<li>GDI Duplicate Current Line 复制当前行到下面一行</li>
-<li>GDI Delete Current Line 删除当前行</li>
-<li>GDI Move Current Line Up 把当前行往上移动一行</li>
-<li>GDI Move Current Line Down 把当前行往下移动一行</li>
-<li>GDI Insert Line Above 在当前行上面增加一空行</li>
-<li>GDI Insert Line Below 在当前行下面增加一空行（不管光标是否在行尾）</li>
-</ul>
-
-
-<p>copy以后重启Xcode，在Xcode菜单中，打开Preferences，选中Key Binding，在右上方搜索GDI, 会出现类似下图的显示，如果没有的话，请检查上面的每步操作。</p>
-
-<p><img src="../images/key_binding.png" alt="img" /></p>
-
-<p>双击右边的空白处，就可以为每个功能设置不同的快捷键。</p>
-
-<p>本文参考自：<a href="http://joeyio.com/2013/07/22/xcode_key_binding_like_eclipse/">Xcode自定义Eclipse中常用的快捷键</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-17T12:17:22+08:00" pubdate data-updated="true">Dec 17<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Known Issues</p>
-
-<ul>
-<li><p>If a <code>UITextField</code> or a <code>UILabel</code> that is baseline aligned with constraints has attributes that change after the constraints have been added, the layout may be incorrect. The exception to this is <code>-setFont:</code> on <code>UILabel</code>, which should work as expected.</p>
-
-<p>  <strong>Workaround:</strong> Avoid making changes in <code>UITextField</code> or <code>UILabel</code> after adding baseline-alignment constraints. If you must make changes, you should remove the constraints and then reapply them afterward. Note that this is a performance hit, so don’t do it unless it is necessary.</p></li>
-<li><p>The <code>backIndicatorTransitionMask</code> from a storyboard or a xib will not be interpreted correctly at runtime.</p>
-
-<p>  <strong>Workaround:</strong> Set the <code>backIndicatorTransitionMask</code> in code.</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-12-13T00:09:36+08:00" pubdate data-updated="true">Dec 13<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>本文要说的是，<em>Frame高度</em>根据文本内容自适应，而非<code>UITextView</code>的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）</p>
-
-<ul>
-<li><p>iOS7以前的最佳解决方案：</p>
-
-<p>  自定义TextView继承<code>UITextView</code>并加入以下方法。<em>1.5em</em>可修改</p>
-
-<pre><code>  - (id)styleString {
-      return [[super styleString] stringByAppendingString:@"; line-height: 1.5em"];
-  }
-</code></pre>
-
-<p>  然后在通过下面方法给frame赋值</p>
-
-<pre><code>  CGRect frame = _textView.frame;
-  frame.size.height = _textView.contentSize.height;
-  _textView.frame = frame;
-</code></pre>
-
-<p>  需要注意的是<code>contentSize</code>只在<code>UITextView</code>被<strong>addSubview</strong>以后才有效，所以要先把它加到画面上再，给它一个初始的frame，让它先得以计算出自己的<code>contentSize</code>。</p></li>
-<li><p>iOS7的最佳解决方案是：</p>
-
-<p>  自定义TextView继承<code>UITextView</code>实现下面的<code>init</code>方法，给textView设定行高。</p>
-
-<pre><code>  - (id)initWithFrame:(CGRect)frame lineHeigth:(float)lineHeigth font:(UIFont *)font {
-
-       self = [super initWithFrame:frame];
-       if (self) {
-                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-
-                    paragraphStyle.lineHeightMultiple = lineHeigth;
-                    paragraphStyle.maximumLineHeight = lineHeigth;
-                    paragraphStyle.minimumLineHeight = lineHeigth;
-                    NSDictionary *ats = 
-                               @{NSFontAttributeName:font,NSParagraphStyleAttributeName : paragraphStyle};
-
-                    self.attributedText = [[NSAttributedString alloc] initWithString:@“ “ attributes:ats];
-                    self.lineHeight = lineHeigth;
-                  }
-        return self;
-  }
-</code></pre>
-
-<p>  然后通过以下方法计算出textView的实际高度，继而确定frame的height。
-因为之前有人说<code>UITextView</code>默认的上下左右padding均为8px，也就是下面16的由来。 所以在计算时要考虑进去才能保证文本显示完整。</p>
-
-<pre><code>  + (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText lineHeight:(float)height
-  {
-    float fPadding = 16.0;
-    CGSize constraint = CGSizeMake(textView.contentSize.width - fPadding, CGFLOAT_MAX);
-
-    CGSize size = [strText sizeWithFont:textView.font
-                      constrainedToSize:constraint
-                          lineBreakMode:UILineBreakModeWordWrap];
-
-    float fHeight = size.height*height/textView.font.lineHeight + 16.0;
-    return fHeight;
-  }
-</code></pre>
-
-<p>  需要注意的是，本文讲的是自定义行高，所以，在下面方法里加上个<strong>lineHeight</strong>参与计算。</p>
-
-<p>  其实从开发文档看，<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html">NSMutableParagraphStyle</a> 在iOS6.0及以后都是有效的，但是我不知道为什么在iOS7上计算很精确，在iOS6上，结果却不令人满意。原因仍在调查中。</p>
-
-<p>  不过，幸好有上面说的 &lt;iOS7以前的最佳解决方案> ，要不然就要用&lt;稍微差一点的解决方案>了，那么就顺带说一下&lt;稍微差一点的解决方案>是什么吧^_^</p></li>
-<li><p>稍微差一点的解决</p>
-
-<p>  使用开源控件 > <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a></p>
-
-<p>  这个控件之前由于性能问题一度被我遗弃过，后来版本更新以后，性能上来不少，但是仍然有些bug。我发现的bug就是当<em>字体小于12号，或者当行数过多，并且<strong>lineHeightMultiple</strong>>1</em>的时候，计算高度会存在偏差，行数越多偏差越大。</p>
-
-<p>  那么也就是说，如果你一个文本不需要显示数百行，在此基础上对文本其他属性有追求，并且苦逼的要考虑兼容iOS7以下用户的话，可以使用 <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a> ，因为这个控件在伴随有 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 的iOS7出来之前还是还是相当牛逼的，而更牛逼的 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 让我们在文本显示领域看见了曙光！顺便奉劝一句，要是你的iOS7用户群达到95%以上，就果断抛弃那些抱着3年前的iPhone4而不敢升级系统的陈旧用户吧。</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/">iOS 7：隐藏的特性和解决之道</a></h1>
+      <h1 class="entry-title">iOS 7：隐藏的特性和解决之道</h1>
     
     
       <p class="meta">
@@ -346,14 +90,14 @@ IDETextKeyBindingSet.plist</code> 这个文件里配置了一些可以设置快�
 <time datetime="2013-11-01T14:14:51+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2013</time>
         
         
-          | <a href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/#comments">Comments</a>
+          | <a href="#comments">Comments</a>
          
       </p>
     
   </header>
 
 
-  <div class="entry-content"><p>当 iOS7 刚发布的时候，全世界的苹果开发人员都立马尝试着去编译他们的app，接着再花上数月的时间来修复任何出现的故障，甚至重建这个app。这样的结果，使得人们根本无暇去探究 iOS7 所带来的新思潮。一些明显而细微的更新，比如说<code>[NSArray firstObject]</code>，这个方法可追溯到 iOS4 时代，现在被提为公有API，除此之外，还有很多隐藏的特性等着我们去挖掘。</p>
+<div class="entry-content"><p>当 iOS7 刚发布的时候，全世界的苹果开发人员都立马尝试着去编译他们的app，接着再花上数月的时间来修复任何出现的故障，甚至重建这个app。这样的结果，使得人们根本无暇去探究 iOS7 所带来的新思潮。一些明显而细微的更新，比如说<code>[NSArray firstObject]</code>，这个方法可追溯到 iOS4 时代，现在被提为公有API，除此之外，还有很多隐藏的特性等着我们去挖掘。</p>
 
 
 <h3>平滑淡入淡出动画</h3>
@@ -701,76 +445,16 @@ CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descr
 <p>原文链接：&nbsp;<a href="http://www.objc.io/issue-5/iOS7-hidden-gems-and-workarounds.html" target="_blank">Peter Steinberger</a>&nbsp;翻译：&nbsp;<a href="http://blog.jobbole.com/">伯乐在线</a>&nbsp;-&nbsp;<a href="http://blog.jobbole.com/author/jobbole/">伯乐在线读者</a><br />译文链接：&nbsp;<a href="http://blog.jobbole.com/51761/">http://blog.jobbole.com/51761/</a><br />[&nbsp;转载必须在正文中标注并保留原文链接、译文链接和译者等信息。]</p>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/">自定义返回按钮时，iOS7手势返回遇到的问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
   
 
+<span class="byline author vcard">Posted by <span class="fn">i-chou</span></span>
 
-<time datetime="2013-09-12T23:07:27+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>从iOS7的Beta版开始，就着手做兼容工作，到Beta4的時候，应用已经基本兼容，只是偶然发现，iOS样式的手势返回，也就是用<code>interactivePopGestureRecognizer</code>返回的时候,出现下面一些列问题。各方调研，无果，史无前例（废话，刚出来的7，上哪有例去&mdash;#）。</p>
-
-<ul>
-<li><p>我的应用是自定义的返回按钮图标(默认返回按钮样式不会出现问题3)，为了保险，写了这句代码<code>[self.navigationItem setHidesBackButton:YES]</code>。
-由于自定义返回按钮，所以iOS7自带返回手势无效。在需要的页面加上<code>navigationController.interactivePopGestureRecognizer.delegate = self</code>
-返回手势好用了。</p></li>
-<li><p>于是出现了第二个问题。
-在一级视图中，iOS样式返回的手势滑动一下，然后进入二级视图，发现，画面卡住了，按Home键转入后台，再返回应用，发现并没有Crash掉，而是直接跳到了二级视图里，运行正常了，大家知道push和pop的原理是用进栈出栈完成的，可能因为在一级视图中滑动那一下，影响了视图在栈中的位置。
-好，先解决一下这个问题，一级视图中一定要加入<code>self.navigationController.interactivePopGestureRecognizer.enabled = NO;</code>，先把iOS7手势返回屏蔽掉，到二级视图再用<code>self.navigationController.interactivePopGestureRecognizer.enabled = YES</code>打开。就Ok了。</p></li>
-<li><p>好，第三个问题相继出现（其实是跟第二个一起出来的）。
-手势返回拖动一半，放手，<code>navigationBar</code>上会出现三个小蓝点，而且位置不规律，可以肯定这个不是项目代码或者图片搞出来的东西，一定是SDK自己蹦出來的。
-后台尝试发现<code>UIBarButtonItem</code>的<code>title</code>如果是nil的话，就会有这个问题。
-解决方案：把<code>[self.navigationItem setHidesBackButton:YES];</code>去掉，然後把假装成返回按钮的<code>UIBarButtonItem</code>的<code>title</code>设置成<code>@""</code>。</p></li>
-<li><p>大功告成。可见设计要是不按苹果规范来的话，就会遇到各种坑啊。</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/">Objective-C常用數學常量宏及函數</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
@@ -782,341 +466,60 @@ CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descr
   
 
 
-<time datetime="2013-08-28T12:12:27+08:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><p>数学常量：</p>
-
-<p>  #define M_E         2.71828182845904523536028747135266250   // e</p>
-
-<p>  #define M_LOG2E     1.44269504088896340735992468100189214   // log 2e</p>
-
-<p>  #define M_LOG10E    0.434294481903251827651128918916605082  // log 10e</p>
-
-<p>  #define M_LN2       0.693147180559945309417232121458176568  // log e2</p>
-
-<p>  #define M_LN10      2.30258509299404568401799145468436421   // log e10</p>
-
-<p>  #define M_PI        3.14159265358979323846264338327950288   // pi</p>
-
-<p>  #define M_PI_2      1.57079632679489661923132169163975144   // pi/2</p>
-
-<p>  #define M_PI_4      0.785398163397448309615660845819875721  // pi/4</p>
-
-<p>  #define M_1_PI      0.318309886183790671537767526745028724  // 1/pi</p>
-
-<p>  #define M_2_PI      0.636619772367581343075535053490057448  // 2/pi</p>
-
-<p>  #define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)</p>
-
-<p>  #define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)</p>
-
-<p>  #define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)</p>
-
-<p>  </br></p></li>
-<li><p>常用函数：</p>
-
-<p>  //指数运算</p>
-
-<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,2) ); //result 9</p>
-
-<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,3) ); //result 27</p>
-
-<p>  </br>
-  //开平方运算</p>
-
-<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(16) ); //result 4</p>
-
-<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(81) ); //result 9</p>
-
-<p>  </br>
-  //上舍入</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.000000000001)); //result 4</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.00)); //result 3</p>
-
-<p>  </br>
-  //下舍入</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.000000000001)); //result 3</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.9999999)); //result 3</p>
-
-<p>  </br>
-  //四舍五入</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.5)); //result 4</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.46)); //result 3</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(-3.5)); //NB: this one returns -4</p>
-
-<p>  </br>
-  //最小值</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmin(5,10)); //result 5</p>
-
-<p>  </br>
-  //最大值</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmax(5,10)); //result 10</p>
-
-<p>  </br> <br/>
-  //绝对值</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(10)); //result 10</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(-10)); //result 10</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+<time datetime="2013-11-01T14:14:51+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2013</time>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie/">iPhone应用开发中emoji带来的问题小结</a></h1>
-    
-    
-      <p class="meta">
-        
 
-
-
-
-
-
-
-
+<span class="categories">
   
+    <a class='category' href='/blog/categories/ios/'>iOS</a>
+  
+</span>
 
 
-<time datetime="2013-08-15T20:36:32+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie/#comments">Comments</a>
-         
-      </p>
+    </p>
     
-  </header>
-
-
-  <div class="entry-content"><p>如果是iPhone自带字体，emoji和文字的高度是不同的，有些细节的地方会造成布局出现瑕疵，我之前的做法是在</p>
-
-<pre><code>- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
-</code></pre>
-
-<p>方法里对输入内容进行判断，采取屏蔽emoji输入的方式，具体屏蔽办法请参见： <a href="https://gist.github.com/cihancimen/4146056">https://gist.github.com/cihancimen/4146056</a></p>
-
-<p>但iOS7出来以后，通过测试发现7中修改和增加了一些emojide的编码。上述办法对于一些emoji的屏蔽失效。解决办法是找到合适的第三方字体包。同时，需要考虑iOS和PHP之前通信以及和其他平台通信时产生的问题。于是找到如下文章。</p>
-
-<p><a href="http://wpceo.com/supporting-emoji-on-php-mysql/">http://wpceo.com/supporting-emoji-on-php-mysql/</a></p>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/" data-via="" data-counturl="i-chou.com/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
-
-    </article>
-  
-  
-    <article>
+    
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/15/xcode5dai-lai-de-%5B%3F%5D-ge-xiao-wen-ti/">Xcode5带来的一个小问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-15T17:57:31+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/08/15/xcode5dai-lai-de-%5B%3F%5D-ge-xiao-wen-ti/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>带有xib文件如果用Xcode5打开过，再用Xcode4.6打开，会出现如下错误：</p>
-
-<p><code>
-Please use a newer version of Xcode. Consider changing the document's Development Target to preserve compatibility.
-</code></p>
-
-<p>解决办法如下：</p>
-
-<p><code>
-Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Interface Builder Documents" section change "Open with" to Xcode 4.6 (if it's 5.x). 3. Save, Close the project and open that with old Xcode.
-</code></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
+        <a class="basic-alignment left" href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/" title="Previous Post: 自定义返回按钮时，iOS7手势返回遇到的问题">&laquo; 自定义返回按钮时，iOS7手势返回遇到的问题</a>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/13/hide-statusbar-also-work-on-ios7/">Hide statusBar (Also Work on Ios7)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-13T20:40:06+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/08/13/hide-statusbar-also-work-on-ios7/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><p>代码方式隐藏</p>
-
-<p>  好处是灵活，随时隐藏随时显示</p>
-
-<pre><code>  //viewDidload
-
-  if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-
-      // iOS 7
-
-      [self prefersStatusBarHidden];
-
-      [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
-
-  } else {
-
-      // iOS 6
-
-      [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-
-  }
-
-  // Add this Method
-
-  - (BOOL)prefersStatusBarHidden
-  {
-      return YES;
-  }
-</code></pre></li>
-<li><p>在配置文件中设置</p>
-
-<p>  如果整个应用都不想显示状态栏，那么这个更方便一些</p>
-
-<p>  在<code>Info.plist</code>中添加如下两行键值对:</p>
-
-<ol>
-<li><p> <code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
-<li><p> <code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
-</ol>
-</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/">iOS获取当前系统语言</a></h1>
-    
-    
-      <p class="meta">
-        
+        <a class="basic-alignment right" href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/" title="Next Post: 文本自定义行高以后高度自适应的解决方法">文本自定义行高以后高度自适应的解决方法 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
 
 
 
+  <section>
+    <h1>Comments</h1>
+    <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"i-chou"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+  </section>
 
-
-
-
-
-  
-
-
-<time datetime="2013-05-18T15:40:14+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>添加如下代码：</p>
-
-<pre><code>NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
-NSArray *languages = [defaults objectForKey:@"AppleLanguages"]; 
-NSString *currentLanguage = [languages objectAtIndex:0];
-</code></pre>
-
-<p>取得设置好的语言。。日语是ja，英文是en，其他。。就设置以后log出来看看吧！</p>
 </div>
-  
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-      <a class="prev" href="/blog/page/2/">&larr; Older</a>
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -1165,23 +568,11 @@ NSString *currentLanguage = [languages objectAtIndex:0];
 <h1>Recent Comments</h1>
 <ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
 
-<!--多说js加载开始，一个页面只需要加载一次 -->
-<script type="text/javascript">
-  var duoshuoQuery = {short_name:"i-chou"};
-  (function() {
-    var ds = document.createElement('script');
-    ds.type = 'text/javascript';ds.async = true;
-    ds.src = 'http://static.duoshuo.com/embed.js';
-    ds.charset = 'UTF-8';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-  })();
-</script>
-<!--多说js加载结束，一个页面只需要加载一次 -->
-
 </section>
 
   
 </aside>
+
 
     </div>
   </div>
