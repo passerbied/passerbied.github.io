@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-29T14:08:37+08:00</updated>
+  <updated>2013-12-29T14:10:33+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -69,7 +69,7 @@
 
 <p>双击右边的空白处，就可以为每个功能设置不同的快捷键。</p>
 
-<p>参考：<a href="http://joeyio.com/2013/07/22/xcode_key_binding_like_eclipse/">Xcode自定义Eclipse中常用的快捷键</a></p>
+<p>本文参考自：<a href="http://joeyio.com/2013/07/22/xcode_key_binding_like_eclipse/">Xcode自定义Eclipse中常用的快捷键</a></p>
 ]]></content>
   </entry>
   
