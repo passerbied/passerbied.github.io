@@ -5,11 +5,12 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>dataFormat里设置格式字母含义 - i-chou's tech blog</title>
+  <title>当Eclipse遇到ADT升级 - i-chou's tech blog</title>
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="y 年 Year 1996; 96 M 年中的月份 Month July; Jul; 07 w 年中的周数 Number 27 W 月份中的周数 Number 2 D 年中的天数 Number 189 d 月份中的天数 Number 10 F 月份中的星期 Number 2 E 星期中的天数 &hellip;">
+  <meta name="description" content="问题一：
+Eclipse3.7.2 + ADT18 一直出现找不到jar中class的问题。今天终于找到结果。由于新版本中把lib名称改称libs的缘故。 解决方案： This issue occurs because the &ldquo;lib&rdquo; folder is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="i-chou.com/blog/2013/04/09/dataformatli-she-zhi-ge-shi-zi-mu-han-yi">
+  <link rel="canonical" href="i-chou.com/blog/2012/04/23/dang-eclipseyu-dao-adtsheng-ji">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
@@ -71,7 +72,7 @@
   
   <header>
     
-      <h1 class="entry-title">dataFormat里设置格式字母含义</h1>
+      <h1 class="entry-title">当Eclipse遇到ADT升级</h1>
     
     
       <p class="meta">
@@ -87,7 +88,7 @@
   
 
 
-<time datetime="2013-04-09T01:05:28+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2013</time>
+<time datetime="2012-04-23T15:30:48+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
         
         
           | <a href="#comments">Comments</a>
@@ -97,41 +98,42 @@
   </header>
 
 
-<div class="entry-content"><p>y  年  Year  1996; 96</p>
+<div class="entry-content"><ul>
+<li><p>问题一：
+Eclipse3.7.2 + ADT18 一直出现找不到jar中class的问题。今天终于找到结果。由于新版本中把lib名称改称libs的缘故。</p>
 
-<p>M  年中的月份  Month  July; Jul; 07</p>
+<p>解决方案：</p>
 
-<p>w  年中的周数  Number  27</p>
+<p>This issue occurs because the &ldquo;lib&rdquo; folder is renamed to &ldquo;libs&rdquo; now by Android People. And as soon as we place our external jars to this &ldquo;libs&rdquo; folder then it will automatically be added to the build path of the application.</p>
 
-<p>W  月份中的周数  Number  2</p>
+<p>Remove the libraries from the standard Java build path :</p>
 
-<p>D  年中的天数  Number  189</p>
+<p>Right click on the project name > Properties > Java Build Path > tab Libraries > remove everything except the “Android X.X” (2.3.3 in my case) and the “Android Dependencies”</p>
 
-<p>d  月份中的天数  Number  10</p>
+<p>Rename the libraries folder from “lib” to “libs”</p>
 
-<p>F  月份中的星期  Number  2</p>
+<p>By doing that, all the libraries in the folder “libs” are found by the Android plugin and are added to the “Android Dependencies” item of the project</p>
 
-<p>E  星期中的天数  Text  Tuesday; Tue</p>
+<p>Clean the project (not exactly needed)</p>
 
-<p>a  Am/pm 标记  Text  PM</p>
+<p>You are good to go !</p>
 
-<p>H  一天中的小时数（0-23）  Number  0</p>
+<p>参考：</p>
 
-<p>k  一天中的小时数（1-24）  Number  24</p>
+<ol>
+<li><p><a href="http://stackoverflow.com/questions/9923161/getting-classnotfound-error-after-updating-from-adt-16-to-adt-17">http://stackoverflow.com/questions/9923161/getting-classnotfound-error-after-updating-from-adt-16-to-adt-17</a></p></li>
+<li><p><a href="http://android.foxykeep.com/dev/how-to-fix-the-classdefnotfounderror-with-adt-17">http://android.foxykeep.com/dev/how-to-fix-the-classdefnotfounderror-with-adt-17</a></p></li>
+<li><p><a href="http://www.eoeandroid.com/thread-165493-1-1.html">http://www.eoeandroid.com/thread-165493-1-1.html</a></p></li>
+</ol>
+</li>
+<li><p>问题二：
+Eclipse每次run都重新开启一个新的emulator运行</p>
 
-<p>K  am/pm 中的小时数（0-11）  Number  0</p>
+<p>解决方案：</p>
 
-<p>h  am/pm 中的小时数（1-12）  Number  12</p>
+<p>在点击 <code>Run as</code> ⇒<code>Android Application</code>以后，选择弹出窗口左下方的 <code>use same device for furture launches</code></p></li>
+</ul>
 
-<p>m  小时中的分钟数  Number  30</p>
-
-<p>s  分钟中的秒数  Number  55</p>
-
-<p>S  毫秒数  Number  978</p>
-
-<p>z  时区  General time zone  Pacific Standard Time; PST; GMT-08:00</p>
-
-<p>Z  时区  RFC 822 time zone  -0800</p>
 </div>
 
 
@@ -154,12 +156,12 @@
   
 
 
-<time datetime="2013-04-09T01:05:28+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2013</time>
+<time datetime="2012-04-23T15:30:48+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/ios/'>iOS</a>
+    <a class='category' href='/blog/categories/android/'>Android</a>
   
 </span>
 
@@ -168,7 +170,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/04/09/dataformatli-she-zhi-ge-shi-zi-mu-han-yi/" data-via="" data-counturl="i-chou.com/blog/2013/04/09/dataformatli-she-zhi-ge-shi-zi-mu-han-yi/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2012/04/23/dang-eclipseyu-dao-adtsheng-ji/" data-via="" data-counturl="i-chou.com/blog/2012/04/23/dang-eclipseyu-dao-adtsheng-ji/" >Tweet</a>
   
   
   
@@ -177,10 +179,10 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/03/07/uitableviewyin-cang-duo-yu-de-fen-ge-xian/" title="Previous Post: UITableView隐藏多余的分割线">&laquo; UITableView隐藏多余的分割线</a>
+        <a class="basic-alignment left" href="/blog/2012/04/14/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/" title="Previous Post: Android Canvas绘制文字 自动换行">&laquo; Android Canvas绘制文字 自动换行</a>
       
       
-        <a class="basic-alignment right" href="/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/" title="Next Post: iOS获取当前系统语言">iOS获取当前系统语言 &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2012/04/26/googlechan-pin-ti-yan-qian-duan-she-ji/" title="Next Post: google产品体验_前端设计">google产品体验_前端设计 &raquo;</a>
       
     </p>
   </footer>
