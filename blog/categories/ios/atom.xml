@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-30T12:49:13+08:00</updated>
+  <updated>2013-12-30T12:52:09+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -24,7 +24,10 @@
 
 <p><code>“Unable to process application info.plist validation at this time due to a general error.Please try again later.”</code></p>
 
-<p><img src="error.jpg" alt="error image" /></p>
+<p><img src="/images/error.jpg"></p>
+
+<!--![error image](error.jpg)-->
+
 
 <p>其实呢，这个错误并不是本地错误，而是苹果服务器方面的错误，只需耐心等待即可。如果只等待不能满足你好动的本性，你就再review一遍吧，也许在review这段时间会有新的发现。</p>
 ]]></content>
@@ -83,7 +86,7 @@ IDETextKeyBindingSet.plist</code> 这个文件里配置了一些可以设置快�
 
 <p>copy以后重启Xcode，在Xcode菜单中，打开Preferences，选中Key Binding，在右上方搜索GDI, 会出现类似下图的显示，如果没有的话，请检查上面的每步操作。</p>
 
-<p><img src="key_binding.png" alt="img" /></p>
+<p> <img src="/images/key_binding.png"></p>
 
 <p>双击右边的空白处，就可以为每个功能设置不同的快捷键。</p>
 
