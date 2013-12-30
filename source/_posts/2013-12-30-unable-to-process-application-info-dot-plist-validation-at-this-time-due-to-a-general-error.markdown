@@ -11,8 +11,8 @@ categories: iOS
 
 `“Unable to process application info.plist validation at this time due to a general error.Please try again later.”`
 
-
-![error image](error.jpg)
+{% img/images/error.jpg %}
+<!--![error image](error.jpg)-->
 
 其实呢，这个错误并不是本地错误，而是苹果服务器方面的错误，只需耐心等待即可。如果只等待不能满足你好动的本性，你就再review一遍吧，也许在review这段时间会有新的发现。
 
