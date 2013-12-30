@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-30T12:07:21+08:00</updated>
+  <updated>2013-12-30T12:13:04+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -24,7 +24,7 @@
 
 <p><code>“Unable to process application info.plist validation at this time due to a general error.Please try again later.”</code></p>
 
-<p><img src="../images/error.png" alt="error image" /></p>
+<p><img src="../images/error.jpg" alt="error image" /></p>
 
 <p>其实呢，这个错误并不是本地错误，而是苹果服务器方面的错误，只需耐心等待即可。如果只等待不能满足你好动的本性，你就再review一遍吧，也许在review这段时间会有新的发现。</p>
 ]]></content>
