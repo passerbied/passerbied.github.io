@@ -100,87 +100,89 @@
 <div class="entry-content"><ul>
 <li><p>数学常量：</p>
 
-<p>  #define M_E         2.71828182845904523536028747135266250   // e</p>
+<pre><code>#define M_E         2.71828182845904523536028747135266250   // e
 
-<p>  #define M_LOG2E     1.44269504088896340735992468100189214   // log 2e</p>
+#define M_LOG2E     1.44269504088896340735992468100189214   // log 2e
 
-<p>  #define M_LOG10E    0.434294481903251827651128918916605082  // log 10e</p>
+#define M_LOG10E    0.434294481903251827651128918916605082  // log 10e
 
-<p>  #define M_LN2       0.693147180559945309417232121458176568  // log e2</p>
+#define M_LN2       0.693147180559945309417232121458176568  // log e2
 
-<p>  #define M_LN10      2.30258509299404568401799145468436421   // log e10</p>
+#define M_LN10      2.30258509299404568401799145468436421   // log e10
 
-<p>  #define M_PI        3.14159265358979323846264338327950288   // pi</p>
+#define M_PI        3.14159265358979323846264338327950288   // pi
 
-<p>  #define M_PI_2      1.57079632679489661923132169163975144   // pi/2</p>
+#define M_PI_2      1.57079632679489661923132169163975144   // pi/2
 
-<p>  #define M_PI_4      0.785398163397448309615660845819875721  // pi/4</p>
+#define M_PI_4      0.785398163397448309615660845819875721  // pi/4
 
-<p>  #define M_1_PI      0.318309886183790671537767526745028724  // 1/pi</p>
+#define M_1_PI      0.318309886183790671537767526745028724  // 1/pi
 
-<p>  #define M_2_PI      0.636619772367581343075535053490057448  // 2/pi</p>
+#define M_2_PI      0.636619772367581343075535053490057448  // 2/pi
 
-<p>  #define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)</p>
+#define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)
 
-<p>  #define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)</p>
+#define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)
 
-<p>  #define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)</p>
+#define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)
+</code></pre>
 
 <p>  </br></p></li>
 <li><p>常用函数：</p>
 
-<p>  //指数运算</p>
+<pre><code>//指数运算
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,2) ); //result 9</p>
+NSLog(@"%.f", pow(3,2) ); //result 9
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,3) ); //result 27</p>
+NSLog(@"%.f", pow(3,3) ); //result 27
 
-<p>  </br>
-  //开平方运算</p>
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(16) ); //result 4</p>
+//开平方运算
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(81) ); //result 9</p>
+NSLog(@"%.f", sqrt(16) ); //result 4
 
-<p>  </br>
-  //上舍入</p>
+NSLog(@"%.f", sqrt(81) ); //result 9
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.000000000001)); //result 4</p>
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.00)); //result 3</p>
+//上舍入
 
-<p>  </br>
-  //下舍入</p>
+NSLog(@"res: %.f", ceil(3.000000000001)); //result 4
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.000000000001)); //result 3</p>
+NSLog(@"res: %.f", ceil(3.00)); //result 3
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.9999999)); //result 3</p>
 
-<p>  </br>
-  //四舍五入</p>
+//下舍入
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.5)); //result 4</p>
+NSLog(@"res: %.f", floor(3.000000000001)); //result 3
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.46)); //result 3</p>
+NSLog(@"res: %.f", floor(3.9999999)); //result 3
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(-3.5)); //NB: this one returns -4</p>
 
-<p>  </br>
-  //最小值</p>
+//四舍五入
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmin(5,10)); //result 5</p>
+NSLog(@"res: %.f", round(3.5)); //result 4
 
-<p>  </br>
-  //最大值</p>
+NSLog(@"res: %.f", round(3.46)); //result 3
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmax(5,10)); //result 10</p>
+NSLog(@"res: %.f", round(-3.5)); //NB: this one returns -4
 
-<p>  </br> <br/>
-  //绝对值</p>
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(10)); //result 10</p>
+//最小值
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(-10)); //result 10</p></li>
+NSLog(@"res: %.f", fmin(5,10)); //result 5
+
+
+//最大值
+
+NSLog(@"res: %.f", fmax(5,10)); //result 10
+
+
+//绝对值
+
+NSLog(@"res: %.f", fabs(10)); //result 10
+
+NSLog(@"res: %.f", fabs(-10)); //result 10
+</code></pre></li>
 </ul>
 
 </div>
@@ -267,12 +269,16 @@
     <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (15)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (16)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/30/ios-define-for-coding-faster/">iOS Define for Coding Faster</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/">Unable to Process Application info.plist Validation at This Time Due to a General Error</a>
@@ -288,10 +294,6 @@
     
       <li class="post">
         <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/">iOS 7：隐藏的特性和解决之道</a>
       </li>
     
   </ul>

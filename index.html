@@ -9,7 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="前几天美国圣诞放长假，往AppStore提交应用时提示28号以后才行。 今天提交前Validate时候遇到个问题，相信不止我一个人遇到，错误信息就是: “Unable to process application info.plist validation at this time due to &hellip;">
+  <meta name="description" content="以下是我在开发中便于开发的常用宏，分享出来。 /* fast make */ #define ccp(__X__,__Y__) CGPointMake(__X__,__Y__) #define ccs(__W__,__H__) CGSizeMake(__W__,__H__) #define ccr &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,133 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/30/ios-define-for-coding-faster/">iOS Define for Coding Faster</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-30T16:11:06+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/12/30/ios-define-for-coding-faster/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>以下是我在开发中便于开发的常用宏，分享出来。</p>
+
+<pre><code>/* fast make */
+
+#define ccp(__X__,__Y__)             CGPointMake(__X__,__Y__)
+
+#define ccs(__W__,__H__)             CGSizeMake(__W__,__H__)
+
+#define ccr(__X__,__Y__,__W__,__H__) CGRectMake(__X__,__Y__,__W__,__H__)
+
+
+/* fast creation */
+
+#define IMG(name)       [UIImage imageNamed:(name)]
+
+#define IMG_VIEW(name)  [[UIImageView alloc] initWithImage:[UIImage imageNamed:(name)]]
+
+#define LocalStr(key)   NSLocalizedString(key,key)
+
+#define SFONT(size)     [UIFont systemFontOfSize:(size)]
+
+#define FONT(s)         [UIFont fontWithName:@"Arial" size:(s)]
+
+#define BFONT(size)     [UIFont boldSystemFontOfSize:(size)]
+
+#define BUNDLE(name)    [[NSBundle mainBundle] pathForResource:(name)]
+
+#define URL(url)        [NSURL URLWithString:url]
+
+
+/* fast appending */
+
+#define ADD(__x__, __y__) [__x__ stringByAppendingString:__y__]
+
+
+/* iOS_Version */
+
+#define IS_IOS7 ((floor(NSFoundationVersionNumber) &gt; NSFoundationVersionNumber_iOS_6_1))
+
+
+/* Components size */
+
+#define SCREEN_WIDTH         [[UIScreen mainScreen] bounds].size.width
+
+#define SCREEN_HEIGHT        [[UIScreen mainScreen] bounds].size.height
+
+#define NAV_BAR_HEIGHT       44
+
+#define NAV_BAR_HEIGHT_IOS7  64
+
+#define TOOL_BAR_HEIGHT      44
+
+#define TAB_BAR_HEIGHT       49
+
+#define STATUS_BAR_HEIGHT    20
+
+
+/* current language */
+
+#define CN 1
+
+#define ENG 2
+
+#define JAN 3
+
+
+/* color helper */
+
+#define COLORRGBA(c,a) [UIColor colorWithRed:((c&gt;&gt;16)&amp;0xFF)/255.0 \
+                                   green:((c&gt;&gt;8)&amp;0xFF)/255.0   \
+                                    blue:(c&amp;0xFF)/255.0        \
+                                   alpha:a]
+
+#define COLORRGB(c)    [UIColor colorWithRed:((c&gt;&gt;16)&amp;0xFF)/255.0 \
+                                   green:((c&gt;&gt;8)&amp;0xFF)/255.0   \
+                                    blue:(c&amp;0xFF)/255.0        \
+                                   alpha:1.0]
+
+
+/* log helper */
+
+#define LOG_STR(str)     NSLog(@"%@", str)
+
+#define LOG_INT(int)     NSLog(@"%d", int)
+
+#define LOG_FLOAT(float) NSLog(@"%f", float)
+
+#define LOG_ERROR(exception,reason) NSLog(@"function:%s | line:%d | exception:%@ | reason:%@",__func__, __LINE__,exception,reason)
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -956,87 +1083,89 @@ CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descr
   <div class="entry-content"><ul>
 <li><p>数学常量：</p>
 
-<p>  #define M_E         2.71828182845904523536028747135266250   // e</p>
+<pre><code>#define M_E         2.71828182845904523536028747135266250   // e
 
-<p>  #define M_LOG2E     1.44269504088896340735992468100189214   // log 2e</p>
+#define M_LOG2E     1.44269504088896340735992468100189214   // log 2e
 
-<p>  #define M_LOG10E    0.434294481903251827651128918916605082  // log 10e</p>
+#define M_LOG10E    0.434294481903251827651128918916605082  // log 10e
 
-<p>  #define M_LN2       0.693147180559945309417232121458176568  // log e2</p>
+#define M_LN2       0.693147180559945309417232121458176568  // log e2
 
-<p>  #define M_LN10      2.30258509299404568401799145468436421   // log e10</p>
+#define M_LN10      2.30258509299404568401799145468436421   // log e10
 
-<p>  #define M_PI        3.14159265358979323846264338327950288   // pi</p>
+#define M_PI        3.14159265358979323846264338327950288   // pi
 
-<p>  #define M_PI_2      1.57079632679489661923132169163975144   // pi/2</p>
+#define M_PI_2      1.57079632679489661923132169163975144   // pi/2
 
-<p>  #define M_PI_4      0.785398163397448309615660845819875721  // pi/4</p>
+#define M_PI_4      0.785398163397448309615660845819875721  // pi/4
 
-<p>  #define M_1_PI      0.318309886183790671537767526745028724  // 1/pi</p>
+#define M_1_PI      0.318309886183790671537767526745028724  // 1/pi
 
-<p>  #define M_2_PI      0.636619772367581343075535053490057448  // 2/pi</p>
+#define M_2_PI      0.636619772367581343075535053490057448  // 2/pi
 
-<p>  #define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)</p>
+#define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)
 
-<p>  #define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)</p>
+#define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)
 
-<p>  #define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)</p>
+#define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)
+</code></pre>
 
 <p>  </br></p></li>
 <li><p>常用函数：</p>
 
-<p>  //指数运算</p>
+<pre><code>//指数运算
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,2) ); //result 9</p>
+NSLog(@"%.f", pow(3,2) ); //result 9
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,3) ); //result 27</p>
+NSLog(@"%.f", pow(3,3) ); //result 27
 
-<p>  </br>
-  //开平方运算</p>
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(16) ); //result 4</p>
+//开平方运算
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(81) ); //result 9</p>
+NSLog(@"%.f", sqrt(16) ); //result 4
 
-<p>  </br>
-  //上舍入</p>
+NSLog(@"%.f", sqrt(81) ); //result 9
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.000000000001)); //result 4</p>
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.00)); //result 3</p>
+//上舍入
 
-<p>  </br>
-  //下舍入</p>
+NSLog(@"res: %.f", ceil(3.000000000001)); //result 4
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.000000000001)); //result 3</p>
+NSLog(@"res: %.f", ceil(3.00)); //result 3
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.9999999)); //result 3</p>
 
-<p>  </br>
-  //四舍五入</p>
+//下舍入
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.5)); //result 4</p>
+NSLog(@"res: %.f", floor(3.000000000001)); //result 3
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.46)); //result 3</p>
+NSLog(@"res: %.f", floor(3.9999999)); //result 3
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(-3.5)); //NB: this one returns -4</p>
 
-<p>  </br>
-  //最小值</p>
+//四舍五入
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmin(5,10)); //result 5</p>
+NSLog(@"res: %.f", round(3.5)); //result 4
 
-<p>  </br>
-  //最大值</p>
+NSLog(@"res: %.f", round(3.46)); //result 3
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmax(5,10)); //result 10</p>
+NSLog(@"res: %.f", round(-3.5)); //NB: this one returns -4
 
-<p>  </br> <br/>
-  //绝对值</p>
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(10)); //result 10</p>
+//最小值
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(-10)); //result 10</p></li>
+NSLog(@"res: %.f", fmin(5,10)); //result 5
+
+
+//最大值
+
+NSLog(@"res: %.f", fmax(5,10)); //result 10
+
+
+//绝对值
+
+NSLog(@"res: %.f", fabs(10)); //result 10
+
+NSLog(@"res: %.f", fabs(-10)); //result 10
+</code></pre></li>
 </ul>
 
 </div>
@@ -1094,55 +1223,6 @@ CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descr
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/15/xcode5dai-lai-de-%5B%3F%5D-ge-xiao-wen-ti/">Xcode5带来的一个小问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-15T17:57:31+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/08/15/xcode5dai-lai-de-%5B%3F%5D-ge-xiao-wen-ti/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>带有xib文件如果用Xcode5打开过，再用Xcode4.6打开，会出现如下错误：</p>
-
-<p><code>
-Please use a newer version of Xcode. Consider changing the document's Development Target to preserve compatibility.
-</code></p>
-
-<p>解决办法如下：</p>
-
-<p><code>
-Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Interface Builder Documents" section change "Open with" to Xcode 4.6 (if it's 5.x). 3. Save, Close the project and open that with old Xcode.
-</code></p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1159,12 +1239,16 @@ Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Int
     <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (15)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (16)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/30/ios-define-for-coding-faster/">iOS Define for Coding Faster</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/">Unable to Process Application info.plist Validation at This Time Due to a General Error</a>
@@ -1180,10 +1264,6 @@ Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Int
     
       <li class="post">
         <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/">iOS 7：隐藏的特性和解决之道</a>
       </li>
     
   </ul>

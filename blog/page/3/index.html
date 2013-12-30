@@ -9,7 +9,8 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="import java.util.Vector; import android.graphics.Canvas; import android.graphics.Color; import android.graphics.Paint; import android.graphics.Paint. &hellip;">
+  <meta name="description" content="问题一：
+Eclipse3.7.2 + ADT18 一直出现找不到jar中class的问题。今天终于找到结果。由于新版本中把lib名称改称libs的缘故。 解决方案： This issue occurs because the &ldquo;lib&rdquo; folder is &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +69,80 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/04/23/dang-eclipseyu-dao-adtsheng-ji/">当Eclipse遇到ADT升级</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-04-23T15:30:48+08:00" pubdate data-updated="true">Apr 23<span>rd</span>, 2012</time>
+        
+        
+          | <a href="/blog/2012/04/23/dang-eclipseyu-dao-adtsheng-ji/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>问题一：
+Eclipse3.7.2 + ADT18 一直出现找不到jar中class的问题。今天终于找到结果。由于新版本中把lib名称改称libs的缘故。</p>
+
+<p>解决方案：</p>
+
+<p>This issue occurs because the &ldquo;lib&rdquo; folder is renamed to &ldquo;libs&rdquo; now by Android People. And as soon as we place our external jars to this &ldquo;libs&rdquo; folder then it will automatically be added to the build path of the application.</p>
+
+<p>Remove the libraries from the standard Java build path :</p>
+
+<p>Right click on the project name > Properties > Java Build Path > tab Libraries > remove everything except the “Android X.X” (2.3.3 in my case) and the “Android Dependencies”</p>
+
+<p>Rename the libraries folder from “lib” to “libs”</p>
+
+<p>By doing that, all the libraries in the folder “libs” are found by the Android plugin and are added to the “Android Dependencies” item of the project</p>
+
+<p>Clean the project (not exactly needed)</p>
+
+<p>You are good to go !</p>
+
+<p>参考：</p>
+
+<ol>
+<li><p><a href="http://stackoverflow.com/questions/9923161/getting-classnotfound-error-after-updating-from-adt-16-to-adt-17">http://stackoverflow.com/questions/9923161/getting-classnotfound-error-after-updating-from-adt-16-to-adt-17</a></p></li>
+<li><p><a href="http://android.foxykeep.com/dev/how-to-fix-the-classdefnotfounderror-with-adt-17">http://android.foxykeep.com/dev/how-to-fix-the-classdefnotfounderror-with-adt-17</a></p></li>
+<li><p><a href="http://www.eoeandroid.com/thread-165493-1-1.html">http://www.eoeandroid.com/thread-165493-1-1.html</a></p></li>
+</ol>
+</li>
+<li><p>问题二：
+Eclipse每次run都重新开启一个新的emulator运行</p>
+
+<p>解决方案：</p>
+
+<p>在点击 <code>Run as</code> ⇒<code>Android Application</code>以后，选择弹出窗口左下方的 <code>use same device for furture launches</code></p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -498,12 +573,16 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (15)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (16)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/30/ios-define-for-coding-faster/">iOS Define for Coding Faster</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/">Unable to Process Application info.plist Validation at This Time Due to a General Error</a>
@@ -519,10 +598,6 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     
       <li class="post">
         <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/">iOS 7：隐藏的特性和解决之道</a>
       </li>
     
   </ul>
