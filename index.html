@@ -9,8 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="相信有一些小伙伴即使用着高大上的Xcode，也还是习惯用Eclipse的一些更亲民的快捷键。
-那么就将搜集到的定制Eclipse快捷键的方法分享在这里，缺点是每次Xcode升级，需要重新配置，不过有些插件可以统一管理Xcode的配置文件和插件，这里就不讲了。 首先找到Xcode中的自带的配置文件 &hellip;">
+  <meta name="description" content="前几天美国圣诞放长假，往AppStore提交应用时提示28号以后才行。 今天提交前Validate时候遇到个问题，相信不止我一个人遇到，错误信息就是: “Unable to process application info.plist validation at this time due to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +68,53 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/">Unable to Process Application info.plist Validation at This Time Due to a General Error</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-30T11:59:26+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>前几天美国圣诞放长假，往AppStore提交应用时提示28号以后才行。</p>
+
+<p>今天提交前Validate时候遇到个问题，相信不止我一个人遇到，错误信息就是:</p>
+
+<p><code>“Unable to process application info.plist validation at this time due to a general error.Please try again later.”</code></p>
+
+<p><img src="../images/error.png" alt="error image" /></p>
+
+<p>其实呢，这个错误并不是本地错误，而是苹果服务器方面的错误，只需耐心等待即可。如果只等待不能满足你好动的本性，你就再review一遍吧，也许在review这段时间会有新的发现。</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1094,87 +1140,6 @@ Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Int
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2013/08/13/hide-statusbar-also-work-on-ios7/">Hide statusBar (Also Work on Ios7)</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2013-08-13T20:40:06+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2013</time>
-        
-        
-          | <a href="/blog/2013/08/13/hide-statusbar-also-work-on-ios7/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><p>代码方式隐藏</p>
-
-<p>  好处是灵活，随时隐藏随时显示</p>
-
-<pre><code>  //viewDidload
-
-  if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
-
-      // iOS 7
-
-      [self prefersStatusBarHidden];
-
-      [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
-
-  } else {
-
-      // iOS 6
-
-      [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
-
-  }
-
-  // Add this Method
-
-  - (BOOL)prefersStatusBarHidden
-  {
-      return YES;
-  }
-</code></pre></li>
-<li><p>在配置文件中设置</p>
-
-<p>  如果整个应用都不想显示状态栏，那么这个更方便一些</p>
-
-<p>  在<code>Info.plist</code>中添加如下两行键值对:</p>
-
-<ol>
-<li><p> <code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
-<li><p> <code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
-</ol>
-</li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/2/">&larr; Older</a>
@@ -1191,12 +1156,16 @@ Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Int
     <li class='category'><a href='/blog/categories/android/'>Android (5)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (14)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (15)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/">Unable to Process Application info.plist Validation at This Time Due to a General Error</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/">Use Eclipse-Style ShortcutKey on Xcode</a>
@@ -1212,10 +1181,6 @@ Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Int
     
       <li class="post">
         <a href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/">iOS 7：隐藏的特性和解决之道</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./">iOS 7: 如何为iPhone 5S编译64位应用</a>
       </li>
     
   </ul>

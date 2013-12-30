@@ -9,7 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="不久的将来，PC就只有开发人员使用了。 科技周报: 技术发展不断革新，面对竞争的压力和利润的最大化需求，计算机技术的革新需比市场实际需求发展得更快。当PC的成长速度已无法满足人们日益增长的快捷需求，PC独霸江湖的时代便渐渐逝去，随着带宽的扩大、显示设备的革新、云计算以及应用产品的普及， &hellip;">
+  <meta name="description" content="有一个常见的错误看法：只使用基础的布局结构会生产高效的布局。然而，每个您程序中的每个控件和布局都需要初始化、布局位置、和绘制。例如使用嵌套的LinearLayout可以导致很多的层次结构。更严重的是，如果在嵌套的LinearLayout中使用layout_weight参数将会导致更加严重的性能问题 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -74,6 +74,116 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/02/07/androidying-yong-kai-fa-zhi-%28you-hua-bu-ju-ceng-ci-jie-gou-%29/">Android应用开发之（优化布局层次结构）</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-07T14:00:58+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2012</time>
+        
+        
+          | <a href="/blog/2012/02/07/androidying-yong-kai-fa-zhi-%28you-hua-bu-ju-ceng-ci-jie-gou-%29/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>有一个常见的错误看法：只使用基础的布局结构会生产高效的布局。然而，每个您程序中的每个控件和布局都需要初始化、布局位置、和绘制。例如使用嵌套的LinearLayout可以导致很多的层次结构。更严重的是，如果在嵌套的LinearLayout中使用layout_weight参数将会导致更加严重的性能问题，因为里面的控件在计算大小的时候会计算两次。如果在<a href="http://developer.android.com/reference/android/widget/ListView.html">ListView</a> 或者 <a href="http://developer.android.com/reference/android/widget/GridView.html">GridView</a>中使用则会更加严重。</p>
+
+<p>这节课程将会介绍如何使用 <a href="http://developer.android.com/guide/developing/tools/hierarchy-viewer.html">Heirachy Viewer</a> 和<a href="http://developer.android.com/guide/developing/tools/layoutopt.html">Layoutopt</a> 工具来检查和优化布局。</p>
+
+<p>检查布局</p>
+
+<p>在 Android SDK 中包含了一个href=&ldquo;<a href="http://developer.android.com/guide/developing/tools/hierarchy-viewer.html">http://developer.android.com/guide/developing/tools/hierarchy-viewer.html</a>&rdquo;>Heirachy Viewer 工具，使用该工具可以在您的程序运行的时候分析程序的布局。使用该工具来发现布局中的瓶颈所在。</p>
+
+<p>Hierarchy Viewer 让你选择其连接的设备或者模拟器中的一个运行中的程序，然后显示该界面的布局树形结构。在每个控件方块中的交通灯分别代表 计算尺寸(Measure)、布局子控件(Layout)、和绘制的性能，通过颜色来帮助您分析潜在的问题。</p>
+
+<p>例如，下图显示了一个用于 <a href="http://developer.android.com/reference/android/widget/ListView.html">ListView</a>的布局。该布局在左边显示一个小图标，在图标右边显示两行文本内容。当该布局会被多次使用(inflated)到的时候性能问题就比较明显， 比如这个例子 由于这个布局是在ListView中使用的， 所以每个ListView中的一项都会解析下该布局然后绘制出来。</p>
+
+<p><img src="http://m1.img.libdd.com/farm3/d/2012/0202/15/B69AD2A52C25B8A5892A0891C2C54659_B500_900_317_59.PNG"/></p>
+
+<p>hierarchyviewer 工具位于 <sdk>/tools/ 目录。打开后 Hierarchy Viewer 将显示一个可用设备的列表和正在运行的界面。点击 Load View Hierarchy 来查看选中的界面的布局分析结果。例如，下图显示了上面定义的ListView中每一项的布局结果。</p>
+
+<p><img src="http://m2.img.libdd.com/farm3/d/2012/0202/15/8FD77AA2EA1FBDF4D7D1DA76D3E940A7_B500_900_457_235.PNG"/></p>
+
+<p>查看渲染一个View的时间</p>
+
+<p>上面左侧的图中，您可以看到有三层布局结构。在每个方块上面点击可以查看显示该控件所需要的时间。对于需要时间比较长的地方就是我们应该去重点优化的地方。</p>
+
+<p>显示一个列表条目所需要的时间如下：</p>
+
+<p><img src="http://m2.img.libdd.com/farm3/d/2012/0202/15/96F675B3672137311CFAC7B280F4EA9B_B500_900_144_244.PNG"/></p>
+
+<p>Measure: 0.977ms</p>
+
+<p>Layout: 0.167ms</p>
+
+<p>Draw: 2.717ms</p>
+
+<p>改进布局</p>
+
+<p>上面的布局被一个嵌套的 <a href="http://developer.android.com/reference/android/widget/LinearLayout.html">LinearLayout</a> 占用了过多的解析时间，如果把布局的嵌套层次降低可能会提高性能.使用 <a href="http://developer.android.com/reference/android/widget/RelativeLayout.html">RelativeLayout</a> 可以实现这个功能。使用<a href="http://developer.android.com/reference/android/widget/RelativeLayout.html">RelativeLayout</a>后可以看到现在布局由3层变为了2层，分析图如下</p>
+
+<p>使用RelativeLayout后的层次结构</p>
+
+<p><img src="http://m2.img.libdd.com/farm3/d/2012/0202/15/11133BBC926776F3A1730AEA91818EA3_B500_900_376_293.PNG"/></p>
+
+<p>Figure 4. Layout hierarchy for the layout in figure 1,
+using <a href="http://developer.android.com/reference/android/widget/RelativeLayout.html">RelativeLayout</a>.</p>
+
+<p>现在显示一个列表条目所需要的时间如下：</p>
+
+<p>Measure: 0.598ms</p>
+
+<p>Layout: 0.110ms</p>
+
+<p>Draw: 2.146ms</p>
+
+<p>看起来是一个很微弱的提升，但是这个时间可以叠加多次，应为每个列表条目在显示的时候都有解析该布局。</p>
+
+<p>当在<a href="http://developer.android.com/reference/android/widget/LinearLayout.html">LinearLayout</a> 中使用 layout_weight 就又不一样了，这样会增加计算控件大小的时间。在使用layout_weight的时候您应该多考虑考虑。</p>
+
+<p>使用 Layoutopt</p>
+
+<p>在您的最终布局文件中运行下 <a href="http://developer.android.com/tools/help/layoutopt.html">layoutopt</a> 工具来看看还有没有可以优化的空间是个很好的习惯。 Layoutopt 工具也位于SDK的 <em>tools/</em> 目录下，您可以用该工具优化单个文件也可以优化一个目录中的所有文件。</p>
+
+<p>当您在单个文件中运行 layoutopt 后，该工具会打印出出现问题的行号和问题的描述，有些问题也会给出优化方案。例如</p>
+
+<pre><code>$ layoutopt samples/
+    samples/compound.xml
+        7:23 The root-level &lt;FrameLayout/&gt; can be replaced with &lt;merge/&gt;
+        11:21 This LinearLayout layout or its FrameLayout parent is useless
+    samples/simple.xml
+        7:7 The root-level &lt;FrameLayout/&gt; can be replaced with &lt;merge/&gt;
+</code></pre>
+
+<p>当你修改了布局文件以后，可以再次运行一下 Hierarchy Viewer 来看看具体提升了多少性能。</p>
+
+<p>from <a href="http://androiddeveloper.diandian.com/post/2012-02-02/16147388">Android Developer</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/01/27/pcxie-mu-qu/">PC谢幕曲</a></h1>
     
     
@@ -127,12 +237,16 @@
     <li class='category'><a href='/blog/categories/android/'>Android (5)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (14)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (15)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/">Unable to Process Application info.plist Validation at This Time Due to a General Error</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/">Use Eclipse-Style ShortcutKey on Xcode</a>
@@ -148,10 +262,6 @@
     
       <li class="post">
         <a href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/">iOS 7：隐藏的特性和解决之道</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./">iOS 7: 如何为iPhone 5S编译64位应用</a>
       </li>
     
   </ul>

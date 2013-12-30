@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>自定义返回按钮时，iOS7手势返回遇到的问题 - i-chou's tech blog</title>
+  <title>Unable to Process Application info.plist Validation at This Time Due to a General Error - i-chou's tech blog</title>
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="从iOS7的Beta版开始，就着手做兼容工作，到Beta4的時候，应用已经基本兼容，只是偶然发现，iOS样式的手势返回，也就是用interactivePopGestureRecognizer返回的时候,出现下面一些列问题。各方调研，无果，史无前例（废话，刚出来的7，上哪有例去&mdash;#）。 &hellip;">
+  <meta name="description" content="前几天美国圣诞放长假，往AppStore提交应用时提示28号以后才行。 今天提交前Validate时候遇到个问题，相信不止我一个人遇到，错误信息就是: “Unable to process application info.plist validation at this time due to &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti">
+  <link rel="canonical" href="i-chou.com/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
@@ -71,7 +71,7 @@
   
   <header>
     
-      <h1 class="entry-title">自定义返回按钮时，iOS7手势返回遇到的问题</h1>
+      <h1 class="entry-title">Unable to Process Application info.plist Validation at This Time Due to a General Error</h1>
     
     
       <p class="meta">
@@ -87,7 +87,7 @@
   
 
 
-<time datetime="2013-09-12T23:07:27+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2013</time>
+<time datetime="2013-12-30T11:59:26+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2013</time>
         
         
           | <a href="#comments">Comments</a>
@@ -97,22 +97,15 @@
   </header>
 
 
-<div class="entry-content"><p>从iOS7的Beta版开始，就着手做兼容工作，到Beta4的時候，应用已经基本兼容，只是偶然发现，iOS样式的手势返回，也就是用<code>interactivePopGestureRecognizer</code>返回的时候,出现下面一些列问题。各方调研，无果，史无前例（废话，刚出来的7，上哪有例去&mdash;#）。</p>
+<div class="entry-content"><p>前几天美国圣诞放长假，往AppStore提交应用时提示28号以后才行。</p>
 
-<ul>
-<li><p>我的应用是自定义的返回按钮图标(默认返回按钮样式不会出现问题3)，为了保险，写了这句代码<code>[self.navigationItem setHidesBackButton:YES]</code>。
-由于自定义返回按钮，所以iOS7自带返回手势无效。在需要的页面加上<code>navigationController.interactivePopGestureRecognizer.delegate = self</code>
-返回手势好用了。</p></li>
-<li><p>于是出现了第二个问题。
-在一级视图中，iOS样式返回的手势滑动一下，然后进入二级视图，发现，画面卡住了，按Home键转入后台，再返回应用，发现并没有Crash掉，而是直接跳到了二级视图里，运行正常了，大家知道push和pop的原理是用进栈出栈完成的，可能因为在一级视图中滑动那一下，影响了视图在栈中的位置。
-好，先解决一下这个问题，一级视图中一定要加入<code>self.navigationController.interactivePopGestureRecognizer.enabled = NO;</code>，先把iOS7手势返回屏蔽掉，到二级视图再用<code>self.navigationController.interactivePopGestureRecognizer.enabled = YES</code>打开。就Ok了。</p></li>
-<li><p>好，第三个问题相继出现（其实是跟第二个一起出来的）。
-手势返回拖动一半，放手，<code>navigationBar</code>上会出现三个小蓝点，而且位置不规律，可以肯定这个不是项目代码或者图片搞出来的东西，一定是SDK自己蹦出來的。
-后台尝试发现<code>UIBarButtonItem</code>的<code>title</code>如果是nil的话，就会有这个问题。
-解决方案：把<code>[self.navigationItem setHidesBackButton:YES];</code>去掉，然後把假装成返回按钮的<code>UIBarButtonItem</code>的<code>title</code>设置成<code>@""</code>。</p></li>
-<li><p>大功告成。可见设计要是不按苹果规范来的话，就会遇到各种坑啊。</p></li>
-</ul>
+<p>今天提交前Validate时候遇到个问题，相信不止我一个人遇到，错误信息就是:</p>
 
+<p><code>“Unable to process application info.plist validation at this time due to a general error.Please try again later.”</code></p>
+
+<p><img src="../images/error.png" alt="error image" /></p>
+
+<p>其实呢，这个错误并不是本地错误，而是苹果服务器方面的错误，只需耐心等待即可。如果只等待不能满足你好动的本性，你就再review一遍吧，也许在review这段时间会有新的发现。</p>
 </div>
 
 
@@ -135,7 +128,7 @@
   
 
 
-<time datetime="2013-09-12T23:07:27+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2013</time>
+<time datetime="2013-12-30T11:59:26+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2013</time>
       
 
 <span class="categories">
@@ -149,7 +142,7 @@
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/" data-via="" data-counturl="i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/" data-via="" data-counturl="i-chou.com/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/" >Tweet</a>
   
   
   
@@ -158,10 +151,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/" title="Previous Post: Objective-C常用數學常量宏及函數">&laquo; Objective-C常用數學常量宏及函數</a>
+        <a class="basic-alignment left" href="/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/" title="Previous Post: use Eclipse-Style ShortcutKey on Xcode">&laquo; use Eclipse-Style ShortcutKey on Xcode</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./" title="Next Post: iOS 7: 如何为iPhone 5S编译64位应用">iOS 7: 如何为iPhone 5S编译64位应用 &raquo;</a>
       
     </p>
   </footer>
