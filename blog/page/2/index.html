@@ -420,6 +420,63 @@ UITableViewCellSeparatorStyleSingleLine</p>
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/">Xperia TM GX UI适配遇到的小问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-25T15:40:49+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
+        
+        
+          | <a href="/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sony Xperia TM GX S0-04D 720*1280 和 S0-05D 均为软控制栏，最近在为这两款机器做适配时候遇到一些小问题，分享在这里。</p>
+
+<ul>
+<li><p>问题1:</p>
+
+<p>现象：Sony上，从第二行LineaLayout开始往下窜一定距离。从其他机器和模拟器上均显示正常。</p>
+
+<p>原因：LinearLayout的Wrap_content属性在Sony和其它机器里的解析有所不同。</p>
+
+<p>改善：将高度设置成内容的实际高度dp值。</p></li>
+<li><p>问题2:</p>
+
+<p>现象：4.0以后机种的SimpleOnGestureListener类手势问题。</p>
+
+<p>原因：onFiling方法触发频繁，导致更换背景的耗时操作使反映变卡。</p>
+
+<p>改善：更换背景耗时操作加入判断条件再触发。</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2012/06/20/android-popupwindowde-shi-yong/">Android PopupWindow的使用</a></h1>
     
     
@@ -573,174 +630,6 @@ Eclipse每次run都重新开启一个新的emulator运行</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/14/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/">Android Canvas绘制文字 自动换行</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-14T12:38:44+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/04/14/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><pre><code>import java.util.Vector; 
-
-import android.graphics.Canvas; 
-import android.graphics.Color; 
-import android.graphics.Paint; 
-import android.graphics.Paint.FontMetrics; 
-import android.view.KeyEvent; 
-
-public class TextUtil { 
-
-private float  mTextPosx = 0;// x坐标 
-private float  mTextPosy = 0;// y坐标 
-private float mTextWidth = 0;// 绘制宽度 
-private float mTextHeight = 0;// 绘制高度 
-private int mFontHeight = 0;// 绘制字体高度 
-private int mPageLineNum = 0;// 每一页显示的行数 
-private int mCanvasBGColor = 0;// 背景颜色 
-private int mFontColor = 0;// 字体颜色 
-private int mAlpha = 0;// Alpha值 
-private int mRealLine = 0;// 字符串真实的行数 
-private int mCurrentLine = 0;// 当前行 
-private int mTextSize = 0;// 字体大小 
-private String mStrText = ""; 
-private Vector mString = null; 
-private Paint mPaint = null; 
-
-public TextUtil(String StrText, float  x, float  y, float w, float h, int bgcolor, 
-      int textcolor, int alpha, int textsize) { 
-  mPaint = new Paint(); 
-  mString = new Vector(); 
-  this.mStrText = StrText; 
-  this.mTextPosx = x; 
-  this.mTextPosy = y; 
-  this.mTextWidth = w; 
-  this.mTextHeight = h; 
-  this.mCanvasBGColor = bgcolor; 
-  this.mFontColor = textcolor; 
-  this.mAlpha = alpha; 
-  this.mTextSize = textsize; 
-} 
-
-public void InitText() { 
-  mString.clear();// 清空Vector 
-  // 对画笔属性的设置 
-  // mPaint.setARGB(this.mAlpha, Color.red(this.mFontColor), Color 
-  // .green(this.mFontColor), Color.blue(this.mFontColor)); 
-  mPaint.setTextSize(this.mTextSize); 
-  mPaint.setColor(Color.BLUE); 
-  mPaint.setAntiAlias(true); 
-
-  this.GetTextIfon(); 
- } 
-
- /** 
-  * 得到字符串信息包括行数，页数等信息 
-  */ 
- public void GetTextIfon() { 
-  char ch; 
-  int w = 0; 
-  int istart = 0; 
-  FontMetrics fm = mPaint.getFontMetrics();// 得到系统默认字体属性 
-  mFontHeight = (int) (Math.ceil(fm.descent - fm.top) + 2);// 获得字体高度 
-  mPageLineNum = (int) (mTextHeight / mFontHeight);// 获得行数 
-
-  int count = this.mStrText.length(); 
-  for (int i = 0; i &lt; count; i++) { 
-      ch = this.mStrText.charAt(i); 
-      float[] widths = new float[1]; 
-      String str = String.valueOf(ch); 
-      mPaint.getTextWidths(str, widths); 
-      if (ch == '/n') { 
-          mRealLine++;// 真实的行数加一 
-          mString.addElement(this.mStrText.substring(istart, i)); 
-          istart = i + 1; 
-          w = 0; 
-      } else { 
-          w += (int) Math.ceil(widths[0]); 
-          if (w &gt; this.mTextWidth) { 
-              mRealLine++;// 真实的行数加一 
-              mString.addElement(this.mStrText.substring(istart, i)); 
-              istart = i; 
-              i--; 
-              w = 0; 
-          } else { 
-              if (i == count - 1) { 
-                  mRealLine++;// 真实的行数加一 
-                  mString.addElement(this.mStrText.substring(istart, 
-                          count)); 
-              } 
-          } 
-      } 
-  } 
-} 
-
-/** 
- * 绘制字符串 
- * 
- * @param canvas 
- */ 
-public void DrawText(Canvas canvas) { 
-     for (int i = this.mCurrentLine, j = 0; i &lt; this.mRealLine; i++, j++) { 
-          if (j &gt; this.mPageLineNum) { 
-              break; 
-          } 
-       canvas.drawText((String) (mString.elementAt(i)), this.mTextPosx, 
-                this.mTextPosy + this.mFontHeight * j, mPaint); 
-     } 
- } 
-
-/** 
-* 翻页等按键处理 
-* 
-* @param keyCode 
-* @param event 
-* @return 
-*/ 
-public boolean KeyDown(int keyCode, KeyEvent event) { 
-    if (keyCode == KeyEvent.KEYCODE_DPAD_UP) { 
-       if (this.mCurrentLine &gt; 0) { 
-            this.mCurrentLine--; 
-        } 
-    } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) { 
-        if ((this.mCurrentLine + this.mPageLineNum) &lt; (this.mRealLine - 1)) { 
-            this.mCurrentLine++; 
-        } 
-      } 
-      return false; 
-   } 
-}
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -756,7 +645,7 @@ public boolean KeyDown(int keyCode, KeyEvent event) {
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/android/'>Android (6)</a></li>
+    <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
 <li class='category'><a href='/blog/categories/ios/'>iOS (15)</a></li>

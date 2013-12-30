@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>iOS获取当前系统语言 - i-chou's tech blog</title>
+  <title>Xperia TM GX UI适配遇到的小问题 - i-chou's tech blog</title>
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="添加如下代码： NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; NSArray *languages = [defaults objectForKey:@"AppleLanguages"]; NSString * &hellip;">
+  <meta name="description" content="Sony Xperia TM GX S0-04D 720*1280 和 S0-05D 均为软控制栏，最近在为这两款机器做适配时候遇到一些小问题，分享在这里。 问题1: 现象：Sony上，从第二行LineaLayout开始往下窜一定距离。从其他机器和模拟器上均显示正常。 原因： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="i-chou.com/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan">
+  <link rel="canonical" href="i-chou.com/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
@@ -71,7 +71,7 @@
   
   <header>
     
-      <h1 class="entry-title">iOS获取当前系统语言</h1>
+      <h1 class="entry-title">Xperia TM GX UI适配遇到的小问题</h1>
     
     
       <p class="meta">
@@ -87,7 +87,7 @@
   
 
 
-<time datetime="2013-05-18T15:40:14+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
+<time datetime="2012-07-25T15:40:49+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
         
         
           | <a href="#comments">Comments</a>
@@ -97,14 +97,25 @@
   </header>
 
 
-<div class="entry-content"><p>添加如下代码：</p>
+<div class="entry-content"><p>Sony Xperia TM GX S0-04D 720*1280 和 S0-05D 均为软控制栏，最近在为这两款机器做适配时候遇到一些小问题，分享在这里。</p>
 
-<pre><code>NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
-NSArray *languages = [defaults objectForKey:@"AppleLanguages"]; 
-NSString *currentLanguage = [languages objectAtIndex:0];
-</code></pre>
+<ul>
+<li><p>问题1:</p>
 
-<p>取得设置好的语言。。日语是ja，英文是en，其他。。就设置以后log出来看看吧！</p>
+<p>现象：Sony上，从第二行LineaLayout开始往下窜一定距离。从其他机器和模拟器上均显示正常。</p>
+
+<p>原因：LinearLayout的Wrap_content属性在Sony和其它机器里的解析有所不同。</p>
+
+<p>改善：将高度设置成内容的实际高度dp值。</p></li>
+<li><p>问题2:</p>
+
+<p>现象：4.0以后机种的SimpleOnGestureListener类手势问题。</p>
+
+<p>原因：onFiling方法触发频繁，导致更换背景的耗时操作使反映变卡。</p>
+
+<p>改善：更换背景耗时操作加入判断条件再触发。</p></li>
+</ul>
+
 </div>
 
 
@@ -127,12 +138,12 @@ NSString *currentLanguage = [languages objectAtIndex:0];
   
 
 
-<time datetime="2013-05-18T15:40:14+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
+<time datetime="2012-07-25T15:40:49+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
       
 
 <span class="categories">
   
-    <a class='category' href='/blog/categories/ios/'>iOS</a>
+    <a class='category' href='/blog/categories/android/'>Android</a>
   
 </span>
 
@@ -141,7 +152,7 @@ NSString *currentLanguage = [languages objectAtIndex:0];
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/" data-via="" data-counturl="i-chou.com/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/" data-via="" data-counturl="i-chou.com/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/" >Tweet</a>
   
   
   
@@ -150,10 +161,10 @@ NSString *currentLanguage = [languages objectAtIndex:0];
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/04/09/dataformatli-she-zhi-ge-shi-zi-mu-han-yi/" title="Previous Post: dataFormat里设置格式字母含义">&laquo; dataFormat里设置格式字母含义</a>
+        <a class="basic-alignment left" href="/blog/2012/06/20/android-popupwindowde-shi-yong/" title="Previous Post: Android PopupWindow的使用">&laquo; Android PopupWindow的使用</a>
       
       
-        <a class="basic-alignment right" href="/blog/2013/08/13/hide-statusbar-also-work-on-ios7/" title="Next Post: hide statusBar (also work on ios7)">hide statusBar (also work on ios7) &raquo;</a>
+        <a class="basic-alignment right" href="/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu/" title="Next Post: Google API 方式制作饼状图">Google API 方式制作饼状图 &raquo;</a>
       
     </p>
   </footer>
