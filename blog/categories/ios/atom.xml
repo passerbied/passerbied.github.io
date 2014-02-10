@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2014-01-06T17:50:54+08:00</updated>
+  <updated>2014-02-10T16:29:22+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,6 +12,21 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[ios7.1 Beta版升级事件]]></title>
+    <link href="i-chou.com/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian/"/>
+    <updated>2014-02-10T16:15:03+08:00</updated>
+    <id>i-chou.com/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian</id>
+    <content type="html"><![CDATA[<p>昨晚因为电话找不到了，就在MAC上iCloud里的Find My iPhone呼叫了一下，第二天早上一拿起手机发现让我填写AppleID和密码激活iPhone。我以为是因为昨天呼叫导致的。结果填写时候发现怎么验证都不通过，经查发现，Beta版不让激活。但是不对啊，之前还激活过，就以为是苹果新加的东东。</p>
+
+<p>连上iTunes发现iPhone开着Find My iPhone是无法恢复备份的，但又无法进入系统关掉它。只好再一次进DFU模式刷机。刷成iOS7.0.4系统。可是，我之前的备份是7.1的Beta3的，不让我恢复，只能又固件刷到7.1的beta3（因为Beta4实在无法使用，不知道其他人的怎么样，反正在我的手机上极其不稳定，所以就不打算继续升级Beta版了），然后呢，还是激活不了。</p>
+
+<p>上班以后同事同样出现了无法激活的情况，才发现，是Beta3的测试期限到了。。。20M的宽带下载个1G+的东西，吃奶的劲都使出来了，还是抓紧分享出来为他人提供方便吧。需要的朋友请自己去百度云下载。</p>
+
+<p>云盘地址:<a href="http:">http:</a> //pan.baidu.com/s/11UoUE</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[iOS Define for Coding Faster]]></title>
@@ -205,88 +220,6 @@ IDETextKeyBindingSet.plist</code> 这个文件里配置了一些可以设置快�
 <li><p>The <code>backIndicatorTransitionMask</code> from a storyboard or a xib will not be interpreted correctly at runtime.</p>
 
 <p>  <strong>Workaround:</strong> Set the <code>backIndicatorTransitionMask</code> in code.</p></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[文本自定义行高以后高度自适应的解决方法]]></title>
-    <link href="i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/"/>
-    <updated>2013-12-13T00:09:36+08:00</updated>
-    <id>i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa</id>
-    <content type="html"><![CDATA[<p>本文要说的是，<em>Frame高度</em>根据文本内容自适应，而非<code>UITextView</code>的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）</p>
-
-<ul>
-<li><p>iOS7以前的最佳解决方案：</p>
-
-<p>  自定义TextView继承<code>UITextView</code>并加入以下方法。<em>1.5em</em>可修改</p>
-
-<pre><code>  - (id)styleString {
-      return [[super styleString] stringByAppendingString:@"; line-height: 1.5em"];
-  }
-</code></pre>
-
-<p>  然后在通过下面方法给frame赋值</p>
-
-<pre><code>  CGRect frame = _textView.frame;
-  frame.size.height = _textView.contentSize.height;
-  _textView.frame = frame;
-</code></pre>
-
-<p>  需要注意的是<code>contentSize</code>只在<code>UITextView</code>被<strong>addSubview</strong>以后才有效，所以要先把它加到画面上再，给它一个初始的frame，让它先得以计算出自己的<code>contentSize</code>。</p></li>
-<li><p>iOS7的最佳解决方案是：</p>
-
-<p>  自定义TextView继承<code>UITextView</code>实现下面的<code>init</code>方法，给textView设定行高。</p>
-
-<pre><code>  - (id)initWithFrame:(CGRect)frame lineHeigth:(float)lineHeigth font:(UIFont *)font {
-
-       self = [super initWithFrame:frame];
-       if (self) {
-                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-
-                    paragraphStyle.lineHeightMultiple = lineHeigth;
-                    paragraphStyle.maximumLineHeight = lineHeigth;
-                    paragraphStyle.minimumLineHeight = lineHeigth;
-                    NSDictionary *ats = 
-                               @{NSFontAttributeName:font,NSParagraphStyleAttributeName : paragraphStyle};
-
-                    self.attributedText = [[NSAttributedString alloc] initWithString:@“ “ attributes:ats];
-                    self.lineHeight = lineHeigth;
-                  }
-        return self;
-  }
-</code></pre>
-
-<p>  然后通过以下方法计算出textView的实际高度，继而确定frame的height。
-因为之前有人说<code>UITextView</code>默认的上下左右padding均为8px，也就是下面16的由来。 所以在计算时要考虑进去才能保证文本显示完整。</p>
-
-<pre><code>  + (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText lineHeight:(float)height
-  {
-    float fPadding = 16.0;
-    CGSize constraint = CGSizeMake(textView.contentSize.width - fPadding, CGFLOAT_MAX);
-
-    CGSize size = [strText sizeWithFont:textView.font
-                      constrainedToSize:constraint
-                          lineBreakMode:UILineBreakModeWordWrap];
-
-    float fHeight = size.height*height/textView.font.lineHeight + 16.0;
-    return fHeight;
-  }
-</code></pre>
-
-<p>  需要注意的是，本文讲的是自定义行高，所以，在下面方法里加上个<strong>lineHeight</strong>参与计算。</p>
-
-<p>  其实从开发文档看，<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html">NSMutableParagraphStyle</a> 在iOS6.0及以后都是有效的，但是我不知道为什么在iOS7上计算很精确，在iOS6上，结果却不令人满意。原因仍在调查中。</p>
-
-<p>  不过，幸好有上面说的 &lt;iOS7以前的最佳解决方案> ，要不然就要用&lt;稍微差一点的解决方案>了，那么就顺带说一下&lt;稍微差一点的解决方案>是什么吧^_^</p></li>
-<li><p>稍微差一点的解决</p>
-
-<p>  使用开源控件 > <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a></p>
-
-<p>  这个控件之前由于性能问题一度被我遗弃过，后来版本更新以后，性能上来不少，但是仍然有些bug。我发现的bug就是当<em>字体小于12号，或者当行数过多，并且<strong>lineHeightMultiple</strong>>1</em>的时候，计算高度会存在偏差，行数越多偏差越大。</p>
-
-<p>  那么也就是说，如果你一个文本不需要显示数百行，在此基础上对文本其他属性有追求，并且苦逼的要考虑兼容iOS7以下用户的话，可以使用 <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a> ，因为这个控件在伴随有 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 的iOS7出来之前还是还是相当牛逼的，而更牛逼的 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 让我们在文本显示领域看见了曙光！顺便奉劝一句，要是你的iOS7用户群达到95%以上，就果断抛弃那些抱着3年前的iPhone4而不敢升级系统的陈旧用户吧。</p></li>
 </ul>
 
 ]]></content>
