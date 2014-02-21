@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2014-02-10T16:31:56+08:00</updated>
+  <updated>2014-02-21T17:07:13+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,6 +12,20 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Xcode5.1 Updated to Beta5]]></title>
+    <link href="i-chou.com/blog/2014/02/21/xcode5-dot-1-updated-to-beta5/"/>
+    <updated>2014-02-21T15:39:49+08:00</updated>
+    <id>i-chou.com/blog/2014/02/21/xcode5-dot-1-updated-to-beta5</id>
+    <content type="html"><![CDATA[<p><code>Xcode5.1 Beta5</code>和<code>iOS7.1Beta5</code>出来有一周时间了，这次更新苹果把Xcode里的64编译变成了默认，而没有了选项，如果你的项目编译时出了问题，请检查一下编码是否支持64位。</p>
+
+<p>下面有一篇介绍如何为64位编译应用的文章，分享出来，多少会了解一些为64位应用编译所需要的基本东西。
+<a href="http://blog.csdn.net/keyboardota/article/details/11993883">iOS 7: 如何为iPhone 5S编译64位应用。 </a></p>
+
+<p>如果您还没有充分准备好为64位编译您的应用，那么请在Xcode5.1项目的Target中<code>Build Settings</code>&ndash;><code>Architectures</code>&ndash;><code>Valid Architectures</code>中的<code>arm64</code>删掉，只保留<code>armv7</code>和<code>armv7s</code>即可。但终究是要兼容64位的，所以，还是抓紧准备吧。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[ios7.1 Beta版升级事件]]></title>
@@ -1091,17 +1105,6 @@ UITableViewCellSeparatorStyleSingleLine</p>
 <p>改善：更换背景耗时操作加入判断条件再触发。</p></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android PopupWindow的使用]]></title>
-    <link href="i-chou.com/blog/2012/06/20/android-popupwindowde-shi-yong/"/>
-    <updated>2012-06-20T16:36:24+08:00</updated>
-    <id>i-chou.com/blog/2012/06/20/android-popupwindowde-shi-yong</id>
-    <content type="html"><![CDATA[<p><a href="http://blog.csdn.net/Android_Tutor/article/details/5576533">Android PopupWindow的使用</a></p>
-
-<p>以上链接解决了画面初始化时直接弹出PopUpWindow的需求。测试有效。</p>
 ]]></content>
   </entry>
   

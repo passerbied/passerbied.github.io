@@ -9,7 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="如果是iPhone自带字体，emoji和文字的高度是不同的，有些细节的地方会造成布局出现瑕疵，我之前的做法是在 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range &hellip;">
+  <meta name="description" content="数学常量： #define M_E 2.71828182845904523536028747135266250 // e #define M_LOG2E 1.44269504088896340735992468100189214 // log 2e #define M_LOG10E 0. &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,132 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/">Objective-C常用數學常量宏及函數</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-28T12:12:27+08:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>数学常量：</p>
+
+<pre><code>#define M_E         2.71828182845904523536028747135266250   // e
+
+#define M_LOG2E     1.44269504088896340735992468100189214   // log 2e
+
+#define M_LOG10E    0.434294481903251827651128918916605082  // log 10e
+
+#define M_LN2       0.693147180559945309417232121458176568  // log e2
+
+#define M_LN10      2.30258509299404568401799145468436421   // log e10
+
+#define M_PI        3.14159265358979323846264338327950288   // pi
+
+#define M_PI_2      1.57079632679489661923132169163975144   // pi/2
+
+#define M_PI_4      0.785398163397448309615660845819875721  // pi/4
+
+#define M_1_PI      0.318309886183790671537767526745028724  // 1/pi
+
+#define M_2_PI      0.636619772367581343075535053490057448  // 2/pi
+
+#define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)
+
+#define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)
+
+#define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)
+</code></pre>
+
+<p>  </br></p></li>
+<li><p>常用函数：</p>
+
+<pre><code>//指数运算
+
+NSLog(@"%.f", pow(3,2) ); //result 9
+
+NSLog(@"%.f", pow(3,3) ); //result 27
+
+
+//开平方运算
+
+NSLog(@"%.f", sqrt(16) ); //result 4
+
+NSLog(@"%.f", sqrt(81) ); //result 9
+
+
+//上舍入
+
+NSLog(@"res: %.f", ceil(3.000000000001)); //result 4
+
+NSLog(@"res: %.f", ceil(3.00)); //result 3
+
+
+//下舍入
+
+NSLog(@"res: %.f", floor(3.000000000001)); //result 3
+
+NSLog(@"res: %.f", floor(3.9999999)); //result 3
+
+
+//四舍五入
+
+NSLog(@"res: %.f", round(3.5)); //result 4
+
+NSLog(@"res: %.f", round(3.46)); //result 3
+
+NSLog(@"res: %.f", round(-3.5)); //NB: this one returns -4
+
+
+//最小值
+
+NSLog(@"res: %.f", fmin(5,10)); //result 5
+
+
+//最大值
+
+NSLog(@"res: %.f", fmax(5,10)); //result 10
+
+
+//绝对值
+
+NSLog(@"res: %.f", fabs(10)); //result 10
+
+NSLog(@"res: %.f", fabs(-10)); //result 10
+</code></pre></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -569,47 +695,6 @@ UITableViewCellSeparatorStyleSingleLine</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/06/20/android-popupwindowde-shi-yong/">Android PopupWindow的使用</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-06-20T16:36:24+08:00" pubdate data-updated="true">Jun 20<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/06/20/android-popupwindowde-shi-yong/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><a href="http://blog.csdn.net/Android_Tutor/article/details/5576533">Android PopupWindow的使用</a></p>
-
-<p>以上链接解决了画面初始化时直接弹出PopUpWindow的需求。测试有效。</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -628,12 +713,16 @@ UITableViewCellSeparatorStyleSingleLine</p>
     <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (17)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (18)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/02/21/xcode5-dot-1-updated-to-beta5/">Xcode5.1 Updated to Beta5</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian/">ios7.1 Beta版升级事件</a>
@@ -649,10 +738,6 @@ UITableViewCellSeparatorStyleSingleLine</p>
     
       <li class="post">
         <a href="/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/">Use Eclipse-Style ShortcutKey on Xcode</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a>
       </li>
     
   </ul>
