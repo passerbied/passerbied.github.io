@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2014-03-11T15:33:45+08:00</updated>
+  <updated>2014-03-11T15:34:48+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -14,10 +14,10 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Those Pop Plug-ins of Xcode]]></title>
-    <link href="i-chou.com/blog/2014/03/11/those-pop-plug-ins-of-xcode/"/>
+    <title type="html"><![CDATA[Those Pop Plug-ins for Xcode]]></title>
+    <link href="i-chou.com/blog/2014/03/11/those-pop-plug-ins-for-xcode/"/>
     <updated>2014-03-11T12:13:47+08:00</updated>
-    <id>i-chou.com/blog/2014/03/11/those-pop-plug-ins-of-xcode</id>
+    <id>i-chou.com/blog/2014/03/11/those-pop-plug-ins-for-xcode</id>
     <content type="html"><![CDATA[<ul>
 <li><h2>Alcatraz</h2>
 
