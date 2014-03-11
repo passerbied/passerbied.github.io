@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2014-03-11T15:37:13+08:00</updated>
+  <updated>2014-03-11T15:51:39+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -78,6 +78,13 @@
 <p>  (兼容到Xcode4.5)</p>
 
 <p>  项目地址： <a href="https://github.com/omz/ColorSense-for-Xcode">https://github.com/omz/ColorSense-for-Xcode</a></p></li>
+<li><h2>Unused</h2>
+
+<p>  A Mac app for checking Xcode projects for unused resources.</p>
+
+<p>  这个虽然不是Xcode插件，但是确实是很有用的东西，他可以把项目中不用的资源文件在可视化窗口中检索出来，以辅助开发人员减少项目中浪费掉的空间。</p>
+
+<p>  项目地址：<a href="https://github.com/jeffhodnett/Unused">https://github.com/jeffhodnett/Unused</a></p></li>
 </ul>
 
 ]]></content>
