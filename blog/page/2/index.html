@@ -9,7 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="数学常量： #define M_E 2.71828182845904523536028747135266250 // e #define M_LOG2E 1.44269504088896340735992468100189214 // log 2e #define M_LOG10E 0. &hellip;">
+  <meta name="description" content="从iOS7的Beta版开始，就着手做兼容工作，到Beta4的時候，应用已经基本兼容，只是偶然发现，iOS样式的手势返回，也就是用interactivePopGestureRecognizer返回的时候,出现下面一些列问题。各方调研，无果，史无前例（废话，刚出来的7，上哪有例去&mdash;#）。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +68,60 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/">自定义返回按钮时，iOS7手势返回遇到的问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-12T23:07:27+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>从iOS7的Beta版开始，就着手做兼容工作，到Beta4的時候，应用已经基本兼容，只是偶然发现，iOS样式的手势返回，也就是用<code>interactivePopGestureRecognizer</code>返回的时候,出现下面一些列问题。各方调研，无果，史无前例（废话，刚出来的7，上哪有例去&mdash;#）。</p>
+
+<ul>
+<li><p>我的应用是自定义的返回按钮图标(默认返回按钮样式不会出现问题3)，为了保险，写了这句代码<code>[self.navigationItem setHidesBackButton:YES]</code>。
+由于自定义返回按钮，所以iOS7自带返回手势无效。在需要的页面加上<code>navigationController.interactivePopGestureRecognizer.delegate = self</code>
+返回手势好用了。</p></li>
+<li><p>于是出现了第二个问题。
+在一级视图中，iOS样式返回的手势滑动一下，然后进入二级视图，发现，画面卡住了，按Home键转入后台，再返回应用，发现并没有Crash掉，而是直接跳到了二级视图里，运行正常了，大家知道push和pop的原理是用进栈出栈完成的，可能因为在一级视图中滑动那一下，影响了视图在栈中的位置。
+好，先解决一下这个问题，一级视图中一定要加入<code>self.navigationController.interactivePopGestureRecognizer.enabled = NO;</code>，先把iOS7手势返回屏蔽掉，到二级视图再用<code>self.navigationController.interactivePopGestureRecognizer.enabled = YES</code>打开。就Ok了。</p></li>
+<li><p>好，第三个问题相继出现（其实是跟第二个一起出来的）。
+手势返回拖动一半，放手，<code>navigationBar</code>上会出现三个小蓝点，而且位置不规律，可以肯定这个不是项目代码或者图片搞出来的东西，一定是SDK自己蹦出來的。
+后台尝试发现<code>UIBarButtonItem</code>的<code>title</code>如果是nil的话，就会有这个问题。
+解决方案：把<code>[self.navigationItem setHidesBackButton:YES];</code>去掉，然後把假装成返回按钮的<code>UIBarButtonItem</code>的<code>title</code>设置成<code>@""</code>。</p></li>
+<li><p>大功告成。可见设计要是不按苹果规范来的话，就会遇到各种坑啊。</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -638,63 +692,6 @@ UITableViewCellSeparatorStyleSingleLine</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/">Xperia TM GX UI适配遇到的小问题</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-07-25T15:40:49+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Sony Xperia TM GX S0-04D 720*1280 和 S0-05D 均为软控制栏，最近在为这两款机器做适配时候遇到一些小问题，分享在这里。</p>
-
-<ul>
-<li><p>问题1:</p>
-
-<p>现象：Sony上，从第二行LineaLayout开始往下窜一定距离。从其他机器和模拟器上均显示正常。</p>
-
-<p>原因：LinearLayout的Wrap_content属性在Sony和其它机器里的解析有所不同。</p>
-
-<p>改善：将高度设置成内容的实际高度dp值。</p></li>
-<li><p>问题2:</p>
-
-<p>现象：4.0以后机种的SimpleOnGestureListener类手势问题。</p>
-
-<p>原因：onFiling方法触发频繁，导致更换背景的耗时操作使反映变卡。</p>
-
-<p>改善：更换背景耗时操作加入判断条件再触发。</p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/blog/page/3/">&larr; Older</a>
@@ -713,12 +710,16 @@ UITableViewCellSeparatorStyleSingleLine</p>
     <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (18)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (19)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/11/those-pop-plug-ins-of-xcode/">Those Pop Plug-ins of Xcode</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/21/xcode5-dot-1-updated-to-beta5/">Xcode5.1 Updated to Beta5</a>
@@ -734,10 +735,6 @@ UITableViewCellSeparatorStyleSingleLine</p>
     
       <li class="post">
         <a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/">Unable to Process Application info.plist Validation at This Time Due to a General Error</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/">Use Eclipse-Style ShortcutKey on Xcode</a>
       </li>
     
   </ul>

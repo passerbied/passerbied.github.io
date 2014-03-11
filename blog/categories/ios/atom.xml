@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2014-02-21T17:07:13+08:00</updated>
+  <updated>2014-03-11T15:33:45+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Those Pop Plug-ins of Xcode]]></title>
+    <link href="i-chou.com/blog/2014/03/11/those-pop-plug-ins-of-xcode/"/>
+    <updated>2014-03-11T12:13:47+08:00</updated>
+    <id>i-chou.com/blog/2014/03/11/those-pop-plug-ins-of-xcode</id>
+    <content type="html"><![CDATA[<ul>
+<li><h2>Alcatraz</h2>
+
+<p>  Alcatraz is an open-source package manager for Xcode 5. It lets you discover and install plugins, templates and color schemes without the need for manually cloning or copying files. It installs itself as a part of Xcode and it feels like home.</p>
+
+<p>  (亲测Xcode5.1可用)</p>
+
+<p>  项目地址： <a href="https://github.com/mneorr/Alcatraz">https://github.com/mneorr/Alcatraz</a>
+  <img src="https://github-camo.global.ssl.fastly.net/f4106ea5018bf4beff4c8625b0f3abe528cceb7d/687474703a2f2f616c63617472617a2e696f2f696d616765732f6865616465724032782e706e67" alt="img" />
+  <img src="https://github-camo.global.ssl.fastly.net/919efe4e1e53237df51d7010c862bd5c04fd6a70/687474703a2f2f616c63617472617a2e696f2f696d616765732f73637265656e73686f744032782e706e67" alt="img" /></p></li>
+<li><h2>Lin</h2>
+
+<p>  Xcode5 plugin showing completion for NSLocalizedString and localizedStringForKey:value:table:</p>
+
+<p>  (兼容到Xcode5，5.1不可用)</p>
+
+<p>  项目地址： <a href="https://github.com/questbeat/Lin">https://github.com/questbeat/Lin</a></p>
+
+<p>  <img src="https://github-camo.global.ssl.fastly.net/6c4fc4630543be9addbb384133d07074866d0a8a/687474703a2f2f61646f746f75742e73616b7572612e6e652e6a702f6769746875622f4c696e2f6c696e5f737330322e706e67" alt="img" /></p></li>
+<li><h2>KFCocoaPodsPlugin</h2>
+
+<p>  XcodePlugin for CocoaPods with pod commands/console output, user notifications &amp; code completion.</p>
+
+<p>  (兼容到Xcode5，5.1不可用)</p>
+
+<p>  项目地址： [<a href="https://github.com/ricobeck/KFCocoaPodsPlugin">https://github.com/ricobeck/KFCocoaPodsPlugin</a>)</p>
+
+<p>  <img src="https://github.com/ricobeck/KFCocoaPodsPlugin/raw/master/Screenshots/Screenshot-Update.png" alt="img" />
+  <img src="https://github.com/ricobeck/KFCocoaPodsPlugin/raw/master/Screenshots/Animation-Completion.gif" alt="img" /></p></li>
+<li><h2>VVDocumenter-Xcode</h2>
+
+<p>  Xcode plug-in which helps you write Javadoc style documents easier.</p>
+
+<p>  (亲测Xcode5.1可用)</p>
+
+<p>  项目地址： <a href="https://github.com/onevcat/VVDocumenter-Xcode">https://github.com/onevcat/VVDocumenter-Xcode</a></p>
+
+<p>  <img src="https://raw.github.com/onevcat/VVDocumenter-Xcode/master/ScreenShot.gif" alt="img" /></p></li>
+<li><h2>Fuzzy Autocomplete for Xcode</h2>
+
+<p>  This is a Xcode 5 plugin that patches the autocomplete filter to work the same way the <code>Open Quickly</code> works.</p>
+
+<p>  It performs very well, and the fuzzy matching actually uses Xcode&rsquo;s own <code>IDEOpenQuicklyPattern</code>.</p>
+
+<p>  I wrote a blog post on how I used <code>dtrace</code> to figure out what to patch: <a href="http://chen.do/blog/2013/10/22/reverse-engineering-xcode-with-dtrace/?utm_source=github&amp;utm_campaign=fuzzyautocomplete">Reverse engineering Xcode with dtrace</a></p>
+
+<p>  Like nifty tools like this plugin? Check out <a href="https://shortcatapp.com/?utm_source=github&amp;utm_campaign=fuzzyautocomplete">Shortcat</a>, an app that lets you control your Mac more effectively with your keyboard!</p>
+
+<p>  (亲测Xcode5.1可用)</p>
+
+<p>  项目地址： <a href="https://github.com/chendo/FuzzyAutocompletePlugin">https://github.com/chendo/FuzzyAutocompletePlugin</a></p>
+
+<p>  <img src="https://raw.github.com/chendo/FuzzyAutocompletePlugin/master/demo.gif" alt="img" /></p></li>
+<li><h2>ColorSense-for-Xcode</h2>
+
+<p>  Plugin for Xcode to make working with colors more visual</p>
+
+<p>  (兼容到Xcode4.5)</p>
+
+<p>  项目地址： <a href="https://github.com/omz/ColorSense-for-Xcode">https://github.com/omz/ColorSense-for-Xcode</a></p></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Xcode5.1 Updated to Beta5]]></title>
@@ -156,67 +226,6 @@
 
 
 <p>如果你确信你的签名认证文件没有弄错，那么恭喜你，这个错误并不是本地错误，而是苹果服务器方面的错误，只需耐心等待即可。如果只等待不能满足你好动的本性，你就再review一遍吧，也许在review这段时间会有新的发现。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Use Eclipse-Style ShortcutKey on Xcode]]></title>
-    <link href="i-chou.com/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/"/>
-    <updated>2013-12-29T13:51:56+08:00</updated>
-    <id>i-chou.com/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode</id>
-    <content type="html"><![CDATA[<p>相信有一些小伙伴即使用着高大上的Xcode，也还是习惯用Eclipse的一些更亲民的快捷键。
-那么就将搜集到的定制Eclipse快捷键的方法分享在这里，缺点是每次Xcode升级，需要重新配置，不过有些插件可以统一管理Xcode的配置文件和插件，这里就不讲了。</p>
-
-<p>首先找到Xcode中的自带的配置文件
-<code>/Applications/Xcode.app/Contents/Frameworks/IDEKit.framework/Versions/A/Resources/
-IDETextKeyBindingSet.plist</code> 这个文件里配置了一些可以设置快捷键的操作, 使用常用的编辑器打开它（需要root权限）。</p>
-
-<p>然后把这段配置</p>
-
-<pre><code>&lt;key&gt;GDI Commands&lt;/key&gt;
-    &lt;dict&gt;
-        &lt;key&gt;GDI Duplicate Current Line&lt;/key&gt;
-        &lt;string&gt;selectLine:, copy:, moveToEndOfLine:, insertNewline:, paste:, deleteBackward:&lt;/string&gt;
-        &lt;key&gt;GDI Delete Current Line&lt;/key&gt;
-        &lt;string&gt;moveToEndOfLine:, deleteToBeginningOfLine:, deleteBackward:, moveDown:, moveToEndOfLine:&lt;/string&gt;
-        &lt;key&gt;GDI Move Current Line Up&lt;/key&gt;
-        &lt;string&gt;selectLine:, cut:, moveUp:, moveToBeginningOfLine:, insertNewLine:, paste:, moveBackward:&lt;/string&gt;
-        &lt;key&gt;GDI Move Current Line Down&lt;/key&gt;
-        &lt;string&gt;selectLine:, cut:, moveDown:, moveToBeginningOfLine:, insertNewLine:, paste:, moveBackward:&lt;/string&gt;
-        &lt;key&gt;GDI Insert Line Above&lt;/key&gt;
-        &lt;string&gt;moveUp:, moveToEndOfLine:, insertNewline:&lt;/string&gt;
-        &lt;key&gt;GDI Insert Line Below&lt;/key&gt;
-        &lt;string&gt;moveToEndOfLine:, insertNewline:&lt;/string&gt;
-    &lt;/dict&gt;
-</code></pre>
-
-<p>放到上面提到的<code>IDETextKeyBindingSet.plist</code>里，放在文件的最后的这两行之前：</p>
-
-<pre><code>    &lt;/dict&gt;
-&lt;/plist&gt;
-</code></pre>
-
-<p>配置解读：</p>
-
-<p>key是名称，对应的string是对应的一组操作。</p>
-
-<ul>
-<li>GDI Duplicate Current Line 复制当前行到下面一行</li>
-<li>GDI Delete Current Line 删除当前行</li>
-<li>GDI Move Current Line Up 把当前行往上移动一行</li>
-<li>GDI Move Current Line Down 把当前行往下移动一行</li>
-<li>GDI Insert Line Above 在当前行上面增加一空行</li>
-<li>GDI Insert Line Below 在当前行下面增加一空行（不管光标是否在行尾）</li>
-</ul>
-
-
-<p>copy以后重启Xcode，在Xcode菜单中，打开Preferences，选中Key Binding，在右上方搜索GDI, 会出现类似下图的显示，如果没有的话，请检查上面的每步操作。</p>
-
-<p> <img src="/images/key_binding.png"></p>
-
-<p>双击右边的空白处，就可以为每个功能设置不同的快捷键。</p>
-
-<p>本文参考自：<a href="http://joeyio.com/2013/07/22/xcode_key_binding_like_eclipse/">Xcode自定义Eclipse中常用的快捷键</a></p>
 ]]></content>
   </entry>
   

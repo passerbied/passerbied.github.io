@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2014-02-21T17:07:13+08:00</updated>
+  <updated>2014-03-11T15:33:45+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,6 +12,76 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Those Pop Plug-ins of Xcode]]></title>
+    <link href="i-chou.com/blog/2014/03/11/those-pop-plug-ins-of-xcode/"/>
+    <updated>2014-03-11T12:13:47+08:00</updated>
+    <id>i-chou.com/blog/2014/03/11/those-pop-plug-ins-of-xcode</id>
+    <content type="html"><![CDATA[<ul>
+<li><h2>Alcatraz</h2>
+
+<p>  Alcatraz is an open-source package manager for Xcode 5. It lets you discover and install plugins, templates and color schemes without the need for manually cloning or copying files. It installs itself as a part of Xcode and it feels like home.</p>
+
+<p>  (亲测Xcode5.1可用)</p>
+
+<p>  项目地址： <a href="https://github.com/mneorr/Alcatraz">https://github.com/mneorr/Alcatraz</a>
+  <img src="https://github-camo.global.ssl.fastly.net/f4106ea5018bf4beff4c8625b0f3abe528cceb7d/687474703a2f2f616c63617472617a2e696f2f696d616765732f6865616465724032782e706e67" alt="img" />
+  <img src="https://github-camo.global.ssl.fastly.net/919efe4e1e53237df51d7010c862bd5c04fd6a70/687474703a2f2f616c63617472617a2e696f2f696d616765732f73637265656e73686f744032782e706e67" alt="img" /></p></li>
+<li><h2>Lin</h2>
+
+<p>  Xcode5 plugin showing completion for NSLocalizedString and localizedStringForKey:value:table:</p>
+
+<p>  (兼容到Xcode5，5.1不可用)</p>
+
+<p>  项目地址： <a href="https://github.com/questbeat/Lin">https://github.com/questbeat/Lin</a></p>
+
+<p>  <img src="https://github-camo.global.ssl.fastly.net/6c4fc4630543be9addbb384133d07074866d0a8a/687474703a2f2f61646f746f75742e73616b7572612e6e652e6a702f6769746875622f4c696e2f6c696e5f737330322e706e67" alt="img" /></p></li>
+<li><h2>KFCocoaPodsPlugin</h2>
+
+<p>  XcodePlugin for CocoaPods with pod commands/console output, user notifications &amp; code completion.</p>
+
+<p>  (兼容到Xcode5，5.1不可用)</p>
+
+<p>  项目地址： [<a href="https://github.com/ricobeck/KFCocoaPodsPlugin">https://github.com/ricobeck/KFCocoaPodsPlugin</a>)</p>
+
+<p>  <img src="https://github.com/ricobeck/KFCocoaPodsPlugin/raw/master/Screenshots/Screenshot-Update.png" alt="img" />
+  <img src="https://github.com/ricobeck/KFCocoaPodsPlugin/raw/master/Screenshots/Animation-Completion.gif" alt="img" /></p></li>
+<li><h2>VVDocumenter-Xcode</h2>
+
+<p>  Xcode plug-in which helps you write Javadoc style documents easier.</p>
+
+<p>  (亲测Xcode5.1可用)</p>
+
+<p>  项目地址： <a href="https://github.com/onevcat/VVDocumenter-Xcode">https://github.com/onevcat/VVDocumenter-Xcode</a></p>
+
+<p>  <img src="https://raw.github.com/onevcat/VVDocumenter-Xcode/master/ScreenShot.gif" alt="img" /></p></li>
+<li><h2>Fuzzy Autocomplete for Xcode</h2>
+
+<p>  This is a Xcode 5 plugin that patches the autocomplete filter to work the same way the <code>Open Quickly</code> works.</p>
+
+<p>  It performs very well, and the fuzzy matching actually uses Xcode&rsquo;s own <code>IDEOpenQuicklyPattern</code>.</p>
+
+<p>  I wrote a blog post on how I used <code>dtrace</code> to figure out what to patch: <a href="http://chen.do/blog/2013/10/22/reverse-engineering-xcode-with-dtrace/?utm_source=github&amp;utm_campaign=fuzzyautocomplete">Reverse engineering Xcode with dtrace</a></p>
+
+<p>  Like nifty tools like this plugin? Check out <a href="https://shortcatapp.com/?utm_source=github&amp;utm_campaign=fuzzyautocomplete">Shortcat</a>, an app that lets you control your Mac more effectively with your keyboard!</p>
+
+<p>  (亲测Xcode5.1可用)</p>
+
+<p>  项目地址： <a href="https://github.com/chendo/FuzzyAutocompletePlugin">https://github.com/chendo/FuzzyAutocompletePlugin</a></p>
+
+<p>  <img src="https://raw.github.com/chendo/FuzzyAutocompletePlugin/master/demo.gif" alt="img" /></p></li>
+<li><h2>ColorSense-for-Xcode</h2>
+
+<p>  Plugin for Xcode to make working with colors more visual</p>
+
+<p>  (兼容到Xcode4.5)</p>
+
+<p>  项目地址： <a href="https://github.com/omz/ColorSense-for-Xcode">https://github.com/omz/ColorSense-for-Xcode</a></p></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Xcode5.1 Updated to Beta5]]></title>
@@ -1078,33 +1148,6 @@ UITableViewCellSeparatorStyleSingleLine</p>
 <p><a href="https://chart.apis.google.com/chart?">https://chart.apis.google.com/chart?</a></p>
 
 <p>This is the base URL for all chart requests. (However, seeImproving Performance on Pages with Many Charts below for an optional variation for pages with multiple charts.)cht=p3The chart type: here, a 3D pie chart.chs=250x100The chart size (width xheight), in pixels. See the maximum valueshere.chd=t:60,40The chart data. This data is in simple text format, but there areother formats.chl=Hello|WorldTheslice labels.&amp;Parameters are separated by an ampersand.Note: When embedding an URL in HTML, for example as thesrc attribute of an <img> tag, you should replace the&amp; between parameters with the characters&amp; This includes when you generate page HTML with PHP or some other language. However, when typing a URL in the browser, or whencalling a URL in code, for example when fetching a URL in PHP or Perl, you should use the&amp; mark.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Xperia TM GX UI适配遇到的小问题]]></title>
-    <link href="i-chou.com/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/"/>
-    <updated>2012-07-25T15:40:49+08:00</updated>
-    <id>i-chou.com/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti</id>
-    <content type="html"><![CDATA[<p>Sony Xperia TM GX S0-04D 720*1280 和 S0-05D 均为软控制栏，最近在为这两款机器做适配时候遇到一些小问题，分享在这里。</p>
-
-<ul>
-<li><p>问题1:</p>
-
-<p>现象：Sony上，从第二行LineaLayout开始往下窜一定距离。从其他机器和模拟器上均显示正常。</p>
-
-<p>原因：LinearLayout的Wrap_content属性在Sony和其它机器里的解析有所不同。</p>
-
-<p>改善：将高度设置成内容的实际高度dp值。</p></li>
-<li><p>问题2:</p>
-
-<p>现象：4.0以后机种的SimpleOnGestureListener类手势问题。</p>
-
-<p>原因：onFiling方法触发频繁，导致更换背景的耗时操作使反映变卡。</p>
-
-<p>改善：更换背景耗时操作加入判断条件再触发。</p></li>
-</ul>
-
 ]]></content>
   </entry>
   

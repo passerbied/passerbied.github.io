@@ -9,8 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="Android PopupWindow的使用 以上链接解决了画面初始化时直接弹出PopUpWindow的需求。测试有效。
-">
+  <meta name="description" content="Sony Xperia TM GX S0-04D 720*1280 和 S0-05D 均为软控制栏，最近在为这两款机器做适配时候遇到一些小问题，分享在这里。 问题1: 现象：Sony上，从第二行LineaLayout开始往下窜一定距离。从其他机器和模拟器上均显示正常。 原因： &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -69,6 +68,63 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/">Xperia TM GX UI适配遇到的小问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-07-25T15:40:49+08:00" pubdate data-updated="true">Jul 25<span>th</span>, 2012</time>
+        
+        
+          | <a href="/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>Sony Xperia TM GX S0-04D 720*1280 和 S0-05D 均为软控制栏，最近在为这两款机器做适配时候遇到一些小问题，分享在这里。</p>
+
+<ul>
+<li><p>问题1:</p>
+
+<p>现象：Sony上，从第二行LineaLayout开始往下窜一定距离。从其他机器和模拟器上均显示正常。</p>
+
+<p>原因：LinearLayout的Wrap_content属性在Sony和其它机器里的解析有所不同。</p>
+
+<p>改善：将高度设置成内容的实际高度dp值。</p></li>
+<li><p>问题2:</p>
+
+<p>现象：4.0以后机种的SimpleOnGestureListener类手势问题。</p>
+
+<p>原因：onFiling方法触发频繁，导致更换背景的耗时操作使反映变卡。</p>
+
+<p>改善：更换背景耗时操作加入判断条件再触发。</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -657,12 +713,16 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (18)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (19)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/11/those-pop-plug-ins-of-xcode/">Those Pop Plug-ins of Xcode</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/02/21/xcode5-dot-1-updated-to-beta5/">Xcode5.1 Updated to Beta5</a>
@@ -678,10 +738,6 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     
       <li class="post">
         <a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/">Unable to Process Application info.plist Validation at This Time Due to a General Error</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/">Use Eclipse-Style ShortcutKey on Xcode</a>
       </li>
     
   </ul>
