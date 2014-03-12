@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2014-03-11T15:51:39+08:00</updated>
+  <updated>2014-03-12T16:29:11+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,6 +12,22 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[项目协作中Xcode Search Paths问题]]></title>
+    <link href="i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/"/>
+    <updated>2014-03-12T12:23:11+08:00</updated>
+    <id>i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti</id>
+    <content type="html"><![CDATA[<p>Xcode引用库的时候，编译器会自动添加一个库文件的绝对路径进去，这种情况下，如果其他人从repo上pull下来编译项目就容易出问题，因为找不到之前那个人引用路径下存放的文件了嘛。</p>
+
+<p>那么，引用库或使用CocoaPods的时候，要注意手动把Build Settings里面的<code>Framework Search Paths</code>,<code>Header Search Paths</code>,<code>Library Search Paths</code>中的绝对路径都删掉，改成相对路径，最简单的办法时，全部删掉，然后加入一个<code>../**</code>即可。</p>
+
+<p>顺便，最近Xcode5.1升级导致诸多在架构编译层面的问题。其中一个就是Xcode5.1默认是64位编译器编译。</p>
+
+<p>手动关闭的方法是：选中<code>Targets</code>—><code>Build Settings</code>—><code>Architectures</code>。双击<code>Architectures</code>，选择<code>other</code>，删除<code>$(ARCHS_STANDARD)</code>，然后增加<code>armv7</code>和<code>armv7s</code>，clean一下再编译。
+官方不推荐将<code>Valid Architectures</code>的内容修改，所以最好使用上面的方法关闭64位编译。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Those Pop Plug-ins for Xcode]]></title>
@@ -213,26 +229,6 @@
 
 #define LOG_ERROR(exception,reason) NSLog(@"function:%s | line:%d | exception:%@ | reason:%@",__func__, __LINE__,exception,reason)
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Unable to Process Application info.plist Validation at This Time Due to a General Error]]></title>
-    <link href="i-chou.com/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/"/>
-    <updated>2013-12-30T11:59:26+08:00</updated>
-    <id>i-chou.com/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error</id>
-    <content type="html"><![CDATA[<p>前几天美国圣诞放长假，往AppStore提交应用时提示28号以后才行。</p>
-
-<p>今天提交前Validate时候遇到个问题，相信不止我一个人遇到，错误信息就是:</p>
-
-<p><code>“Unable to process application info.plist validation at this time due to a general error.Please try again later.”</code></p>
-
-<p><img src="/images/error.jpg"></p>
-
-<!--![error image](error.jpg)-->
-
-
-<p>如果你确信你的签名认证文件没有弄错，那么恭喜你，这个错误并不是本地错误，而是苹果服务器方面的错误，只需耐心等待即可。如果只等待不能满足你好动的本性，你就再review一遍吧，也许在review这段时间会有新的发现。</p>
 ]]></content>
   </entry>
   

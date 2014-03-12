@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>iOS获取当前系统语言 - i-chou's tech blog</title>
+  <title>项目协作中Xcode Search Paths问题 - i-chou's tech blog</title>
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="添加如下代码： NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; NSArray *languages = [defaults objectForKey:@"AppleLanguages"]; NSString * &hellip;">
+  <meta name="description" content="Xcode引用库的时候，编译器会自动添加一个库文件的绝对路径进去，这种情况下，如果其他人从repo上pull下来编译项目就容易出问题，因为找不到之前那个人引用路径下存放的文件了嘛。 那么，引用库或使用CocoaPods的时候，要注意手动把Build Settings里面的Framework &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="i-chou.com/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan">
+  <link rel="canonical" href="i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
@@ -71,7 +71,7 @@
   
   <header>
     
-      <h1 class="entry-title">iOS获取当前系统语言</h1>
+      <h1 class="entry-title">项目协作中Xcode Search Paths问题</h1>
     
     
       <p class="meta">
@@ -87,7 +87,7 @@
   
 
 
-<time datetime="2013-05-18T15:40:14+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
+<time datetime="2014-03-12T12:23:11+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2014</time>
         
         
           | <a href="#comments">Comments</a>
@@ -97,14 +97,14 @@
   </header>
 
 
-<div class="entry-content"><p>添加如下代码：</p>
+<div class="entry-content"><p>Xcode引用库的时候，编译器会自动添加一个库文件的绝对路径进去，这种情况下，如果其他人从repo上pull下来编译项目就容易出问题，因为找不到之前那个人引用路径下存放的文件了嘛。</p>
 
-<pre><code>NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
-NSArray *languages = [defaults objectForKey:@"AppleLanguages"]; 
-NSString *currentLanguage = [languages objectAtIndex:0];
-</code></pre>
+<p>那么，引用库或使用CocoaPods的时候，要注意手动把Build Settings里面的<code>Framework Search Paths</code>,<code>Header Search Paths</code>,<code>Library Search Paths</code>中的绝对路径都删掉，改成相对路径，最简单的办法时，全部删掉，然后加入一个<code>../**</code>即可。</p>
 
-<p>取得设置好的语言。。日语是ja，英文是en，其他。。就设置以后log出来看看吧！</p>
+<p>顺便，最近Xcode5.1升级导致诸多在架构编译层面的问题。其中一个就是Xcode5.1默认是64位编译器编译。</p>
+
+<p>手动关闭的方法是：选中<code>Targets</code>—><code>Build Settings</code>—><code>Architectures</code>。双击<code>Architectures</code>，选择<code>other</code>，删除<code>$(ARCHS_STANDARD)</code>，然后增加<code>armv7</code>和<code>armv7s</code>，clean一下再编译。
+官方不推荐将<code>Valid Architectures</code>的内容修改，所以最好使用上面的方法关闭64位编译。</p>
 </div>
 
 
@@ -127,7 +127,7 @@ NSString *currentLanguage = [languages objectAtIndex:0];
   
 
 
-<time datetime="2013-05-18T15:40:14+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
+<time datetime="2014-03-12T12:23:11+08:00" pubdate data-updated="true">Mar 12<span>th</span>, 2014</time>
       
 
 <span class="categories">
@@ -141,7 +141,7 @@ NSString *currentLanguage = [languages objectAtIndex:0];
     
       <div class="sharing">
   
-  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/" data-via="" data-counturl="i-chou.com/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/" >Tweet</a>
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/" data-via="" data-counturl="i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/" >Tweet</a>
   
   
   
@@ -150,10 +150,8 @@ NSString *currentLanguage = [languages objectAtIndex:0];
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2013/04/09/dataformatli-she-zhi-ge-shi-zi-mu-han-yi/" title="Previous Post: dataFormat里设置格式字母含义">&laquo; dataFormat里设置格式字母含义</a>
+        <a class="basic-alignment left" href="/blog/2014/03/11/those-pop-plug-ins-for-xcode/" title="Previous Post: Those Pop plug-ins for Xcode">&laquo; Those Pop plug-ins for Xcode</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/08/13/hide-statusbar-also-work-on-ios7/" title="Next Post: hide statusBar (also work on ios7)">hide statusBar (also work on ios7) &raquo;</a>
       
     </p>
   </footer>

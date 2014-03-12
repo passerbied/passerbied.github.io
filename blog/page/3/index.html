@@ -9,7 +9,8 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="Sony Xperia TM GX S0-04D 720*1280 和 S0-05D 均为软控制栏，最近在为这两款机器做适配时候遇到一些小问题，分享在这里。 问题1: 现象：Sony上，从第二行LineaLayout开始往下窜一定距离。从其他机器和模拟器上均显示正常。 原因： &hellip;">
+  <meta name="description" content="最简单的一种方式，Android上面使用WebView控件加载即可，以下是GoogleAPI相关内容。 PS：需要添加网络访问权限。 URL:
+http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -68,6 +69,56 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu/">Google API 方式制作饼状图</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-12-11T11:00:48+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
+        
+        
+          | <a href="/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>最简单的一种方式，Android上面使用<code>WebView</code>控件加载即可，以下是<code>GoogleAPI</code>相关内容。</p>
+
+<p>PS：需要添加网络访问权限。</p>
+
+<p>URL:
+<a href="http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp;chl=Hello%7CWorld">http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp;chl=Hello%7CWorld</a></p>
+
+<h4>Components</h4>
+
+<p><a href="https://chart.apis.google.com/chart?">https://chart.apis.google.com/chart?</a></p>
+
+<p>This is the base URL for all chart requests. (However, seeImproving Performance on Pages with Many Charts below for an optional variation for pages with multiple charts.)cht=p3The chart type: here, a 3D pie chart.chs=250x100The chart size (width xheight), in pixels. See the maximum valueshere.chd=t:60,40The chart data. This data is in simple text format, but there areother formats.chl=Hello|WorldTheslice labels.&amp;Parameters are separated by an ampersand.Note: When embedding an URL in HTML, for example as thesrc attribute of an <img> tag, you should replace the&amp; between parameters with the characters&amp; This includes when you generate page HTML with PHP or some other language. However, when typing a URL in the browser, or whencalling a URL in code, for example when fetching a URL in PHP or Perl, you should use the&amp; mark.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -713,12 +764,16 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (19)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (20)</a></li>
 
   </ul>
 </section><section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/">项目协作中Xcode Search Paths问题</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2014/03/11/those-pop-plug-ins-for-xcode/">Those Pop Plug-ins for Xcode</a>
@@ -734,10 +789,6 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     
       <li class="post">
         <a href="/blog/2013/12/30/ios-define-for-coding-faster/">iOS Define for Coding Faster</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/">Unable to Process Application info.plist Validation at This Time Due to a General Error</a>
       </li>
     
   </ul>

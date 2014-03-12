@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2014-03-11T15:51:39+08:00</updated>
+  <updated>2014-03-12T16:29:11+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,6 +12,22 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[项目协作中Xcode Search Paths问题]]></title>
+    <link href="i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/"/>
+    <updated>2014-03-12T12:23:11+08:00</updated>
+    <id>i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti</id>
+    <content type="html"><![CDATA[<p>Xcode引用库的时候，编译器会自动添加一个库文件的绝对路径进去，这种情况下，如果其他人从repo上pull下来编译项目就容易出问题，因为找不到之前那个人引用路径下存放的文件了嘛。</p>
+
+<p>那么，引用库或使用CocoaPods的时候，要注意手动把Build Settings里面的<code>Framework Search Paths</code>,<code>Header Search Paths</code>,<code>Library Search Paths</code>中的绝对路径都删掉，改成相对路径，最简单的办法时，全部删掉，然后加入一个<code>../**</code>即可。</p>
+
+<p>顺便，最近Xcode5.1升级导致诸多在架构编译层面的问题。其中一个就是Xcode5.1默认是64位编译器编译。</p>
+
+<p>手动关闭的方法是：选中<code>Targets</code>—><code>Build Settings</code>—><code>Architectures</code>。双击<code>Architectures</code>，选择<code>other</code>，删除<code>$(ARCHS_STANDARD)</code>，然后增加<code>armv7</code>和<code>armv7s</code>，clean一下再编译。
+官方不推荐将<code>Valid Architectures</code>的内容修改，所以最好使用上面的方法关闭64位编译。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Those Pop Plug-ins for Xcode]]></title>
@@ -1135,26 +1151,6 @@ UITableViewCellSeparatorStyleSingleLine</p>
 
 <p>模拟器调试情况下，DB文件的存放路径如下：
 <code>当前用户/Library/Application Support/iPhone Simulator/版本号(6.0)/Applications/你的app名所在文件夹/Documents</code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Google API 方式制作饼状图]]></title>
-    <link href="i-chou.com/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu/"/>
-    <updated>2012-12-11T11:00:48+08:00</updated>
-    <id>i-chou.com/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu</id>
-    <content type="html"><![CDATA[<p>最简单的一种方式，Android上面使用<code>WebView</code>控件加载即可，以下是<code>GoogleAPI</code>相关内容。</p>
-
-<p>PS：需要添加网络访问权限。</p>
-
-<p>URL:
-<a href="http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp;chl=Hello%7CWorld">http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp;chl=Hello%7CWorld</a></p>
-
-<h4>Components</h4>
-
-<p><a href="https://chart.apis.google.com/chart?">https://chart.apis.google.com/chart?</a></p>
-
-<p>This is the base URL for all chart requests. (However, seeImproving Performance on Pages with Many Charts below for an optional variation for pages with multiple charts.)cht=p3The chart type: here, a 3D pie chart.chs=250x100The chart size (width xheight), in pixels. See the maximum valueshere.chd=t:60,40The chart data. This data is in simple text format, but there areother formats.chl=Hello|WorldTheslice labels.&amp;Parameters are separated by an ampersand.Note: When embedding an URL in HTML, for example as thesrc attribute of an <img> tag, you should replace the&amp; between parameters with the characters&amp; This includes when you generate page HTML with PHP or some other language. However, when typing a URL in the browser, or whencalling a URL in code, for example when fetching a URL in PHP or Perl, you should use the&amp; mark.</p>
 ]]></content>
   </entry>
   
