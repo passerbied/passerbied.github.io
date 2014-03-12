@@ -71,6 +71,13 @@ categories: iOS
 	
 	项目地址： [https://github.com/omz/ColorSense-for-Xcode](https://github.com/omz/ColorSense-for-Xcode)
 	
+- ##Unused
+	
+	A Mac app for checking Xcode projects for unused resources.
+	
+	这个虽然不是Xcode插件，但是确实是很有用的东西，他可以把项目中不用的资源文件在可视化窗口中检索出来，以辅助开发人员减少项目中浪费掉的空间。
+	
+	项目地址：[https://github.com/jeffhodnett/Unused](https://github.com/jeffhodnett/Unused)
 
 	
 	
