@@ -57,7 +57,14 @@ footer: true
 	    
 	      大学期间经营小酒吧
 		  
-		  算是第一次职业经历，而且是人生的第一次创业经历		  
+		  算是第一次职业经历，而且是人生的第一次创业经历
+		  
+	* 2005年 ~ 2010年 *大连*
+	    
+	      组建原创乐队——蓝点颏乐队
+		  
+		  担当唱作人兼节奏吉他手，从此开始了那放荡不羁的大学校园生活。
+		  
 		  
 - #####个人标签
 
@@ -65,7 +72,7 @@ footer: true
 	
 		  移动互联网，创业，产品，摇滚乐，日本语，台球，喜静，多感
 
-- #####作品展示
+- #####开发作品展示
 	
 	 <img width="50" height="50" src='logo512.png'> 约伴（iPhone）：[AppStore](https://itunes.apple.com/cn/app/yue-ban-zhen-zheng-neng-zhao/id639508528?mt=8)
 	
@@ -90,4 +97,8 @@ footer: true
 	 <img width="50" height="50" src='外派.png'> 外派研修生管理系统（Web）：山东威海国际持有（内部系统非公开）
 	 
 	 <img width="50" height="50" src='报奖金.jpg'> 営業報奨金管理システム（Web）：日本東建集团持有（内部系统非公开）
+	 
+- #####音乐作品展示
+	
+	点击移至 [豆瓣音乐人小站](http://site.douban.com/bluethroat/) 试听
 	 
