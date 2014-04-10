@@ -76,7 +76,7 @@ footer: true
 	
 	 <img width="50" height="50" src='logo512.png'> 约伴（iPhone）：[AppStore](https://itunes.apple.com/cn/app/yue-ban-zhen-zheng-neng-zhao/id639508528?mt=8)
 	
-	 <img width="50" height="50" src='1386873184.jpg'> 歌谱阅读器（iPad & iPhone & Android）：开发者账户原因，暂时从[AppStore](http://)下架 & [googlePlay](http://)
+	 <img width="50" height="50" src='1386873184.jpg'> 歌谱阅读器（iPad & iPhone & Android）：已下架
 	
 	 <img width="50" height="50" src='ic_launcher.png'> 電池ウィジェット（Android）：[日本Au/Docomo/Softbank会员制](http://love-suzyszoo.jp/PDL000/?product_id=3)
 	
@@ -88,11 +88,7 @@ footer: true
 	
 	 <img width="50" height="50" src='ic_launcher_marionette.png'> Marionette（Android）：日本大洋持有（内部系统非公开商品）
 	
-	 <img width="50" height="50" src='なごみ日記帳.jpg'> なごみ日記帳（Android）：[GooglePlay](https://play.google.com/store/apps/details?id=co.jp.taiyo.diary)
-	
 	 <img width="50" height="50" src='連絡帳.jpg'> 連絡帳（Android）：[GooglePlay](https://play.google.com/store/apps/details?id=com.taiyo.contactmanager.activity)
-	 
-	 <img width="50" height="50" src='soundinput.jpg'> 音声入力エディタ（Android）：[GooglePlay](https://play.google.com/store/apps/details?id=co.jp.taiyo.speakpaste)
 	 
 	 <img width="50" height="50" src='外派.png'> 外派研修生管理系统（Web）：山东威海国际持有（内部系统非公开）
 	 
