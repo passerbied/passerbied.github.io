@@ -4,7 +4,7 @@
   <title><![CDATA[i-chou's tech blog]]></title>
   <link href="i-chou.com/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2014-04-18T16:23:52+08:00</updated>
+  <updated>2014-07-15T10:39:06+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -12,6 +12,23 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ios Sdk 8 Symbol _NSURLAuthenticationMethodServerTrust Not Found]]></title>
+    <link href="i-chou.com/blog/2014/07/15/ios-sdk-8-symbol-nsurlauthenticationmethodservertrust-not-found/"/>
+    <updated>2014-07-15T10:27:58+08:00</updated>
+    <id>i-chou.com/blog/2014/07/15/ios-sdk-8-symbol-nsurlauthenticationmethodservertrust-not-found</id>
+    <content type="html"><![CDATA[<p>今天把做到收尾部分的新项目放到Xcode6上用iOS8SDK运行，出现<code>ios sdk 8 Symbol _NSURLAuthenticationMethodServerTrust not found</code>错误。</p>
+
+<p>解决方法分享一下：</p>
+
+<p>由于用到的AFNetworking是用官方推进安装方式CocoaPods方式安装的。那么遇到这个问题就可以在pods项目下的<code>Targets Support Files</code>→<code>Pods</code>下面找到Pods.xcconfig文件，在里面找到<code>OTHER_CFLAGS</code>关键字里面的<code>-framework Foundation</code>，把<code>-framework Foundation</code>剪切到<code>-framework CFNetwork</code>的前面，保存，Clean and re-build/run</p>
+
+<p>OK， 希望对你有用。</p>
+
+<p>这个办法来自<a href="https://github.com/AFNetworking/AFNetworking/issues/2109">https://github.com/AFNetworking/AFNetworking/issues/2109</a></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[项目协作中Xcode Search Paths问题]]></title>
@@ -1137,20 +1154,6 @@ UITableViewCellSeparatorStyleSingleLine</p>
 
 <p>顺便，如果想仿造TableView的分割线默认样式，做个单条的分割线的话，
 可以自己创建一个高度为1.25,颜色值为0xe7e7e7的UIImageview来伪装一下。</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[[iOS开发]关于导入带有数据的SQLite文件]]></title>
-    <link href="i-chou.com/blog/2012/12/18/ioskai-fa-guan-yu-dao-ru-dai-you-shu-ju-de-sqlitewen-jian/"/>
-    <updated>2012-12-18T18:23:37+08:00</updated>
-    <id>i-chou.com/blog/2012/12/18/ioskai-fa-guan-yu-dao-ru-dai-you-shu-ju-de-sqlitewen-jian</id>
-    <content type="html"><![CDATA[<p>DB文件需要引入到项目中的<code>Supporting Files</code>文件夹下。</p>
-
-<p>注意：直接拖拽的形式引入时，需要勾选<code>Add to tagets</code>选项，同时根据情况注意勾选上面的<code>Copy</code>选项。</p>
-
-<p>模拟器调试情况下，DB文件的存放路径如下：
-<code>当前用户/Library/Application Support/iPhone Simulator/版本号(6.0)/Applications/你的app名所在文件夹/Documents</code></p>
 ]]></content>
   </entry>
   
