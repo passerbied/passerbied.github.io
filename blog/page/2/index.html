@@ -9,8 +9,7 @@
   <meta name="author" content="i-chou">
 
   
-  <meta name="description" content="- (void)setExtraCellLineHidden: (UITableView *)tableView
-{ UIView *view = [UIView new]; view.backgroundColor = [UIColor clearColor]; [tableView &hellip;">
+  <meta name="description" content="当 iOS7 刚发布的时候，全世界的苹果开发人员都立马尝试着去编译他们的app，接着再花上数月的时间来修复任何出现的故障，甚至重建这个app。这样的结果，使得人们根本无暇去探究 iOS7 所带来的新思潮。一些明显而细微的更新，比如说[NSArray firstObject]，这个方法可追溯到 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -75,6 +74,980 @@
       
   <header>
     
+      <h1 class="entry-title"><a href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/">iOS 7：隐藏的特性和解决之道</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-11-01T14:14:51+08:00" pubdate data-updated="true">Nov 1<span>st</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>当 iOS7 刚发布的时候，全世界的苹果开发人员都立马尝试着去编译他们的app，接着再花上数月的时间来修复任何出现的故障，甚至重建这个app。这样的结果，使得人们根本无暇去探究 iOS7 所带来的新思潮。一些明显而细微的更新，比如说<code>[NSArray firstObject]</code>，这个方法可追溯到 iOS4 时代，现在被提为公有API，除此之外，还有很多隐藏的特性等着我们去挖掘。</p>
+
+
+<h3>平滑淡入淡出动画</h3>
+
+
+<p>我这里要讨论的并非新的弹性动画APIs 或者 UIDynamics，而是一些更细微的东西。CALayer增加了两个新方法：<code>allowsGroupOpacity</code>和<code>allowsEdgeAntialiasing</code>。现在，组不透明度(group opacity)不再是什么新鲜的东西了。iOS会多次使用存在于 Info.plist 中的键UIViewGroupOpacity并可在应用程序范围内启用或禁用它。对于大多数apps而言，这（译注：启用）并非所期望的，因为它会降低整体性能。在 iOS7 中，用 SDK7 所链接的程序，这项属性默认是启用的。当它被启用时，一些动画将会变得不流畅，它也可以在layer层上被控制。</p>
+
+
+<p>一个有趣的细节，如果<code>allowsGroupOpacity</code>启用的话，_UIBackdropView（在UIToolbar或者UIPopoverView中的背景视图）不能对其模糊进行动画处理，所以当你做一个alpha转换时，你可能会临时禁用这项属性。因为这会降低动画体验，你可以回退到旧的方式然后在动画期间临时启用<code>shouldRasterize</code>。别忘了设置适当的<code>rasterizationScale</code>，否则在retina的设备上这些视图会成锯齿状。</p>
+
+
+<p>如果你想要复制的 Safari 显示所有选项卡时的动画，那么边缘抗锯齿属性将变得非常有用。</p>
+
+
+<h3>阻塞动画</h3>
+
+
+<p>一个小但非常有用的新方法<code>[UIView performWithoutAnimation:]</code>。它是一个简单的封装，先检查动画当前是否启用，然后禁止动画，执行块语句，最后重新启用动画。一个需要说明的地方是，它并不会阻塞基于 CoreAnimation 的动画。因此，不用急于将你的方法调用从：</p>
+
+
+<pre class="brush: c; gutter: true">[CATransaction begin];
+[CATransaction setDisableActions:YES];
+view.frame = CGRectMake(...);
+[CATransaction commit];
+</pre>
+
+
+<p>替换为：</p>
+
+
+<pre class="brush: c; gutter: true">[UIView performWithoutAnimation:^{
+    view.frame = CGRectMake(...);
+}];
+</pre>
+
+
+<p>但是，绝大多数情况下这样也能工作的很好，只要你不直接处理CALayers。</p>
+
+
+<p>iOS7 中，我有很多代码路径（主要是 UITableViewCells）需要额外的保护，防止意外的动画，例如，如果一个弹窗的大小调整了，那么同时显示中的表视图将因为高度的变化而加载新的cell。我通常的做法是将整个 layoutSubviews 的代码包扎到一个动画块中：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">- (void)layoutSubviews 
+{
+    // Otherwise the popover animation could leak into our cells on iOS 7 legacy mode.
+    [UIView performWithoutAnimation:^{
+        [super layoutSubviews];
+        _renderView.frame = self.bounds;
+    }];
+}
+</pre>
+
+
+<h3>处理长表视图</h3>
+
+
+<p>UITableView 非常快速高效，除非你开始使用<code>tableView:heightForRowAtIndexPath:</code>，它会开始为你表中任意元素调用此方法，即便没有可视对象，就比如其内在的UIScrollView只是去获取正确的<code>contentSize</code>。此前有一些变通方法，但都不好用。iOS7 中，苹果公司终于承认这一问题，并添加<code>tableView:estimatedHeightForRowAtIndexPath:</code>，这个方法延迟了实际滚动时间成本的大部分。如果你不知道一个cell的大小，返回<code>UITableViewAutomaticDimension</code>即可。</p>
+
+
+<p>对于节头/尾（section headers/footers），现在也有类似的API了。</p>
+
+
+<h3>UISearchDisplayController</h3>
+
+
+<p>苹果的 search controller 使用了新的技巧来简化移动 search bar 到 navigation bar 的过程。启用&nbsp;<code>displaysSearchBarInNavigationBar&nbsp;</code>就可以了（除非你还要用到 scope bar，我只能说你真不幸）。我倒是很喜欢这么做，但比较遗憾的是，iOS7 上的 UISearchDisplayController 貌似被摧残的比较严重，尤其是iPad。苹果公司看上去像是没时间处理这个问题的样子（原文：Apple seems to have run out of time），对于显示的搜索结果并不会隐藏实际的表视图。在 iOS7 之前，这并没有问题，但是现在 searchResultsTableView 有一个透明的背景色，使它看上去相当糟糕。作为一种变通方法，你可以设置不透明色或者取道于<a href="http://petersteinberger.com/blog/2013/fixing-uisearchdisplaycontroller-on-ios-7/">富于技巧的手段</a>来获得你所期望的。关于这个控件会出现各种各样的结果，当使用<code>displaysSearchBarInNavigationBar</code>时甚至不会展示搜索表视图。</p>
+
+
+<p>你的结果可能有所不同，但我是使用了一些手段来让<code>displaysSearchBarInNavigationBar</code>工作的：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">- (void)restoreOriginalTableView 
+{
+    if (PSPDFIsUIKitFlatMode() &amp;&amp; self.originalTableView) {
+        self.view = self.originalTableView;
+    }
+}
+
+- (UITableView *)tableView 
+{
+    return self.originalTableView ?: [super tableView];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller 
+  didShowSearchResultsTableView:(UITableView *)tableView 
+{
+    // HACK: iOS 7 requires a cruel workaround to show the search table view.
+    if (PSPDFIsUIKitFlatMode()) {
+        if (!self.originalTableView) self.originalTableView = self.tableView;
+        self.view = controller.searchResultsTableView;
+        controller.searchResultsTableView.contentInset = UIEdgeInsetsZero; // Remove 64 pixel gap
+    }
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller 
+  didHideSearchResultsTableView:(UITableView *)tableView 
+{
+    [self restoreOriginalTableView];
+}
+</pre>
+
+
+<p>这里，别忘了在<code>viewWillDisappear</code>中调用<code>restoreOriginalTableView</code>，否则会发送crash。</p>
+
+
+<p>记住这是唯一的解决办法；可能有不少激进的方法不替换视图本身，但这个问题确实应该由苹果公司来修复。（TODO: RADAR!）</p>
+
+
+<h3>分页</h3>
+
+
+<p>UIWebView 使用了新的技巧来自动分页带<code>paginationMode</code>的网站。有一大堆与此功能相关的新属性：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">@property (nonatomic) UIWebPaginationMode paginationMode NS_AVAILABLE_IOS(7_0);
+@property (nonatomic) UIWebPaginationBreakingMode paginationBreakingMode NS_AVAILABLE_IOS(7_0);
+@property (nonatomic) CGFloat pageLength NS_AVAILABLE_IOS(7_0);
+@property (nonatomic) CGFloat gapBetweenPages NS_AVAILABLE_IOS(7_0);
+@property (nonatomic, readonly) NSUInteger pageCount NS_AVAILABLE_IOS(7_0);
+</pre>
+
+
+<p>现在而言，虽然这可能并非对于大多数网站都有用，但它肯定是生成简单的电子书阅读器或显示文本的一种更好的方式。加点乐子的话，请尝试将它设置为<code>UIWebPaginationModeBottomToTop</code>。</p>
+
+
+<h3>会飞的 Popovers</h3>
+
+
+<p>想知道为什么你的popovers疯了一样到处乱飞？在<code>UIPopoverControllerDelegate</code>协议中有一个新的代理方法使你能控制它：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">-     (void)popoverController:(UIPopoverController *)popoverController
+  willRepositionPopoverToRect:(inout CGRect *)rect 
+                       inView:(inout UIView **)view
+</pre>
+
+
+<p>当popover锚点是指向一个UIBarButtonItem时，UIPopoverController会有一些动作，但如果你让它在一个view或者rect中显示，你可能就需要实现此方法并正常返回。一个花费了我相当长的时间来验证的问题&mdash;&mdash;如果你通过改变<code>preferredContentSize</code>来动态调整你的popovers，那么这个方法就特别要求得以实现。苹果公司现在对改变popovers大小的请求更严格，如果没有预留足够的空间，popover将会到处移动。</p>
+
+
+<h3>键盘支持</h3>
+
+
+<p>苹果公司不只为我们提供了<a href="https://developer.apple.com/library/ios/documentation/ServicesDiscovery/Conceptual/GameControll">全新的framework用于游戏控制器</a>，它也给了我们这些键盘爱好者一些提示！你会发现新定义的公用键像&nbsp;<code>UIKeyInputEscape</code>&nbsp;或&nbsp;<code>UIKeyInputUpArrow</code>，可以使用所有新的&nbsp;<a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIKeyCommand_class/Reference/Reference.html#//apple_ref/occ/instp/UIKeyCommand/input"><code>UIKeyCommand</code></a>&nbsp;类截查。在 iOS7 之前，只能通过一些<a href="http://petersteinberger.com/blog/2013/adding-keyboard-shortcuts-to-uialertview/">难以言表的手段来处理键盘命令</a>，现在，就让我们操起蓝牙键盘试试看我们能用这个做什么！</p>
+
+
+<p>开始之前，你需要对责任者链有个了解。你的 UIApplication 继承自 UIResponder，UIView 和 UIViewController 也是如此。如果你处理过 UIMenuItem 并且没有使用<a href="https://github.com/steipete/PSMenuItem">我的基于块的包装</a>的话，那么你已经了解了这些。事件先被发送到最上层的响应者，然后一级级往下传递直到 UIApplication 。为了捕获按键命令，你需要告诉系统你关心哪些键命令（而不是全捕获）。为了完成这个，你需要重写<code>keyCommands</code>这个新属性：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">- (NSArray *)keyCommands 
+{
+    return @[[UIKeyCommand keyCommandWithInput:@"f"
+                                 modifierFlags:UIKeyModifierCommand  
+                                        action:@selector(searchKeyPressed:)]];
+}
+
+- (void)searchKeyPressed:(UIKeyCommand *)keyCommand 
+{
+    // Respond to the event
+}
+</pre>
+
+
+<div class="RIL_IMG loaded" id="RIL_IMG_1"><img src="http://img.readitlater.com/i/ww4.sinaimg.cn/large/7cc829d3gw1eascrhdud2j20q80ugdl2/RS/w1280.jpg" /></div>
+
+
+<p>现在可别太激动，需要注意的是，这个方法只在键盘可见时有效（比如有类似 UITextView 这样的对象作为第一响应者时）。对于全局热键，你仍然需要用上面的方法。除却那些，这个路径还是很优雅的。不要覆盖类似 cmd-V 系统的快捷键，它会被自动映射为粘贴功能。</p>
+
+
+<p>还有一些新的预定义的响应行为如：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">- (void)increaseSize:(id)sender NS_AVAILABLE_IOS(7_0);
+- (void)decreaseSize:(id)sender NS_AVAILABLE_IOS(7_0);
+</pre>
+
+
+<p>它们分别对应着 cmd+ 和 cmd- 命令，用来放大/缩小内容。</p>
+
+
+<h3>匹配键盘背景</h3>
+
+
+<p>苹果公司终于公开了&nbsp;<a href="https://developer.apple.com/library/ios/documentation/UIKit/Reference/UIInputView_class/Reference/Reference.html">UIInputView</a>，其中提供了一种方式&mdash;&mdash;使用<code>UIInputViewStyleKeyboard</code>来匹配键盘样式。这使得你可以编写自定义的键盘或者带默认样式的默认键盘扩展（工具条）。这个类以前就<a href="https://github.com/nst/iOS-Runtime-Headers/commits/master/Frameworks/UIKit.framework/UIInputView.h">存在</a>了，不过现在我们终于可以绕过私有API的方式来使用它了。</p>
+
+
+<p>如果 UIInputView 是一个 inputView 或者 inputAccessoryView 的根视图，它将只显示一个背景，否则它将是透明的。遗憾的是，这并不能让你实现一个未填充的分离态的键盘，但它仍然比用一个简单的 UIToolbar 要好。我还没看到苹果在何处使用这个新API，貌似它只作为一个 UIToolbar 使用在 Safari 上。</p>
+
+
+<h3>了解你的网络</h3>
+
+
+<p>虽然早在 iOS4 的时候，关于网络信息的大部分已经在 CTTelephony 暴露了，但它通常只用于特定场景并非十分有用。iOS7 中，苹果公司为其添加了一个方法，其中最有用的：<code>currentRadioAccessTechnology</code>。这个使你能知晓手机是处于较慢的GPRS还是高速的LTE或者介于其中。目前还没有方法得到连接速度（当然手机本身也无法获取这个），但是这足以用来优化一个下载管理器，让其在EDGE下不用尝试同时去下载6张图片了。</p>
+
+
+<p>现在还没有<code>currentRadioAccessTechnology</code>的相关文档，因此存在一些不正规或者错误的用法。当你想要获取当前网络信号值，你应当注册一个<code>CTRadioAccessTechnologyDidChangeNotification</code>通知而不应该去轮询这个属性。为了获取这些通知，你需要使用<code>CTTelephonyNetworkInfo</code>的一个实例，注意不要在通知中创建 CTTelephonyNetworkInfo 的实例，否则会 crash。</p>
+
+
+<p>在这个简单的例子中，我在block中捕获并持有了 telephonyInfo，大家可以忽略这个：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">CTTelephonyNetworkInfo *telephonyInfo = [CTTelephonyNetworkInfo new];
+NSLog(@"Current Radio Access Technology: %@", telephonyInfo.currentRadioAccessTechnology);
+[NSNotificationCenter.defaultCenter addObserverForName:CTRadioAccessTechnologyDidChangeNotification 
+                                                object:nil 
+                                                 queue:nil 
+                                            usingBlock:^(NSNotification *note) 
+{
+    NSLog(@"New Radio Access Technology: %@", telephonyInfo.currentRadioAccessTechnology);
+}];
+</pre>
+
+
+<p>当手机从edge环境到3G，log输出应该像这样：</p>
+
+
+<p>iOS7Tests[612:60b] Current Radio Access Technology: CTRadioAccessTechnologyEdge<br />iOS7Tests[612:1803] New Radio Access Technology: (null)<br />iOS7Tests[612:1803] New Radio Access Technology: CTRadioAccessTechnologyHSDPA</p>
+
+
+<p>苹果导出了所有字符串符号，因此可以很简单的比较和检测当前的网络信息。</p>
+
+
+<h3>Core Foundation 和 Autorelease</h3>
+
+
+<p>Core Foundation中出现了一个新的方法，它被用于私有调用已有数年时间：</p>
+
+
+<div>
+<pre>CFTypeRef CFAutorelease(CFTypeRef CF_RELEASES_ARGUMENT arg)</pre>
+</div>
+
+
+<p>它确实做了你所期望的事，让人费解的是苹果花了这么长时间才把它公开。ARC 下，大多数人在处理返回 Core Foundation 对象时是通过转换成对等的 NS 对象来完成的，如 NSDictionary,即便它只是一个 CFDictionaryRef 然后简单地&nbsp;<code>CFBridgingRelease()&nbsp;</code>。这样通常没问题，除非你返回的对等 NS 对象不可用时，如 CFBagRef。你要么使用 id，这样会失去类型安全性，要么你将你的方法重命名为 createMethod 并考虑所有的内存语义，最后使用 CFRelease。还有一些手段，比如<a href="http://favstar.fm/users/AndrePang/status/18099774996">这个</a>，用 non-ARC-file 标签然后编译，但终归得使用<code>CFAutorelease()</code>。另外：不要编写使用苹果公司命名空间的代码，所有这些自定义的 CF-宏将来都会被打破的。</p>
+
+
+<h3>图片解压缩</h3>
+
+
+<p>当通过 UIImage 展示一张图时，在显示之前需要解压缩（除非源已经像素缓存了）。对于 JPG/PNG 文件这会占用相当可观的时间并会造成卡顿。iOS6 以前，通常是创建一个位图上下文，然后在其中画图来解决。（<a href="https://github.com/AFNetworking/AFNetworking/blob/09658b352a496875c91cc33dd52c3f47b9369945/AFNetworking/AFURLResponseSerialization.m#L442-518">参见 AFNetworking 如何处理</a>）。</p>
+
+
+<p>iOS7 开始，你可以使用<code>kCGImageSourceShouldCacheImmediately:</code>来强制图片在创建时立即解压缩：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">+ (UIImage *)decompressedImageWithData:(NSData *)data 
+{
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+    CGImageRef cgImage = CGImageSourceCreateImageAtIndex(source, 0, (__bridge CFDictionaryRef)@{(id)kCGImageSourceShouldCacheImmediately: @YES});
+
+    UIImage *image = [UIImage imageWithCGImage:cgImage];
+    CGImageRelease(cgImage);
+    CFRelease(source);
+    return image;
+}
+</pre>
+
+
+<p>当我刚发现这一点时确实很兴奋，但事实并非如此。在我的测试中，发现当开启了即时缓存后性能有明显的降低。要么这个方法是在主线程中调用的（不太可能），感觉上性能更糟，因为它在方法<code>copyImageBlockSetJPEG</code>中锁住了，而同时在主线程中在显示非加密的图片所致。在我的程序中，我在主线程中加载小的预览图，在后台线程中加载大型图，使用了<code>kCGImageSourceShouldCacheImmediately</code>后小小的解压缩阻塞了主线程，同时在后台处理大量开销昂贵的操作。</p>
+
+
+<div class="RIL_IMG loaded" id="RIL_IMG_2"><img src="http://img.readitlater.com/i/ww2.sinaimg.cn/large/7cc829d3gw1eascrg8oyhj210s1k2n9j/RS/w1280.jpg" /></div>
+
+
+<p>还有更多关于图片解压缩相关的却不是 iOS7 中的新东西，像<code>kCGImageSourceShouldCache</code>，它用来控制系统自动卸载解压缩的图片数据的能力。确保你将它设置为YES，否则所有的工作都将没有意义。有趣的是，苹果在64bit运行时的系统中将<code>kCGImageSourceShouldCache</code>的默认值从 NO 改为了 YES。</p>
+
+
+<h3>盗版检查</h3>
+
+
+<p>苹果添加了一个方式，通过 NSBunble 上的新方法<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSBundle_Class/Reference/Reference.html#//apple_ref/occ/instm/NSBundle/appStoreReceiptURL"><code>appStoreReceiptURL</code></a>来评估Lion系统上 App Store 的收据，同时也将其移植到了 iOS 上。这使得你可以检查你的应用是在被合法购买或者已经被破解了。检查收据还有一个重要的原因，它包含了初始购买日期，这点对于把你的应用从付费模型迁移到免费+应用内付费方式很有帮助意义。你可以根据这个初始购买日期来决定额外内容对于你的用户是免费的还是收费的。</p>
+
+
+<p>收据还允许你检查应用程序是否通过批量购买计划购买以及该许可证是否仍有效，有一个名为<code>SKReceiptPropertyIsVolumePurchase</code>的属性显示了该值。</p>
+
+
+<p>当你调用<code>appStoreReceiptURL</code>时，你需要特别注意，因为在 iOS6 上，它还是一个私有API，你应该在用户代码中先调用<code>doesNotRecognizeSelector:</code>，在调用前检查运行（基础）版本。在开发期间，这个方法返回的 URL 不会是指向一个文件。你可能需要使用 StoreKit 的<a href="https://developer.apple.com/library/ios/documentation/StoreKit/Reference/SKReceiptRefreshRequest_ClassRef/SKReceiptRefreshRequest.html"><code>SKReceiptRefreshRequest</code></a>，这也是 iOS7 中的新东西，用它来下载证书。使用一个至少购买过一次的测试用户，否则它将没法工作：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">// Refresh the Receipt
+SKReceiptRefreshRequest *request = [[SKReceiptRefreshRequest alloc] init];
+[request setDelegate:self];
+[request start];
+</pre>
+
+
+<p>验证收据需要大量的代码。你需要使用OpenSSL和内嵌的<a href="http://www.apple.com/certificateauthority/">苹果根证书</a>，并且你还要了解一些基本的东西像是证书、<a href="http://en.wikipedia.org/wiki/PKCS">PCKS容器</a>以及<a href="http://de.wikipedia.org/wiki/Abstract_Syntax_Notation_One">ASN.1</a>。这里有一些<a href="https://github.com/rmaddy/VerifyStoreReceiptiOS">样例</a>代码，但是你不应该让它这么简单&mdash;&mdash;别只是拷贝现有的验证方法，至少做点修改或者编写你自己的，你应该不希望一个普通的补丁程序就能在数秒内瓦解你的努力吧。</p>
+
+
+<p>你绝对应该读读苹果的指南&mdash;&mdash;<a href="https://developer.apple.com/library/mac/releasenotes/General/ValidateAppStoreReceipt/index.html">验证 Mac App 商店收据</a>，这里面的大多数都适用于 iOS。苹果在&nbsp;<a href="https://developer.apple.com/wwdc/videos/">WWDC2013 的 Session308 &ldquo;Using Receipts to Protect Your Digital Sales&rdquo;</a>&nbsp;中详述了&ldquo;Grand Unified Receipt&rdquo;的变动。</p>
+
+
+<h3>Comic Sans MS</h3>
+
+
+<p>iOS7 中，终于迎回了 Comic Sans MS。现在，它以可下载的字体被添加到 iOS6 中，但当时的字体列表很少也不见得多么有趣。在 iOS7 中苹果添加了不少字体，包括&ldquo;famous&rdquo;，它和&nbsp;<a href="http://www.fontsquirrel.com/fonts/PT-Sans">PT Sans</a>&nbsp;或&nbsp;<a href="http://sixrevisions.com/graphics-design/comic-sans-the-font-everyone-loves-to-hate/">Comic Sans MS</a>&nbsp;有些类似。<code>kCTFontDownloadableAttribute</code>并没有在 iOS6 中声明，所以 iOS7 以前它并不真正可用，但苹果确是在 iOS6 的时候就已经做了私有声明了。</p>
+
+
+<div class="RIL_IMG loaded" id="RIL_IMG_3"><img src="http://img.readitlater.com/i/ww3.sinaimg.cn/large/7cc829d3gw1eascrig015j20n00v2784/RS/w1280.jpg" /></div>
+
+
+<p>字体列表是<a href="http://mesu.apple.com/assets/com_apple_MobileAsset_Font/com_apple_MobileAsset_Font.xml">动态变化</a>的，以后可能就会发生变动。苹果在&nbsp;<a href="http://support.apple.com/kb/HT5484">Tech Note HT5484</a>&nbsp;中罗列了一些可用的字体，但这个文档已经过时了，同时也不能反映 iOS7 的变化。</p>
+
+
+<p>这里显示了你该如何获取一个用<code>CTFontDescriptorRef</code>标示可下载的字体数组：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">CFDictionary *descriptorOptions = @{(id)kCTFontDownloadableAttribute : @YES};
+CTFontDescriptorRef descriptor = CTFontDescriptorCreateWithAttributes((CFDictionaryRef)descriptorOptions);
+CFArrayRef fontDescriptors = CTFontDescriptorCreateMatchingFontDescriptors(descriptor, NULL);
+</pre>
+
+
+<p>系统不会检查字体是否已存在于磁盘上而将直接返回同样的列表。另外，这个方法可能会启用网络并造成阻塞，你不应该在主线程中使用它。</p>
+
+
+<p>使用如下基于块的 API 来下载字体：</p>
+
+
+<pre class="brush: actionscript3; gutter: true">bool CTFontDescriptorMatchFontDescriptorsWithProgressHandler(
+         CFArrayRef                          descriptors,
+         CFSetRef                            mandatoryAttributes,
+         CTFontDescriptorProgressHandler     progressBlock)
+</pre>
+
+
+<p>这个方法能操作网络并传递下载进度信息来调用你的<code>progressBlock</code>方法直到下载成功或者失败。参考苹果的&nbsp;<a href="http://test-0x01.logdown.com/de/DownloadFont/Listings/DownloadFont_ViewController_m.html">DownloadFont</a>&nbsp;样例看如何使用它。</p>
+
+
+<p>有一些值得注意的地方，这里的字体只在当前程序周期内有效，下次运行将被重新载入内存。因为字体存放在共享空间中，你不能依赖于它们是否可用。很有可能也不能保证的说，系统会清理这个目录，或者你的程序被拷贝到新的设备环境中，而这时又没有这个字体存在，同时当前处于没有网络的环境中。在 Mac 或是模拟器上，你能根据<code>kCTFontURLAttribute</code>获得字体的绝对路径，加载速度也会提升，但是在 iOS 上是不可能的，因为这个目录在你程序之外，你需要再次调用<code>CTFontDescriptorMatchFontDescriptorsWithProgressHandler</code>。</p>
+
+
+<p>你也可以注册新的<code>kCTFontManagerRegisteredFontsChangedNotification</code>通知来跟踪新字体在何时载入到了字体注册表中。你可以在&nbsp;<a href="https://developer.apple.com/wwdc/videos/">WWDC2013 的 Session223 &ldquo;Using Fonts with TextKit&rdquo;</a>中查找更多信息。</p>
+
+
+<h3>这还不够？</h3>
+
+
+<p>没关系，iOS7 的新东西远不止如此！<a href="http://nshipster.com/ios7/">了解一下 NSHipster</a>&nbsp;你将明白语音合成相关的东西，base64、NSURLComponents、NSProgress、bar codes、reading lists 以及 CIDetectorEyeBlink。还有很多我们没有涵盖到的，比如苹果&nbsp;<a href="https://developer.apple.com/library/ios/releasenotes/General/iOS70APIDiffs/index.html#//apple_ref/doc/uid/TP40013203">iOS7 的 API 变化</a>，<a href="https://developer.apple.com/library/ios/releasenotes/General/WhatsNewIniOS/Articles/iOS7.html">iOS 指南的新东西</a>以及&nbsp;<a href="https://developer.apple.com/library/prerelease/mac/releasenotes/Foundation/RN-Foundation/index.html#//apple_ref/doc/uid/TP30000742">Foundation Release Notes</a>（这些都是服务于 OS X的，但是代码都是共享的，也同样适用于 iOS）。很多方法都还没形成文档，等着你来探究和 blog。</p>
+
+
+<p></p>
+
+
+<p>原文链接：&nbsp;<a href="http://www.objc.io/issue-5/iOS7-hidden-gems-and-workarounds.html" target="_blank">Peter Steinberger</a>&nbsp;翻译：&nbsp;<a href="http://blog.jobbole.com/">伯乐在线</a>&nbsp;-&nbsp;<a href="http://blog.jobbole.com/author/jobbole/">伯乐在线读者</a><br />译文链接：&nbsp;<a href="http://blog.jobbole.com/51761/">http://blog.jobbole.com/51761/</a><br />[&nbsp;转载必须在正文中标注并保留原文链接、译文链接和译者等信息。]</p>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./">iOS 7: 如何为iPhone 5S编译64位应用</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-16T14:22:10+08:00" pubdate data-updated="true">Oct 16<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h5>随着iPhone 5S的推出，大家开始关心5S上所使用的64位CPU A7。</h5>
+
+<p>除了关心A7的性能以外，大家还会关心一个问题，那就是使用A7的64位系统对应用有没有什么要求。特别是应用开发者，大家都比较关心我们的应用如何迁移到64位的系统上来，以充分发挥A7的能力。其实这些问题都可以在苹果的官方文档<em>《64-Bit transition Guide for Cocoa Touch》</em>中找到答案。</p>
+
+<p>为了大家方便，我将<em>《64-Bit transition Guide for Cocoa Touch》</em>中的一些重点整理了一下，希望可以为大家节约一些详细阅读文档的时间，如果我理解有不对的地方请大家指正。</p>
+
+<p>首先，A7使用的是ARM V8架构，除了使用64位的地址总线和64位的寄存器以外，还增加了寄存器的数量，目前A7中的整数和浮点数寄存器是A6的两倍。</p>
+
+<p>这里需要强调的是，寄存器的增加大大提高了程序的运行速度。将CPU由32位提高到64位，最主要的改变增大了寻址能力，可以突破32位系统只能访问3G内存的限制（感谢 wanglang3081 指出这里的问题，32位系统在理论上可以访问4G内存，因为2的32次方约等于4 290 000 000，很多32位系统只能访问3G左右的内存是因为有一大部分地址被分配给I/O系统了，所以总体可用内存就不足4G了。），但是，32位到64位的改变并不一定意味着程序运行速度的提高，甚至有些情况下会因为64位系统中的数据占用内存变大而导致程序运行速度变慢。而寄存器数量的增加，则直接提高了程序运行速度，当然，前提是你的应用需要重新为64位系统编译一遍，让程序可以充分使用所有的寄存器。</p>
+
+<h5>使用Xcode 5可以很方便地将以前的应用编译成64位程序，基本过程如下：</h5>
+
+<ol>
+<li><p>使用Xcode 5 打开原有项目。</p></li>
+<li><p>将支持的设备改成“iOS 7”。</p></li>
+<li><p>在<em>“Build Setting”</em>中将<em>“Architectures”</em>改成<em>“Standard Architectures (including 64-bit)”</em>。</p></li>
+<li><p>运行测试程序，解决编译过程出现的问题。</p></li>
+</ol>
+
+
+<p>其中第4步是关键，具体会遇到什么问题和原来程序的设计有关，包括使用数据类型的方式是否标准等，后面会继续讨论细节，其实<em>《64-Bit transition Guide for Cocoa Touch》</em>一书主要就是讲这些细节。</p>
+
+<p>在讨论细节之前有一些较为宏观的内容大家可以了解一下。</p>
+
+<p>Xcode 5编译的iOS 7程序包含了32位和64位两套二进制代码，在32位的iOS系统上会调用32位的二进制代码，在64位系统上会调用64位的二进制代码，以此来解决向后兼容的问题。</p>
+
+<p>同时，考虑到很多32位的程序可能在没有重新编译的情况下部署到64位系统上，64位的iOS系统中带有两套FrameWork，一套是32位的，一套是64位的。</p>
+
+<p>当64位的iOS系统运行原来的32位程序时，系统会调用32位的FrameWork作为底层支撑，当系统运行64位程序时，系统会调用64位的FrameWork作为底层支撑。</p>
+
+<p>也就是说，当一个iPhone 5S上同时运行32位程序和64位程序时，系统同时将32位和64位两套FrameWork载入了内存中，所以消耗的内存也比较多。</p>
+
+<p>如果一台64位的iOS设备上运行的所有程序都是为64位系统编译过的，iOS系统将只载入64位的FrameWork，这将节省好多内存。所以，<strong>如果大家都可以快速将程序传换成64位的，iOS将跑得更快。真的是“大家好才是真的好”。</strong></p>
+
+<p>后面我们来看看一些为64位系统调整程序的技术细节。</p>
+
+<p>32位的iOS系统和64位的iOS系统主要的差别有两个，一个是数据类型的差别，一个是过程调用方法的差别。</p>
+
+<p>在数据类型上，主要的变化是指针类型(<em>Pointer</em>)和长整数类型(<em>long</em>)的长度变化和内存对齐方式的变化，同时也导致了更高级别数据类型的变化，如<em>NSInteger</em>的长度也有变化。</p>
+
+<p>在过程调用方法上，因为ARM V8 和ARM V7具有不同数量的寄存器，具有不同的过程调用约定，所以32位系统和64位系统在汇编层级是不同的。</p>
+
+<h6>根据以上两方面的变化，书中总结了以下要点，开发人员根据以下要点来检查原来的32位代码就差不多可以将应用移植到64位系统上了：</h6>
+
+<ul>
+<li><p>不要将长整型数据(long)赋予整型(int)</p>
+
+<p>这种代码在32位系统上没有问题，因为在32位系统中long和int的长度是一样的，不过在64位系统中就有可能出问题，因为64位系统中long比int长，将long值赋予int将导致数据丢失。</p></li>
+<li><p>不要将指针类型(Pointer)赋予整型(int)</p>
+
+<p>为了方便地址计算，有时程序员会将指针类型赋予整型，这种代码在32位系统上没有问题，因为在32位系统中Pointer和int的长度是一样的，不过在64位系统中就会有问题，因为64位系统中Pointer比int长，将Pointer值赋予int将导致地址数据丢失，最终导致严重问题。</p></li>
+<li><p>留意那些和数位相关的数值计算</p>
+
+<p>比如掩码技术，如果使用一个long类型的掩码，转到64位系统后高位都是0，计算出来的结果可能不符合预期。还有无符号整数和有符号整数的混用等。</p></li>
+<li><p>留意对齐方式带来的变化</p>
+
+<p>如果在32位系统上定义一个结构包含两个long类型，第二个long数值的偏移地址是4，可以通过结构地址+4的方式获取，但是在64位系统上就不行了，因为在64位系统中第二个long数值的偏移地址是8。</p></li>
+<li><p>充分考虑在32位应用和64位应用之间的数据交换</p>
+
+<p>因为用户会通过网络交换数据，同时用户保存的数据也可能通过备份等方式在32位系统和64位系统之间切换，所以应用在保存和发送流数据的时候一定要考虑充分。比如数据在32位系统中保存，在64位系统中能否正常打开，或者反过来，在64位系统中保存，在32位系统中打开是否正常。</p></li>
+<li><p>重写所有汇编代码</p>
+
+<p>这点无需说明，如果你在代码中嵌入了汇编代码，你需要参考64位系统的指令集重写汇编代码。</p></li>
+<li><p>不要将可变参数的过程强制转换为定参过程，也不要将定参过程强制转换为可变参数的过程。</p>
+
+<p>这时因为32位系统和64位系统对于这两种过程调用方式的处理方法不同。</p></li>
+</ul>
+
+
+<p>按以上几个重点去检查程序就差不多了，当然，具体的细节还有很多，需要在实际工作中结合代码和调试结果进行分析。</p>
+
+<p>总之，建议具体负责应用迁移的开发者需要完整阅读<em>《64-Bit transition Guide for Cocoa Touch》。</em></p>
+
+<p>来源：<a href="http://blog.csdn.net/keyboardota/article/details/11993883">keyboardOTA的博客</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/">自定义返回按钮时，iOS7手势返回遇到的问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-09-12T23:07:27+08:00" pubdate data-updated="true">Sep 12<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>从iOS7的Beta版开始，就着手做兼容工作，到Beta4的時候，应用已经基本兼容，只是偶然发现，iOS样式的手势返回，也就是用<code>interactivePopGestureRecognizer</code>返回的时候,出现下面一些列问题。各方调研，无果，史无前例（废话，刚出来的7，上哪有例去&mdash;#）。</p>
+
+<ul>
+<li><p>我的应用是自定义的返回按钮图标(默认返回按钮样式不会出现问题3)，为了保险，写了这句代码<code>[self.navigationItem setHidesBackButton:YES]</code>。
+由于自定义返回按钮，所以iOS7自带返回手势无效。在需要的页面加上<code>navigationController.interactivePopGestureRecognizer.delegate = self</code>
+返回手势好用了。</p></li>
+<li><p>于是出现了第二个问题。
+在一级视图中，iOS样式返回的手势滑动一下，然后进入二级视图，发现，画面卡住了，按Home键转入后台，再返回应用，发现并没有Crash掉，而是直接跳到了二级视图里，运行正常了，大家知道push和pop的原理是用进栈出栈完成的，可能因为在一级视图中滑动那一下，影响了视图在栈中的位置。
+好，先解决一下这个问题，一级视图中一定要加入<code>self.navigationController.interactivePopGestureRecognizer.enabled = NO;</code>，先把iOS7手势返回屏蔽掉，到二级视图再用<code>self.navigationController.interactivePopGestureRecognizer.enabled = YES</code>打开。就Ok了。</p></li>
+<li><p>好，第三个问题相继出现（其实是跟第二个一起出来的）。
+手势返回拖动一半，放手，<code>navigationBar</code>上会出现三个小蓝点，而且位置不规律，可以肯定这个不是项目代码或者图片搞出来的东西，一定是SDK自己蹦出來的。
+后台尝试发现<code>UIBarButtonItem</code>的<code>title</code>如果是nil的话，就会有这个问题。
+解决方案：把<code>[self.navigationItem setHidesBackButton:YES];</code>去掉，然後把假装成返回按钮的<code>UIBarButtonItem</code>的<code>title</code>设置成<code>@""</code>。</p></li>
+<li><p>大功告成。可见设计要是不按苹果规范来的话，就会遇到各种坑啊。</p></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/">Objective-C常用數學常量宏及函數</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-28T12:12:27+08:00" pubdate data-updated="true">Aug 28<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>数学常量：</p>
+
+<pre><code>#define M_E         2.71828182845904523536028747135266250   // e
+
+#define M_LOG2E     1.44269504088896340735992468100189214   // log 2e
+
+#define M_LOG10E    0.434294481903251827651128918916605082  // log 10e
+
+#define M_LN2       0.693147180559945309417232121458176568  // log e2
+
+#define M_LN10      2.30258509299404568401799145468436421   // log e10
+
+#define M_PI        3.14159265358979323846264338327950288   // pi
+
+#define M_PI_2      1.57079632679489661923132169163975144   // pi/2
+
+#define M_PI_4      0.785398163397448309615660845819875721  // pi/4
+
+#define M_1_PI      0.318309886183790671537767526745028724  // 1/pi
+
+#define M_2_PI      0.636619772367581343075535053490057448  // 2/pi
+
+#define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)
+
+#define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)
+
+#define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)
+</code></pre>
+
+<p>  </br></p></li>
+<li><p>常用函数：</p>
+
+<pre><code>//指数运算
+
+NSLog(@"%.f", pow(3,2) ); //result 9
+
+NSLog(@"%.f", pow(3,3) ); //result 27
+
+
+//开平方运算
+
+NSLog(@"%.f", sqrt(16) ); //result 4
+
+NSLog(@"%.f", sqrt(81) ); //result 9
+
+
+//上舍入
+
+NSLog(@"res: %.f", ceil(3.000000000001)); //result 4
+
+NSLog(@"res: %.f", ceil(3.00)); //result 3
+
+
+//下舍入
+
+NSLog(@"res: %.f", floor(3.000000000001)); //result 3
+
+NSLog(@"res: %.f", floor(3.9999999)); //result 3
+
+
+//四舍五入
+
+NSLog(@"res: %.f", round(3.5)); //result 4
+
+NSLog(@"res: %.f", round(3.46)); //result 3
+
+NSLog(@"res: %.f", round(-3.5)); //NB: this one returns -4
+
+
+//最小值
+
+NSLog(@"res: %.f", fmin(5,10)); //result 5
+
+
+//最大值
+
+NSLog(@"res: %.f", fmax(5,10)); //result 10
+
+
+//绝对值
+
+NSLog(@"res: %.f", fabs(10)); //result 10
+
+NSLog(@"res: %.f", fabs(-10)); //result 10
+</code></pre></li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie/">iPhone应用开发中emoji带来的问题小结</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-15T20:36:32+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/08/15/iphoneying-yong-kai-fa-zhong-emojidai-lai-de-wen-ti-xiao-jie/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>如果是iPhone自带字体，emoji和文字的高度是不同的，有些细节的地方会造成布局出现瑕疵，我之前的做法是在</p>
+
+<pre><code>- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+</code></pre>
+
+<p>方法里对输入内容进行判断，采取屏蔽emoji输入的方式，具体屏蔽办法请参见： <a href="https://gist.github.com/cihancimen/4146056">https://gist.github.com/cihancimen/4146056</a></p>
+
+<p>但iOS7出来以后，通过测试发现7中修改和增加了一些emojide的编码。上述办法对于一些emoji的屏蔽失效。解决办法是找到合适的第三方字体包。同时，需要考虑iOS和PHP之前通信以及和其他平台通信时产生的问题。于是找到如下文章。</p>
+
+<p><a href="http://wpceo.com/supporting-emoji-on-php-mysql/">http://wpceo.com/supporting-emoji-on-php-mysql/</a></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/15/xcode5dai-lai-de-%5B%3F%5D-ge-xiao-wen-ti/">Xcode5带来的一个小问题</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-15T17:57:31+08:00" pubdate data-updated="true">Aug 15<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/08/15/xcode5dai-lai-de-%5B%3F%5D-ge-xiao-wen-ti/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>带有xib文件如果用Xcode5打开过，再用Xcode4.6打开，会出现如下错误：</p>
+
+<p><code>
+Please use a newer version of Xcode. Consider changing the document's Development Target to preserve compatibility.
+</code></p>
+
+<p>解决办法如下：</p>
+
+<p><code>
+Open the Storyboard file on Xcode 5, And then: 1. Open file inspector 2. On "Interface Builder Documents" section change "Open with" to Xcode 4.6 (if it's 5.x). 3. Save, Close the project and open that with old Xcode.
+</code></p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/08/13/hide-statusbar-also-work-on-ios7/">Hide statusBar (Also Work on Ios7)</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-08-13T20:40:06+08:00" pubdate data-updated="true">Aug 13<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/08/13/hide-statusbar-also-work-on-ios7/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>代码方式隐藏</p>
+
+<p>  好处是灵活，随时隐藏随时显示</p>
+
+<pre><code>  //viewDidload
+
+  if ([self respondsToSelector:@selector(setNeedsStatusBarAppearanceUpdate)]) {
+
+      // iOS 7
+
+      [self prefersStatusBarHidden];
+
+      [self performSelector:@selector(setNeedsStatusBarAppearanceUpdate)];
+
+  } else {
+
+      // iOS 6
+
+      [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationSlide];
+
+  }
+
+  // Add this Method
+
+  - (BOOL)prefersStatusBarHidden
+  {
+      return YES;
+  }
+</code></pre></li>
+<li><p>在配置文件中设置</p>
+
+<p>  如果整个应用都不想显示状态栏，那么这个更方便一些</p>
+
+<p>  在<code>Info.plist</code>中添加如下两行键值对:</p>
+
+<ol>
+<li><p> <code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
+<li><p> <code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
+</ol>
+</li>
+</ul>
+
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/">iOS获取当前系统语言</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-05-18T15:40:14+08:00" pubdate data-updated="true">May 18<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/05/18/ioshuo-qu-dang-qian-xi-tong-yu-yan/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>添加如下代码：</p>
+
+<pre><code>NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults]; 
+NSArray *languages = [defaults objectForKey:@"AppleLanguages"]; 
+NSString *currentLanguage = [languages objectAtIndex:0];
+</code></pre>
+
+<p>取得设置好的语言。。日语是ja，英文是en，其他。。就设置以后log出来看看吧！</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2013/04/09/dataformatli-she-zhi-ge-shi-zi-mu-han-yi/">dataFormat里设置格式字母含义</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-04-09T01:05:28+08:00" pubdate data-updated="true">Apr 9<span>th</span>, 2013</time>
+        
+        
+          | <a href="/blog/2013/04/09/dataformatli-she-zhi-ge-shi-zi-mu-han-yi/#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>y  年  Year  1996; 96</p>
+
+<p>M  年中的月份  Month  July; Jul; 07</p>
+
+<p>w  年中的周数  Number  27</p>
+
+<p>W  月份中的周数  Number  2</p>
+
+<p>D  年中的天数  Number  189</p>
+
+<p>d  月份中的天数  Number  10</p>
+
+<p>F  月份中的星期  Number  2</p>
+
+<p>E  星期中的天数  Text  Tuesday; Tue</p>
+
+<p>a  Am/pm 标记  Text  PM</p>
+
+<p>H  一天中的小时数（0-23）  Number  0</p>
+
+<p>k  一天中的小时数（1-24）  Number  24</p>
+
+<p>K  am/pm 中的小时数（0-11）  Number  0</p>
+
+<p>h  am/pm 中的小时数（1-12）  Number  12</p>
+
+<p>m  小时中的分钟数  Number  30</p>
+
+<p>s  分钟中的秒数  Number  55</p>
+
+<p>S  毫秒数  Number  978</p>
+
+<p>z  时区  General time zone  Pacific Standard Time; PST; GMT-08:00</p>
+
+<p>Z  时区  RFC 822 time zone  -0800</p>
+</div>
+  
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
       <h1 class="entry-title"><a href="/blog/2013/03/07/uitableviewyin-cang-duo-yu-de-fen-ge-xian/">UITableView隐藏多余的分割线</a></h1>
     
     
@@ -122,557 +1095,9 @@ UITableViewCellSeparatorStyleSingleLine</p>
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/18/ioskai-fa-guan-yu-dao-ru-dai-you-shu-ju-de-sqlitewen-jian/">[iOS开发]关于导入带有数据的SQLite文件</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-18T18:23:37+08:00" pubdate data-updated="true">Dec 18<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/12/18/ioskai-fa-guan-yu-dao-ru-dai-you-shu-ju-de-sqlitewen-jian/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>DB文件需要引入到项目中的<code>Supporting Files</code>文件夹下。</p>
-
-<p>注意：直接拖拽的形式引入时，需要勾选<code>Add to tagets</code>选项，同时根据情况注意勾选上面的<code>Copy</code>选项。</p>
-
-<p>模拟器调试情况下，DB文件的存放路径如下：
-<code>当前用户/Library/Application Support/iPhone Simulator/版本号(6.0)/Applications/你的app名所在文件夹/Documents</code></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu/">Google API 方式制作饼状图</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-12-11T11:00:48+08:00" pubdate data-updated="true">Dec 11<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>最简单的一种方式，Android上面使用<code>WebView</code>控件加载即可，以下是<code>GoogleAPI</code>相关内容。</p>
-
-<p>PS：需要添加网络访问权限。</p>
-
-<p>URL:
-<a href="http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp;chl=Hello%7CWorld">http://chart.apis.google.com/chart?cht=p3&amp;chs=250x100&amp;chd=t:60,40&amp;chl=Hello%7CWorld</a></p>
-
-<h4>Components</h4>
-
-<p><a href="https://chart.apis.google.com/chart?">https://chart.apis.google.com/chart?</a></p>
-
-<p>This is the base URL for all chart requests. (However, seeImproving Performance on Pages with Many Charts below for an optional variation for pages with multiple charts.)cht=p3The chart type: here, a 3D pie chart.chs=250x100The chart size (width xheight), in pixels. See the maximum valueshere.chd=t:60,40The chart data. This data is in simple text format, but there areother formats.chl=Hello|WorldTheslice labels.&amp;Parameters are separated by an ampersand.Note: When embedding an URL in HTML, for example as thesrc attribute of an <img> tag, you should replace the&amp; between parameters with the characters&amp; This includes when you generate page HTML with PHP or some other language. However, when typing a URL in the browser, or whencalling a URL in code, for example when fetching a URL in PHP or Perl, you should use the&amp; mark.</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/26/googlechan-pin-ti-yan-qian-duan-she-ji/">Google产品体验_前端设计</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-26T20:02:56+08:00" pubdate data-updated="true">Apr 26<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/04/26/googlechan-pin-ti-yan-qian-duan-she-ji/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>其实不仅仅是google，好多公司的产品体验都非常好，看似简单，但细微处让人舒服得很。</p>
-
-<p>最近不经意间发现drive.google宣传页的前端设计，每个功能点介绍正好占据一个页面，唯独首页最上面的视频没有占据整个画面，而特意露出下一节的一行字，我猜想这是让用户知道下方还有内容可以看。</p>
-
-<p>PS：因为是用mac版chrome体验，所以其他版本浏览器不清楚是不是这样。就算google不是刻意做成我理解的这样，我认为还是应该把这种用户体验考虑在自己以后的开发和设计理念中。</p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/14/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/">Android Canvas绘制文字 自动换行</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-14T12:38:44+08:00" pubdate data-updated="true">Apr 14<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/04/14/android-canvashui-zhi-wen-zi-zi-dong-huan-xing/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><pre><code>import java.util.Vector; 
-
-import android.graphics.Canvas; 
-import android.graphics.Color; 
-import android.graphics.Paint; 
-import android.graphics.Paint.FontMetrics; 
-import android.view.KeyEvent; 
-
-public class TextUtil { 
-
-private float  mTextPosx = 0;// x坐标 
-private float  mTextPosy = 0;// y坐标 
-private float mTextWidth = 0;// 绘制宽度 
-private float mTextHeight = 0;// 绘制高度 
-private int mFontHeight = 0;// 绘制字体高度 
-private int mPageLineNum = 0;// 每一页显示的行数 
-private int mCanvasBGColor = 0;// 背景颜色 
-private int mFontColor = 0;// 字体颜色 
-private int mAlpha = 0;// Alpha值 
-private int mRealLine = 0;// 字符串真实的行数 
-private int mCurrentLine = 0;// 当前行 
-private int mTextSize = 0;// 字体大小 
-private String mStrText = ""; 
-private Vector mString = null; 
-private Paint mPaint = null; 
-
-public TextUtil(String StrText, float  x, float  y, float w, float h, int bgcolor, 
-      int textcolor, int alpha, int textsize) { 
-  mPaint = new Paint(); 
-  mString = new Vector(); 
-  this.mStrText = StrText; 
-  this.mTextPosx = x; 
-  this.mTextPosy = y; 
-  this.mTextWidth = w; 
-  this.mTextHeight = h; 
-  this.mCanvasBGColor = bgcolor; 
-  this.mFontColor = textcolor; 
-  this.mAlpha = alpha; 
-  this.mTextSize = textsize; 
-} 
-
-public void InitText() { 
-  mString.clear();// 清空Vector 
-  // 对画笔属性的设置 
-  // mPaint.setARGB(this.mAlpha, Color.red(this.mFontColor), Color 
-  // .green(this.mFontColor), Color.blue(this.mFontColor)); 
-  mPaint.setTextSize(this.mTextSize); 
-  mPaint.setColor(Color.BLUE); 
-  mPaint.setAntiAlias(true); 
-
-  this.GetTextIfon(); 
- } 
-
- /** 
-  * 得到字符串信息包括行数，页数等信息 
-  */ 
- public void GetTextIfon() { 
-  char ch; 
-  int w = 0; 
-  int istart = 0; 
-  FontMetrics fm = mPaint.getFontMetrics();// 得到系统默认字体属性 
-  mFontHeight = (int) (Math.ceil(fm.descent - fm.top) + 2);// 获得字体高度 
-  mPageLineNum = (int) (mTextHeight / mFontHeight);// 获得行数 
-
-  int count = this.mStrText.length(); 
-  for (int i = 0; i &lt; count; i++) { 
-      ch = this.mStrText.charAt(i); 
-      float[] widths = new float[1]; 
-      String str = String.valueOf(ch); 
-      mPaint.getTextWidths(str, widths); 
-      if (ch == '/n') { 
-          mRealLine++;// 真实的行数加一 
-          mString.addElement(this.mStrText.substring(istart, i)); 
-          istart = i + 1; 
-          w = 0; 
-      } else { 
-          w += (int) Math.ceil(widths[0]); 
-          if (w &gt; this.mTextWidth) { 
-              mRealLine++;// 真实的行数加一 
-              mString.addElement(this.mStrText.substring(istart, i)); 
-              istart = i; 
-              i--; 
-              w = 0; 
-          } else { 
-              if (i == count - 1) { 
-                  mRealLine++;// 真实的行数加一 
-                  mString.addElement(this.mStrText.substring(istart, 
-                          count)); 
-              } 
-          } 
-      } 
-  } 
-} 
-
-/** 
- * 绘制字符串 
- * 
- * @param canvas 
- */ 
-public void DrawText(Canvas canvas) { 
-     for (int i = this.mCurrentLine, j = 0; i &lt; this.mRealLine; i++, j++) { 
-          if (j &gt; this.mPageLineNum) { 
-              break; 
-          } 
-       canvas.drawText((String) (mString.elementAt(i)), this.mTextPosx, 
-                this.mTextPosy + this.mFontHeight * j, mPaint); 
-     } 
- } 
-
-/** 
-* 翻页等按键处理 
-* 
-* @param keyCode 
-* @param event 
-* @return 
-*/ 
-public boolean KeyDown(int keyCode, KeyEvent event) { 
-    if (keyCode == KeyEvent.KEYCODE_DPAD_UP) { 
-       if (this.mCurrentLine &gt; 0) { 
-            this.mCurrentLine--; 
-        } 
-    } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) { 
-        if ((this.mCurrentLine + this.mPageLineNum) &lt; (this.mRealLine - 1)) { 
-            this.mCurrentLine++; 
-        } 
-      } 
-      return false; 
-   } 
-}
-</code></pre>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/04/12/androidmanifest-dot-xmlbu-fen-shu-xing-shuo-ming/">AndroidManifest.xml部分属性说明</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-04-12T19:44:38+08:00" pubdate data-updated="true">Apr 12<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/04/12/androidmanifest-dot-xmlbu-fen-shu-xing-shuo-ming/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li><p>android:allowTaskReparenting</p>
-
-<p>  用法<code>&lt;application android:allowTaskReparenting="true/false"&gt;&lt;/application&gt;</code>
-  是否允许Activity更换从属的任务，比如从短信息任务 切换到浏览器任务。用来标记Activity能否从启动的Task移动到有着affinity的Task（当这个Task进入到前台时）—— “true”，表示能移动，“false”，表示它必须呆在启动时呆在的那个Task里。</p>
-
-<p>  如果这个特性没有被设定，设定到<code>&lt;application&gt;</code>元素上的<code>allowTaskReparenting</code>特性的值会应用到<code>Activity</code>上。默认值为“false”。</p>
-
-<p>  一般来说，当Activity启动后，它就与启动它的Task关联，并且在那里耗尽它的整个生命周期。当当前的Task不再显示时，你可以使用这个特性来 强制Activity移动到有着<code>affinity</code>的Task中。典型用法是：把一个应用程序的Activity移到另一个应用程序的主Task中。</p>
-
-<p>  例如，如果e－mail中包含一个web页的链接，点击它就会启动一个Activity来显示这个页面。这个Activity是由Browser应用程序 定义的，但是，现在它作为<code>e－mail Task</code>的一部分。如果它重新宿主到<code>Browser Task</code>里，当Browser下一次进入到前台时，它就能被看见，并且，当<code>e－mail Task</code>再次进入前台时，就看不到它了。</p>
-
-<p>  Actvity的<code>affinity</code>是由<code>taskAffinity</code>特性定义的。Task的<code>affinity</code>是通过读取根Activity的<code>affinity</code> 决定。因此，根据定义，根Activity总是位于相同<code>affinity</code>的Task里。由于启动模式为“singleTask”和 “singleInstance”的Activity只能位于Task的底部，因此，重新宿主只能限于“standard”和“singleTop”模 式。</p></li>
-<li><p>android:alwaysRetainTaskState</p>
-
-<p>  用法<code>&lt;activity android:alwaysRetainTaskState="true/false"&gt;&lt;/activity&gt;</code>
-  用来标记Activity所在的Task的状态是否总是由系统来保持——“true”，表示总是；“false”，表示在某种情形下允许系统恢复Task 到它的初始化状态。默认值是“false”。这个特性只针对Task的根Activity有意义；对其它Activity来说，忽略之。
-  一般来说，特定的情形如当用户从主画面重新选择这个Task时，系统会对这个Task进行清理（从stack中删除位于根Activity之上的所有Activivity）。典型的情况，当用户有一段时间没有访问这个Task时也会这么做，例如30分钟。
-  然而，当这个特性设为“true”时，用户总是能回到这个Task的最新状态，无论他们是如何启动的。这非常有用，例如，像Browser应用程序，这里有很多的状态（例如多个打开的Tab），用户不想丢失这些状态。</p></li>
-<li><p>android:clearTaskOnLanunch</p>
-
-<p>   用法<code>&lt;activity android:clearTaskOnLanunch=”true/false”&gt;&lt;/activity&gt;</code>
-   用来标记是否从Task中清除所有的Activity，除了根Activity外（每当从主画面重新启动时）——“true”，表示总是清除至它的 根 Activity，“false”表示不。默认值是“false”。这个特性只对启动一个新的Task的Activity（根Activity）有意义； 对Task中其它的Activity忽略。
-   当这个值为“true”，每次用户重新启动这个Task时，都会进入到它的根Activity中，不管这个Task最后在做些什么，也不管用户是使 用 BACK还是HOME离开的。当这个值为“false”时，可能会在一些情形下（参考alwaysRetainTaskState特性）清除Task的 Activity，但不总是。
-   假设，某人从主画面启动了Activity P，并从那里迁移至Activity Q。接下来用户按下HOME，然后返回Activity P。一般，用户可能见到的是Activity Q，因为它是P的Task中最后工作的内容。然而，如果P设定这个特性为“true”，当用户按下HOME并使这个Task再次进入前台时，其上的所有的 Activity(在这里是Q)都将被清除。因此，当返回到这个Task时，用户只能看到P。
-  如果这个特性和<code>allowTaskReparenting</code>都设定为“true”，那些能重新宿主的Activity会移动到共享<code>affinity</code>的Task中；剩下的Activity都将被抛弃，如上所述。</p></li>
-<li><p>android:configChanges</p>
-
-<p>  当配置list发生修改时， 是否调用 <code>onConfigurationChanged()</code> 方法 比如 &ldquo;locale|navigation|orientation&rdquo;.
-  举例：在按下power键时，直接在应用程序里onPause处理就好。当app是竖屏时，这样处理没问题。但是当app是横屏时，按下power 键，app会强制回到竖屏，并且会重新调用activity的<code>onCreate</code>。很多时候这不是预期结果，所以就会用到 <code>android:configChanges</code>。</p>
-
-<p>  在配置文件里设置<code>android:configChanges＝”keyboardHidden|orientation”</code>，这样在屏幕方向改变的时候就 不会重新调用activity的<code>onCreate()</code>方法，而是调用<code>onConfigurationChanged()</code>,然后在activity里面重在 下。</p></li>
-<li><p>android:enabled</p>
-
-<p>  activity 是否可以被实例化
-  用法：<code>&lt;activity android:enabled="true"&gt;&lt;/activity&gt;</code></p></li>
-<li><p>android:excludeFromRecents</p>
-
-<p>  是否可被显示在最近打开的activity列表里
-  用法：<code>&lt;activity android:excludeFromRecents="true"&gt;&lt;/activity&gt;</code></p></li>
-<li><p>android:exported</p>
-
-<p>  是否允许activity被其它程序调用</p></li>
-<li><p>android:finishOnTaskLaunch</p>
-
-<p>  用来标记当用户再次启动它的Task（在主画面选择这个Task）时已经存在的Activity实例是否要关闭（结束）——“true”，表示应该关闭，“false”表示不关闭。默认值是“false”。
-  如果这个特性和<code>allowTaskReparenting</code>都设定为“true”，这个特性胜出。Activity的<code>affinity</code>忽略。这个 Activity不会重新宿主，但是会销毁。</p></li>
-<li><p>android.icon</p>
-
-<p>  用法：<code>&lt;application android:icon="@drawable/xx_icon"&gt;&lt;/application&gt;</code>,加在应用程序图标</p></li>
-<li><p>android:label</p>
-
-<p>  定义了每个title栏的名称，但是优先级低于activity中的<code>setTitle()</code></p></li>
-</ul>
-
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/02/07/androidying-yong-kai-fa-zhi-%28you-hua-bu-ju-ceng-ci-jie-gou-%29/">Android应用开发之（优化布局层次结构）</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-02-07T14:00:58+08:00" pubdate data-updated="true">Feb 7<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/02/07/androidying-yong-kai-fa-zhi-%28you-hua-bu-ju-ceng-ci-jie-gou-%29/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>有一个常见的错误看法：只使用基础的布局结构会生产高效的布局。然而，每个您程序中的每个控件和布局都需要初始化、布局位置、和绘制。例如使用嵌套的LinearLayout可以导致很多的层次结构。更严重的是，如果在嵌套的LinearLayout中使用layout_weight参数将会导致更加严重的性能问题，因为里面的控件在计算大小的时候会计算两次。如果在<a href="http://developer.android.com/reference/android/widget/ListView.html">ListView</a> 或者 <a href="http://developer.android.com/reference/android/widget/GridView.html">GridView</a>中使用则会更加严重。</p>
-
-<p>这节课程将会介绍如何使用 <a href="http://developer.android.com/guide/developing/tools/hierarchy-viewer.html">Heirachy Viewer</a> 和<a href="http://developer.android.com/guide/developing/tools/layoutopt.html">Layoutopt</a> 工具来检查和优化布局。</p>
-
-<p>检查布局</p>
-
-<p>在 Android SDK 中包含了一个href=&ldquo;<a href="http://developer.android.com/guide/developing/tools/hierarchy-viewer.html">http://developer.android.com/guide/developing/tools/hierarchy-viewer.html</a>&rdquo;>Heirachy Viewer 工具，使用该工具可以在您的程序运行的时候分析程序的布局。使用该工具来发现布局中的瓶颈所在。</p>
-
-<p>Hierarchy Viewer 让你选择其连接的设备或者模拟器中的一个运行中的程序，然后显示该界面的布局树形结构。在每个控件方块中的交通灯分别代表 计算尺寸(Measure)、布局子控件(Layout)、和绘制的性能，通过颜色来帮助您分析潜在的问题。</p>
-
-<p>例如，下图显示了一个用于 <a href="http://developer.android.com/reference/android/widget/ListView.html">ListView</a>的布局。该布局在左边显示一个小图标，在图标右边显示两行文本内容。当该布局会被多次使用(inflated)到的时候性能问题就比较明显， 比如这个例子 由于这个布局是在ListView中使用的， 所以每个ListView中的一项都会解析下该布局然后绘制出来。</p>
-
-<p><img src="http://m1.img.libdd.com/farm3/d/2012/0202/15/B69AD2A52C25B8A5892A0891C2C54659_B500_900_317_59.PNG"/></p>
-
-<p>hierarchyviewer 工具位于 <sdk>/tools/ 目录。打开后 Hierarchy Viewer 将显示一个可用设备的列表和正在运行的界面。点击 Load View Hierarchy 来查看选中的界面的布局分析结果。例如，下图显示了上面定义的ListView中每一项的布局结果。</p>
-
-<p><img src="http://m2.img.libdd.com/farm3/d/2012/0202/15/8FD77AA2EA1FBDF4D7D1DA76D3E940A7_B500_900_457_235.PNG"/></p>
-
-<p>查看渲染一个View的时间</p>
-
-<p>上面左侧的图中，您可以看到有三层布局结构。在每个方块上面点击可以查看显示该控件所需要的时间。对于需要时间比较长的地方就是我们应该去重点优化的地方。</p>
-
-<p>显示一个列表条目所需要的时间如下：</p>
-
-<p><img src="http://m2.img.libdd.com/farm3/d/2012/0202/15/96F675B3672137311CFAC7B280F4EA9B_B500_900_144_244.PNG"/></p>
-
-<p>Measure: 0.977ms</p>
-
-<p>Layout: 0.167ms</p>
-
-<p>Draw: 2.717ms</p>
-
-<p>改进布局</p>
-
-<p>上面的布局被一个嵌套的 <a href="http://developer.android.com/reference/android/widget/LinearLayout.html">LinearLayout</a> 占用了过多的解析时间，如果把布局的嵌套层次降低可能会提高性能.使用 <a href="http://developer.android.com/reference/android/widget/RelativeLayout.html">RelativeLayout</a> 可以实现这个功能。使用<a href="http://developer.android.com/reference/android/widget/RelativeLayout.html">RelativeLayout</a>后可以看到现在布局由3层变为了2层，分析图如下</p>
-
-<p>使用RelativeLayout后的层次结构</p>
-
-<p><img src="http://m2.img.libdd.com/farm3/d/2012/0202/15/11133BBC926776F3A1730AEA91818EA3_B500_900_376_293.PNG"/></p>
-
-<p>Figure 4. Layout hierarchy for the layout in figure 1,
-using <a href="http://developer.android.com/reference/android/widget/RelativeLayout.html">RelativeLayout</a>.</p>
-
-<p>现在显示一个列表条目所需要的时间如下：</p>
-
-<p>Measure: 0.598ms</p>
-
-<p>Layout: 0.110ms</p>
-
-<p>Draw: 2.146ms</p>
-
-<p>看起来是一个很微弱的提升，但是这个时间可以叠加多次，应为每个列表条目在显示的时候都有解析该布局。</p>
-
-<p>当在<a href="http://developer.android.com/reference/android/widget/LinearLayout.html">LinearLayout</a> 中使用 layout_weight 就又不一样了，这样会增加计算控件大小的时间。在使用layout_weight的时候您应该多考虑考虑。</p>
-
-<p>使用 Layoutopt</p>
-
-<p>在您的最终布局文件中运行下 <a href="http://developer.android.com/tools/help/layoutopt.html">layoutopt</a> 工具来看看还有没有可以优化的空间是个很好的习惯。 Layoutopt 工具也位于SDK的 <em>tools/</em> 目录下，您可以用该工具优化单个文件也可以优化一个目录中的所有文件。</p>
-
-<p>当您在单个文件中运行 layoutopt 后，该工具会打印出出现问题的行号和问题的描述，有些问题也会给出优化方案。例如</p>
-
-<pre><code>$ layoutopt samples/
-    samples/compound.xml
-        7:23 The root-level &lt;FrameLayout/&gt; can be replaced with &lt;merge/&gt;
-        11:21 This LinearLayout layout or its FrameLayout parent is useless
-    samples/simple.xml
-        7:7 The root-level &lt;FrameLayout/&gt; can be replaced with &lt;merge/&gt;
-</code></pre>
-
-<p>当你修改了布局文件以后，可以再次运行一下 Hierarchy Viewer 来看看具体提升了多少性能。</p>
-
-<p>from <a href="http://androiddeveloper.diandian.com/post/2012-02-02/16147388">Android Developer</a></p>
-</div>
-  
-  
-
-
-    </article>
-  
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2012/01/27/pcxie-mu-qu/">PC谢幕曲</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-
-
-
-
-  
-
-
-<time datetime="2012-01-27T15:09:14+08:00" pubdate data-updated="true">Jan 27<span>th</span>, 2012</time>
-        
-        
-          | <a href="/blog/2012/01/27/pcxie-mu-qu/#comments">Comments</a>
-         
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>不久的将来，PC就只有开发人员使用了。</p>
-
-<blockquote><p>科技周报:<br/>
- 技术发展不断革新，面对竞争的压力和利润的最大化需求，计算机技术的革新需比市场实际需求发展得更快。当PC的成长速度已无法满足人们日益增长的快捷需求，PC独霸江湖的时代便渐渐逝去，随着带宽的扩大、显示设备的革新、云计算以及应用产品的普及，PC的未来将毫无光景。个人电脑将不再统治数码世界，而是会像智能手机与平板电脑一样，成为众多电子设备之一，并随着时间的推移，渐渐销声匿迹。  PC兴衰史 没有服务器、没有本地化处理、网络不发达的时代，人们在相互交流以及信息汲取方面受到重重阻碍，效率以及准确性受到了严峻考验。而二战时期对信息的紧迫需求大大推动了创造的发展，使得资源可以运用于基本的技术试验，促进了计算机的出现。 伴随着计算机在尖端科学技术与工程设计方面的普遍应用，人们对计算机的性能、容量要求不断提高，在计算机行业，按照技术轨道领先一步推出新型技术产品意味着可能提前占有市场。 然而，市场始终是为需求服务的。综观PC发展史，从发展初期至2000年，由于人们的需求刚刚从书本纸张过渡到本地化信息处理，对于快捷处理的需求日益增长，成就了个人电脑的辉煌历史，使得台式计算机成为主导PC市场成败的关键。 而随着互联网的发展，人们对于解决信息处理方面的要求，从传统的台式机逐渐演变到满足交互体验的任意电子产品上，繁杂冗余的大体积台式机毛利润越来越低，陷入了低价化困境。 在巨大压力下，Intel积极开发低耗电处理器，PC市场从原本的台式机时代逐步转移至笔记本电脑时代，而基于云服务的出现，人们对信息加工的需求不再需要经过本地处理，更轻便的过渡产品便成为了引领潮流的先驱，使得笔记本也逃不过低价化的命运，整个PC行业逐渐步入阴霾。  移动终端——过渡产品 所谓过渡产品，既是说包括手机及平板电脑等终端产品，在信息加工方面已经可以逐步代替PC的本地化处理功能，但由于过渡产品仍不能完全满足今后科技对于低成本高效率的信息需求，只是基于其低廉的价格优势以及轻便的体积，成为更多消费者愿意选择的产品。 随着3G网络的大势兴起，3G手机与智能手机的逐步革新，平板电脑不断洗牌，智能终端已经成为当下最潮最热的流行趋势。不难看出，智能操作系统的兴起使得手机退化为终端载体，而生产厂商为了实现差异化竞争，只能在硬件技术上进行提升，降低成本以保证消费者市场。 选择是复杂的，不仅包括技术的先进性，还包括了社会的认同和接受。 对多数消费者来说，轻便装备不但可满足他们上网与玩电子游戏的需求，也是节省时间方便出行的必备工具;而对企业来说，iPad与iPhone等亦足以胜任作简报、工作会议等工作需要;对社会来说，耗能越少越低碳，不但可以节约能源与资源，还能减缩大量废弃电子产品的处理成本。 从企业来看，微软决定让Windows操作系统兼容ARM架构的处理器，也就是说英特尔如今已无法巩固其在PC业的主导地位，ARM在移动芯片的主宰地位更不是英特尔一朝一夕能颠覆的，这预示着长久以来占据市场主导地位的Wintel联盟(Windows+Intel)不再能驱动PC成长。  PC之劫 经济危机带来的影响加速了整个PC行业的利润率下滑，而用户和市场同时决定了计算机技术的发展，在市场判定规则一定的情况下，技术优越者取胜，使得经济之间的竞争转化为技术之间的竞争。随着PC市场的下滑，制造商整合将成为行业更常见的趋势。 2005年IBM将PC业务卖给联想，从PC制造商转型为最大的高端服务提供商，现在看来此举无疑是具有远见卓识的一步。近日，联想整合NEC、收购德国Medion，惠普放出分拆或者出售PC业务的消息，方正集团将PC业务出售给宏公司，戴尔也对外宣称业务中心从PC走向其他领域。众多的产业格局变化都反映了过去以PC为主的厂商想要摆脱走向衰亡的命运。 举例来说，惠普近几年来一直稳坐个人电脑业务头把交椅，在利润率低下已经成为当下整个PC行业不争事实的前提下，惠普做出分拆PC业务的决定，实际上已经等于给这个产业划上了休止符。尽管惠普最终反悔决策表示将继续保留PC业务，但初衷并不是认为PC业务还有未来，只不过因为无法承担分拆成本过高造成的负担。  后PC时代 如今，PC仍旧在市场占有一席之地，因为目前就技术而言，PC在部分层面上占有一定优势。首先，带宽技术的不理想，特别是无线资费的高昂以及带宽的限制，使得需要进行大数量处理的信息技术仍要靠PC来完成。 其次，显示设备的局限性，消费者要享受高质量的视听需求，相比手机与平板电脑，PC仍然是看视频看电影的首选。此外，交互体验的需求也是部分高端玩家选择PC的主要原因之一。 最后，云端建设的不完善，许多存储信息需要靠PC的硬盘完成，而处理器匹配等也是目前尚在开发阶段的问题。 由此看来，今后的计算机技术若是完成了云构架的完善、带宽的革新以及显示设备的提升 ，PC产业必将消亡。到时人们需要的只是一个轻便的操作设备与显示设备，通过云端设备提供强大的运算能力和信息平台，便可完成所有信息处理功能。 就企业而言，随着PC重要性的下降，必会造成数字世界中的权利分配从终端用户和软件开发者向操作系统厂商发生转移。 除了云建设以外，应用程序商店与社交媒体的地位逐步上升，将让原本PC时代以硬件规格定胜负的游戏规则，逐步转为这三项服务与其他阵营之间的差异化大战。这可以推算出与其吊死在PC这一根无利可图的大树上，企业为寻求出路会向操作系统发展。改变组织结构、创立软件与创新服务部门，或者以快速并购方式弥补营运缺点等，都是各企业目前在寻觅的生存规则。 后PC时代的到来伴随着业务的整合、应用的拓展以及云端设备提供的强大运算能力和信息平台，那个单纯靠硬件打拼的时代已不复存在。如同恩格尔·巴特所说，今后的计算机技术将建立在共享信息的基础上，这也是科学技术进步的关键，因为基于新平台的信息交互可以使创造活动的时效性与质量得到有效提高，满足信息时代的处理要求。 综上所述，PC会经历一个慢慢消亡的过程，从主导市场变为与智能终端产品并列而存，随着云建设的崛起以及目前已经着手改良的带宽与网络资费问题，PC将在不久的未来逐步退出历史舞台。</p></blockquote>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/blog/page/3/">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -685,10 +1110,10 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     <section>
   <h1>Categories</h1>
   <ul id="categories">
-    <li class='category'><a href='/blog/categories/android/'>Android (4)</a></li>
+    <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
 <li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
 <li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
-<li class='category'><a href='/blog/categories/ios/'>iOS (12)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (20)</a></li>
 
   </ul>
 </section><section>
@@ -696,23 +1121,23 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2013/12/25/hide-statusbar-on-ios/">Hide StatusBar on iOS</a>
+        <a href="/blog/2014/07/15/ios-sdk-8-symbol-nsurlauthenticationmethodservertrust-not-found/">Ios Sdk 8 Symbol _NSURLAuthenticationMethodServerTrust Not Found</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/">UIKit in Release Notes for iOS 7.1 Beta2</a>
+        <a href="/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/">项目协作中Xcode Search Paths问题</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/">文本自定义行高以后高度自适应的解决方法</a>
+        <a href="/blog/2014/03/11/those-pop-plug-ins-for-xcode/">Those Pop Plug-ins for Xcode</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/">自定义返回按钮时，iOS7手势返回遇到的问题</a>
+        <a href="/blog/2014/02/21/xcode5-dot-1-updated-to-beta5/">Xcode5.1 Updated to Beta5</a>
       </li>
     
       <li class="post">
-        <a href="/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/">Objective-C常用數學常量宏及函數</a>
+        <a href="/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian/">ios7.1 Beta版升级事件</a>
       </li>
     
   </ul>
@@ -749,7 +1174,7 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
     </div>
   </div>
   <footer role="contentinfo"><p>
-  Copyright &copy; 2013 - i-chou -
+  Copyright &copy; 2014 - i-chou -
   <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
 </p>
 
@@ -761,16 +1186,6 @@ using <a href="http://developer.android.com/reference/android/widget/RelativeLay
 
 
 
-
-  <script type="text/javascript">
-    (function(){
-      var twitterWidgets = document.createElement('script');
-      twitterWidgets.type = 'text/javascript';
-      twitterWidgets.async = true;
-      twitterWidgets.src = '//platform.twitter.com/widgets.js';
-      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
-    })();
-  </script>
 
 
 

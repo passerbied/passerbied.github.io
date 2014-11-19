@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Android | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/android/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-26T14:31:55+08:00</updated>
+  <updated>2014-11-19T10:14:06+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -30,6 +30,88 @@
 <p><a href="https://chart.apis.google.com/chart?">https://chart.apis.google.com/chart?</a></p>
 
 <p>This is the base URL for all chart requests. (However, seeImproving Performance on Pages with Many Charts below for an optional variation for pages with multiple charts.)cht=p3The chart type: here, a 3D pie chart.chs=250x100The chart size (width xheight), in pixels. See the maximum valueshere.chd=t:60,40The chart data. This data is in simple text format, but there areother formats.chl=Hello|WorldTheslice labels.&amp;Parameters are separated by an ampersand.Note: When embedding an URL in HTML, for example as thesrc attribute of an <img> tag, you should replace the&amp; between parameters with the characters&amp; This includes when you generate page HTML with PHP or some other language. However, when typing a URL in the browser, or whencalling a URL in code, for example when fetching a URL in PHP or Perl, you should use the&amp; mark.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xperia TM GX UI适配遇到的小问题]]></title>
+    <link href="i-chou.com/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/"/>
+    <updated>2012-07-25T15:40:49+08:00</updated>
+    <id>i-chou.com/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti</id>
+    <content type="html"><![CDATA[<p>Sony Xperia TM GX S0-04D 720*1280 和 S0-05D 均为软控制栏，最近在为这两款机器做适配时候遇到一些小问题，分享在这里。</p>
+
+<ul>
+<li><p>问题1:</p>
+
+<p>现象：Sony上，从第二行LineaLayout开始往下窜一定距离。从其他机器和模拟器上均显示正常。</p>
+
+<p>原因：LinearLayout的Wrap_content属性在Sony和其它机器里的解析有所不同。</p>
+
+<p>改善：将高度设置成内容的实际高度dp值。</p></li>
+<li><p>问题2:</p>
+
+<p>现象：4.0以后机种的SimpleOnGestureListener类手势问题。</p>
+
+<p>原因：onFiling方法触发频繁，导致更换背景的耗时操作使反映变卡。</p>
+
+<p>改善：更换背景耗时操作加入判断条件再触发。</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Android PopupWindow的使用]]></title>
+    <link href="i-chou.com/blog/2012/06/20/android-popupwindowde-shi-yong/"/>
+    <updated>2012-06-20T16:36:24+08:00</updated>
+    <id>i-chou.com/blog/2012/06/20/android-popupwindowde-shi-yong</id>
+    <content type="html"><![CDATA[<p><a href="http://blog.csdn.net/Android_Tutor/article/details/5576533">Android PopupWindow的使用</a></p>
+
+<p>以上链接解决了画面初始化时直接弹出PopUpWindow的需求。测试有效。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[当Eclipse遇到ADT升级]]></title>
+    <link href="i-chou.com/blog/2012/04/23/dang-eclipseyu-dao-adtsheng-ji/"/>
+    <updated>2012-04-23T15:30:48+08:00</updated>
+    <id>i-chou.com/blog/2012/04/23/dang-eclipseyu-dao-adtsheng-ji</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>问题一：
+Eclipse3.7.2 + ADT18 一直出现找不到jar中class的问题。今天终于找到结果。由于新版本中把lib名称改称libs的缘故。</p>
+
+<p>解决方案：</p>
+
+<p>This issue occurs because the &ldquo;lib&rdquo; folder is renamed to &ldquo;libs&rdquo; now by Android People. And as soon as we place our external jars to this &ldquo;libs&rdquo; folder then it will automatically be added to the build path of the application.</p>
+
+<p>Remove the libraries from the standard Java build path :</p>
+
+<p>Right click on the project name > Properties > Java Build Path > tab Libraries > remove everything except the “Android X.X” (2.3.3 in my case) and the “Android Dependencies”</p>
+
+<p>Rename the libraries folder from “lib” to “libs”</p>
+
+<p>By doing that, all the libraries in the folder “libs” are found by the Android plugin and are added to the “Android Dependencies” item of the project</p>
+
+<p>Clean the project (not exactly needed)</p>
+
+<p>You are good to go !</p>
+
+<p>参考：</p>
+
+<ol>
+<li><p><a href="http://stackoverflow.com/questions/9923161/getting-classnotfound-error-after-updating-from-adt-16-to-adt-17">http://stackoverflow.com/questions/9923161/getting-classnotfound-error-after-updating-from-adt-16-to-adt-17</a></p></li>
+<li><p><a href="http://android.foxykeep.com/dev/how-to-fix-the-classdefnotfounderror-with-adt-17">http://android.foxykeep.com/dev/how-to-fix-the-classdefnotfounderror-with-adt-17</a></p></li>
+<li><p><a href="http://www.eoeandroid.com/thread-165493-1-1.html">http://www.eoeandroid.com/thread-165493-1-1.html</a></p></li>
+</ol>
+</li>
+<li><p>问题二：
+Eclipse每次run都重新开启一个新的emulator运行</p>
+
+<p>解决方案：</p>
+
+<p>在点击 <code>Run as</code> ⇒<code>Android Application</code>以后，选择弹出窗口左下方的 <code>use same device for furture launches</code></p></li>
+</ul>
+
 ]]></content>
   </entry>
   
@@ -168,149 +250,6 @@ public boolean KeyDown(int keyCode, KeyEvent event) {
    } 
 }
 </code></pre>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[AndroidManifest.xml部分属性说明]]></title>
-    <link href="i-chou.com/blog/2012/04/12/androidmanifest-dot-xmlbu-fen-shu-xing-shuo-ming/"/>
-    <updated>2012-04-12T19:44:38+08:00</updated>
-    <id>i-chou.com/blog/2012/04/12/androidmanifest-dot-xmlbu-fen-shu-xing-shuo-ming</id>
-    <content type="html"><![CDATA[<ul>
-<li><p>android:allowTaskReparenting</p>
-
-<p>  用法<code>&lt;application android:allowTaskReparenting="true/false"&gt;&lt;/application&gt;</code>
-  是否允许Activity更换从属的任务，比如从短信息任务 切换到浏览器任务。用来标记Activity能否从启动的Task移动到有着affinity的Task（当这个Task进入到前台时）—— “true”，表示能移动，“false”，表示它必须呆在启动时呆在的那个Task里。</p>
-
-<p>  如果这个特性没有被设定，设定到<code>&lt;application&gt;</code>元素上的<code>allowTaskReparenting</code>特性的值会应用到<code>Activity</code>上。默认值为“false”。</p>
-
-<p>  一般来说，当Activity启动后，它就与启动它的Task关联，并且在那里耗尽它的整个生命周期。当当前的Task不再显示时，你可以使用这个特性来 强制Activity移动到有着<code>affinity</code>的Task中。典型用法是：把一个应用程序的Activity移到另一个应用程序的主Task中。</p>
-
-<p>  例如，如果e－mail中包含一个web页的链接，点击它就会启动一个Activity来显示这个页面。这个Activity是由Browser应用程序 定义的，但是，现在它作为<code>e－mail Task</code>的一部分。如果它重新宿主到<code>Browser Task</code>里，当Browser下一次进入到前台时，它就能被看见，并且，当<code>e－mail Task</code>再次进入前台时，就看不到它了。</p>
-
-<p>  Actvity的<code>affinity</code>是由<code>taskAffinity</code>特性定义的。Task的<code>affinity</code>是通过读取根Activity的<code>affinity</code> 决定。因此，根据定义，根Activity总是位于相同<code>affinity</code>的Task里。由于启动模式为“singleTask”和 “singleInstance”的Activity只能位于Task的底部，因此，重新宿主只能限于“standard”和“singleTop”模 式。</p></li>
-<li><p>android:alwaysRetainTaskState</p>
-
-<p>  用法<code>&lt;activity android:alwaysRetainTaskState="true/false"&gt;&lt;/activity&gt;</code>
-  用来标记Activity所在的Task的状态是否总是由系统来保持——“true”，表示总是；“false”，表示在某种情形下允许系统恢复Task 到它的初始化状态。默认值是“false”。这个特性只针对Task的根Activity有意义；对其它Activity来说，忽略之。
-  一般来说，特定的情形如当用户从主画面重新选择这个Task时，系统会对这个Task进行清理（从stack中删除位于根Activity之上的所有Activivity）。典型的情况，当用户有一段时间没有访问这个Task时也会这么做，例如30分钟。
-  然而，当这个特性设为“true”时，用户总是能回到这个Task的最新状态，无论他们是如何启动的。这非常有用，例如，像Browser应用程序，这里有很多的状态（例如多个打开的Tab），用户不想丢失这些状态。</p></li>
-<li><p>android:clearTaskOnLanunch</p>
-
-<p>   用法<code>&lt;activity android:clearTaskOnLanunch=”true/false”&gt;&lt;/activity&gt;</code>
-   用来标记是否从Task中清除所有的Activity，除了根Activity外（每当从主画面重新启动时）——“true”，表示总是清除至它的 根 Activity，“false”表示不。默认值是“false”。这个特性只对启动一个新的Task的Activity（根Activity）有意义； 对Task中其它的Activity忽略。
-   当这个值为“true”，每次用户重新启动这个Task时，都会进入到它的根Activity中，不管这个Task最后在做些什么，也不管用户是使 用 BACK还是HOME离开的。当这个值为“false”时，可能会在一些情形下（参考alwaysRetainTaskState特性）清除Task的 Activity，但不总是。
-   假设，某人从主画面启动了Activity P，并从那里迁移至Activity Q。接下来用户按下HOME，然后返回Activity P。一般，用户可能见到的是Activity Q，因为它是P的Task中最后工作的内容。然而，如果P设定这个特性为“true”，当用户按下HOME并使这个Task再次进入前台时，其上的所有的 Activity(在这里是Q)都将被清除。因此，当返回到这个Task时，用户只能看到P。
-  如果这个特性和<code>allowTaskReparenting</code>都设定为“true”，那些能重新宿主的Activity会移动到共享<code>affinity</code>的Task中；剩下的Activity都将被抛弃，如上所述。</p></li>
-<li><p>android:configChanges</p>
-
-<p>  当配置list发生修改时， 是否调用 <code>onConfigurationChanged()</code> 方法 比如 &ldquo;locale|navigation|orientation&rdquo;.
-  举例：在按下power键时，直接在应用程序里onPause处理就好。当app是竖屏时，这样处理没问题。但是当app是横屏时，按下power 键，app会强制回到竖屏，并且会重新调用activity的<code>onCreate</code>。很多时候这不是预期结果，所以就会用到 <code>android:configChanges</code>。</p>
-
-<p>  在配置文件里设置<code>android:configChanges＝”keyboardHidden|orientation”</code>，这样在屏幕方向改变的时候就 不会重新调用activity的<code>onCreate()</code>方法，而是调用<code>onConfigurationChanged()</code>,然后在activity里面重在 下。</p></li>
-<li><p>android:enabled</p>
-
-<p>  activity 是否可以被实例化
-  用法：<code>&lt;activity android:enabled="true"&gt;&lt;/activity&gt;</code></p></li>
-<li><p>android:excludeFromRecents</p>
-
-<p>  是否可被显示在最近打开的activity列表里
-  用法：<code>&lt;activity android:excludeFromRecents="true"&gt;&lt;/activity&gt;</code></p></li>
-<li><p>android:exported</p>
-
-<p>  是否允许activity被其它程序调用</p></li>
-<li><p>android:finishOnTaskLaunch</p>
-
-<p>  用来标记当用户再次启动它的Task（在主画面选择这个Task）时已经存在的Activity实例是否要关闭（结束）——“true”，表示应该关闭，“false”表示不关闭。默认值是“false”。
-  如果这个特性和<code>allowTaskReparenting</code>都设定为“true”，这个特性胜出。Activity的<code>affinity</code>忽略。这个 Activity不会重新宿主，但是会销毁。</p></li>
-<li><p>android.icon</p>
-
-<p>  用法：<code>&lt;application android:icon="@drawable/xx_icon"&gt;&lt;/application&gt;</code>,加在应用程序图标</p></li>
-<li><p>android:label</p>
-
-<p>  定义了每个title栏的名称，但是优先级低于activity中的<code>setTitle()</code></p></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Android应用开发之（优化布局层次结构）]]></title>
-    <link href="i-chou.com/blog/2012/02/07/androidying-yong-kai-fa-zhi-%28you-hua-bu-ju-ceng-ci-jie-gou-%29/"/>
-    <updated>2012-02-07T14:00:58+08:00</updated>
-    <id>i-chou.com/blog/2012/02/07/androidying-yong-kai-fa-zhi-(you-hua-bu-ju-ceng-ci-jie-gou-)</id>
-    <content type="html"><![CDATA[<p>有一个常见的错误看法：只使用基础的布局结构会生产高效的布局。然而，每个您程序中的每个控件和布局都需要初始化、布局位置、和绘制。例如使用嵌套的LinearLayout可以导致很多的层次结构。更严重的是，如果在嵌套的LinearLayout中使用layout_weight参数将会导致更加严重的性能问题，因为里面的控件在计算大小的时候会计算两次。如果在<a href="http://developer.android.com/reference/android/widget/ListView.html">ListView</a> 或者 <a href="http://developer.android.com/reference/android/widget/GridView.html">GridView</a>中使用则会更加严重。</p>
-
-<p>这节课程将会介绍如何使用 <a href="http://developer.android.com/guide/developing/tools/hierarchy-viewer.html">Heirachy Viewer</a> 和<a href="http://developer.android.com/guide/developing/tools/layoutopt.html">Layoutopt</a> 工具来检查和优化布局。</p>
-
-<p>检查布局</p>
-
-<p>在 Android SDK 中包含了一个href=&ldquo;<a href="http://developer.android.com/guide/developing/tools/hierarchy-viewer.html">http://developer.android.com/guide/developing/tools/hierarchy-viewer.html</a>&rdquo;>Heirachy Viewer 工具，使用该工具可以在您的程序运行的时候分析程序的布局。使用该工具来发现布局中的瓶颈所在。</p>
-
-<p>Hierarchy Viewer 让你选择其连接的设备或者模拟器中的一个运行中的程序，然后显示该界面的布局树形结构。在每个控件方块中的交通灯分别代表 计算尺寸(Measure)、布局子控件(Layout)、和绘制的性能，通过颜色来帮助您分析潜在的问题。</p>
-
-<p>例如，下图显示了一个用于 <a href="http://developer.android.com/reference/android/widget/ListView.html">ListView</a>的布局。该布局在左边显示一个小图标，在图标右边显示两行文本内容。当该布局会被多次使用(inflated)到的时候性能问题就比较明显， 比如这个例子 由于这个布局是在ListView中使用的， 所以每个ListView中的一项都会解析下该布局然后绘制出来。</p>
-
-<p><img src="http://m1.img.libdd.com/farm3/d/2012/0202/15/B69AD2A52C25B8A5892A0891C2C54659_B500_900_317_59.PNG"/></p>
-
-<p>hierarchyviewer 工具位于 <sdk>/tools/ 目录。打开后 Hierarchy Viewer 将显示一个可用设备的列表和正在运行的界面。点击 Load View Hierarchy 来查看选中的界面的布局分析结果。例如，下图显示了上面定义的ListView中每一项的布局结果。</p>
-
-<p><img src="http://m2.img.libdd.com/farm3/d/2012/0202/15/8FD77AA2EA1FBDF4D7D1DA76D3E940A7_B500_900_457_235.PNG"/></p>
-
-<p>查看渲染一个View的时间</p>
-
-<p>上面左侧的图中，您可以看到有三层布局结构。在每个方块上面点击可以查看显示该控件所需要的时间。对于需要时间比较长的地方就是我们应该去重点优化的地方。</p>
-
-<p>显示一个列表条目所需要的时间如下：</p>
-
-<p><img src="http://m2.img.libdd.com/farm3/d/2012/0202/15/96F675B3672137311CFAC7B280F4EA9B_B500_900_144_244.PNG"/></p>
-
-<p>Measure: 0.977ms</p>
-
-<p>Layout: 0.167ms</p>
-
-<p>Draw: 2.717ms</p>
-
-<p>改进布局</p>
-
-<p>上面的布局被一个嵌套的 <a href="http://developer.android.com/reference/android/widget/LinearLayout.html">LinearLayout</a> 占用了过多的解析时间，如果把布局的嵌套层次降低可能会提高性能.使用 <a href="http://developer.android.com/reference/android/widget/RelativeLayout.html">RelativeLayout</a> 可以实现这个功能。使用<a href="http://developer.android.com/reference/android/widget/RelativeLayout.html">RelativeLayout</a>后可以看到现在布局由3层变为了2层，分析图如下</p>
-
-<p>使用RelativeLayout后的层次结构</p>
-
-<p><img src="http://m2.img.libdd.com/farm3/d/2012/0202/15/11133BBC926776F3A1730AEA91818EA3_B500_900_376_293.PNG"/></p>
-
-<p>Figure 4. Layout hierarchy for the layout in figure 1,
-using <a href="http://developer.android.com/reference/android/widget/RelativeLayout.html">RelativeLayout</a>.</p>
-
-<p>现在显示一个列表条目所需要的时间如下：</p>
-
-<p>Measure: 0.598ms</p>
-
-<p>Layout: 0.110ms</p>
-
-<p>Draw: 2.146ms</p>
-
-<p>看起来是一个很微弱的提升，但是这个时间可以叠加多次，应为每个列表条目在显示的时候都有解析该布局。</p>
-
-<p>当在<a href="http://developer.android.com/reference/android/widget/LinearLayout.html">LinearLayout</a> 中使用 layout_weight 就又不一样了，这样会增加计算控件大小的时间。在使用layout_weight的时候您应该多考虑考虑。</p>
-
-<p>使用 Layoutopt</p>
-
-<p>在您的最终布局文件中运行下 <a href="http://developer.android.com/tools/help/layoutopt.html">layoutopt</a> 工具来看看还有没有可以优化的空间是个很好的习惯。 Layoutopt 工具也位于SDK的 <em>tools/</em> 目录下，您可以用该工具优化单个文件也可以优化一个目录中的所有文件。</p>
-
-<p>当您在单个文件中运行 layoutopt 后，该工具会打印出出现问题的行号和问题的描述，有些问题也会给出优化方案。例如</p>
-
-<pre><code>$ layoutopt samples/
-    samples/compound.xml
-        7:23 The root-level &lt;FrameLayout/&gt; can be replaced with &lt;merge/&gt;
-        11:21 This LinearLayout layout or its FrameLayout parent is useless
-    samples/simple.xml
-        7:7 The root-level &lt;FrameLayout/&gt; can be replaced with &lt;merge/&gt;
-</code></pre>
-
-<p>当你修改了布局文件以后，可以再次运行一下 Hierarchy Viewer 来看看具体提升了多少性能。</p>
-
-<p>from <a href="http://androiddeveloper.diandian.com/post/2012-02-02/16147388">Android Developer</a></p>
 ]]></content>
   </entry>
   

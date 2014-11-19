@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>iOS Define for Coding Faster - i-chou's tech blog</title>
+  <meta name="author" content="i-chou">
+
+  
+  <meta name="description" content="以下是我在开发中常用的可以提高开发效率的宏 /* fast make */ #define ccp(__X__,__Y__) CGPointMake(__X__,__Y__) #define ccs(__W__,__H__) CGSizeMake(__W__,__H__) #define ccr( &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="i-chou.com/blog/2013/12/30/ios-define-for-coding-faster">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">i-chou's tech blog</a></h1>
+  
+    <h2>Android iOS</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:i-chou.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">iOS Define for Coding Faster</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-30T16:11:06+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2013</time>
+        
+        
+          | <a href="#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>以下是我在开发中常用的可以提高开发效率的宏</p>
+
+<pre><code>/* fast make */
+
+#define ccp(__X__,__Y__)             CGPointMake(__X__,__Y__)
+
+#define ccs(__W__,__H__)             CGSizeMake(__W__,__H__)
+
+#define ccr(__X__,__Y__,__W__,__H__) CGRectMake(__X__,__Y__,__W__,__H__)
+
+
+/* fast creation */
+
+#define IMG(name)       [UIImage imageNamed:(name)]
+
+#define IMG_VIEW(name)  [[UIImageView alloc] initWithImage:[UIImage imageNamed:(name)]]
+
+#define LocalStr(key)   NSLocalizedString(key,key)
+
+#define SFONT(size)     [UIFont systemFontOfSize:(size)]
+
+#define FONT(s)         [UIFont fontWithName:@"Arial" size:(s)]
+
+#define BFONT(size)     [UIFont boldSystemFontOfSize:(size)]
+
+#define BUNDLE(name)    [[NSBundle mainBundle] pathForResource:(name)]
+
+#define URL(url)        [NSURL URLWithString:url]
+
+
+/* fast appending */
+
+#define ADD(__x__, __y__) [__x__ stringByAppendingString:__y__]
+
+
+/* iOS_Version */
+
+#define IS_IOS7 ((floor(NSFoundationVersionNumber) &gt; NSFoundationVersionNumber_iOS_6_1))
+
+
+/* Components size */
+
+#define SCREEN_WIDTH         [[UIScreen mainScreen] bounds].size.width
+
+#define SCREEN_HEIGHT        [[UIScreen mainScreen] bounds].size.height
+
+#define NAV_BAR_HEIGHT       44
+
+#define NAV_BAR_HEIGHT_IOS7  64
+
+#define TOOL_BAR_HEIGHT      44
+
+#define TAB_BAR_HEIGHT       49
+
+#define STATUS_BAR_HEIGHT    20
+
+
+/* current language */
+
+#define CN 1
+
+#define ENG 2
+
+#define JAN 3
+
+
+/* color helper */
+
+#define COLORRGBA(c,a) [UIColor colorWithRed:((c&gt;&gt;16)&amp;0xFF)/255.0 \
+                                   green:((c&gt;&gt;8)&amp;0xFF)/255.0   \
+                                    blue:(c&amp;0xFF)/255.0        \
+                                   alpha:a]
+
+#define COLORRGB(c)    [UIColor colorWithRed:((c&gt;&gt;16)&amp;0xFF)/255.0 \
+                                   green:((c&gt;&gt;8)&amp;0xFF)/255.0   \
+                                    blue:(c&amp;0xFF)/255.0        \
+                                   alpha:1.0]
+
+
+/* log helper */
+
+#define LOG_STR(str)     NSLog(@"%@", str)
+
+#define LOG_INT(int)     NSLog(@"%d", int)
+
+#define LOG_FLOAT(float) NSLog(@"%f", float)
+
+#define LOG_ERROR(exception,reason) NSLog(@"function:%s | line:%d | exception:%@ | reason:%@",__func__, __LINE__,exception,reason)
+</code></pre>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">i-chou</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-12-30T16:11:06+08:00" pubdate data-updated="true">Dec 30<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ios/'>iOS</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+<div class="bshare-custom"><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到人人网" class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count">0</span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/" title="Previous Post: Unable to process application info.plist validation at this time due to a general error">&laquo; Unable to process application info.plist validation at this time due to a general error</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian/" title="Next Post: ios7.1 Beta版升级事件">ios7.1 Beta版升级事件 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"i-chou"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
+<li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
+<li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (20)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/15/ios-sdk-8-symbol-nsurlauthenticationmethodservertrust-not-found/">Ios Sdk 8 Symbol _NSURLAuthenticationMethodServerTrust Not Found</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/">项目协作中Xcode Search Paths问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/11/those-pop-plug-ins-for-xcode/">Those Pop Plug-ins for Xcode</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/21/xcode5-dot-1-updated-to-beta5/">Xcode5.1 Updated to Beta5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian/">ios7.1 Beta版升级事件</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>新浪微薄: <a href="http://weibo.com/passerbied">@Bluethroat</a><br/>
+  	 Tumblr: <a href="http://passerbied.tumblr.com/">@Passerbied</a>
+  </p>
+</section>
+
+<section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - i-chou -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

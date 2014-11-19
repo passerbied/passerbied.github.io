@@ -1,0 +1,323 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>iOS 7: 如何为iPhone 5S编译64位应用 - i-chou's tech blog</title>
+  <meta name="author" content="i-chou">
+
+  
+  <meta name="description" content="随着iPhone 5S的推出，大家开始关心5S上所使用的64位CPU A7。 除了关心A7的性能以外，大家还会关心一个问题，那就是使用A7的64位系统对应用有没有什么要求。特别是应用开发者，大家都比较关心我们的应用如何迁移到64位的系统上来，以充分发挥A7的能力。其实这些问题都可以在苹果的官方文档 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="i-chou.com/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-.">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="i-chou's tech blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  
+
+<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">i-chou's tech blog</a></h1>
+  
+    <h2>Android iOS</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="http://google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="q" value="site:i-chou.com" />
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+  <li><a href="/about/">About Me</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">iOS 7: 如何为iPhone 5S编译64位应用</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-16T14:22:10+08:00" pubdate data-updated="true">Oct 16<span>th</span>, 2013</time>
+        
+        
+          | <a href="#comments">Comments</a>
+         
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h5>随着iPhone 5S的推出，大家开始关心5S上所使用的64位CPU A7。</h5>
+
+<p>除了关心A7的性能以外，大家还会关心一个问题，那就是使用A7的64位系统对应用有没有什么要求。特别是应用开发者，大家都比较关心我们的应用如何迁移到64位的系统上来，以充分发挥A7的能力。其实这些问题都可以在苹果的官方文档<em>《64-Bit transition Guide for Cocoa Touch》</em>中找到答案。</p>
+
+<p>为了大家方便，我将<em>《64-Bit transition Guide for Cocoa Touch》</em>中的一些重点整理了一下，希望可以为大家节约一些详细阅读文档的时间，如果我理解有不对的地方请大家指正。</p>
+
+<p>首先，A7使用的是ARM V8架构，除了使用64位的地址总线和64位的寄存器以外，还增加了寄存器的数量，目前A7中的整数和浮点数寄存器是A6的两倍。</p>
+
+<p>这里需要强调的是，寄存器的增加大大提高了程序的运行速度。将CPU由32位提高到64位，最主要的改变增大了寻址能力，可以突破32位系统只能访问3G内存的限制（感谢 wanglang3081 指出这里的问题，32位系统在理论上可以访问4G内存，因为2的32次方约等于4 290 000 000，很多32位系统只能访问3G左右的内存是因为有一大部分地址被分配给I/O系统了，所以总体可用内存就不足4G了。），但是，32位到64位的改变并不一定意味着程序运行速度的提高，甚至有些情况下会因为64位系统中的数据占用内存变大而导致程序运行速度变慢。而寄存器数量的增加，则直接提高了程序运行速度，当然，前提是你的应用需要重新为64位系统编译一遍，让程序可以充分使用所有的寄存器。</p>
+
+<h5>使用Xcode 5可以很方便地将以前的应用编译成64位程序，基本过程如下：</h5>
+
+<ol>
+<li><p>使用Xcode 5 打开原有项目。</p></li>
+<li><p>将支持的设备改成“iOS 7”。</p></li>
+<li><p>在<em>“Build Setting”</em>中将<em>“Architectures”</em>改成<em>“Standard Architectures (including 64-bit)”</em>。</p></li>
+<li><p>运行测试程序，解决编译过程出现的问题。</p></li>
+</ol>
+
+
+<p>其中第4步是关键，具体会遇到什么问题和原来程序的设计有关，包括使用数据类型的方式是否标准等，后面会继续讨论细节，其实<em>《64-Bit transition Guide for Cocoa Touch》</em>一书主要就是讲这些细节。</p>
+
+<p>在讨论细节之前有一些较为宏观的内容大家可以了解一下。</p>
+
+<p>Xcode 5编译的iOS 7程序包含了32位和64位两套二进制代码，在32位的iOS系统上会调用32位的二进制代码，在64位系统上会调用64位的二进制代码，以此来解决向后兼容的问题。</p>
+
+<p>同时，考虑到很多32位的程序可能在没有重新编译的情况下部署到64位系统上，64位的iOS系统中带有两套FrameWork，一套是32位的，一套是64位的。</p>
+
+<p>当64位的iOS系统运行原来的32位程序时，系统会调用32位的FrameWork作为底层支撑，当系统运行64位程序时，系统会调用64位的FrameWork作为底层支撑。</p>
+
+<p>也就是说，当一个iPhone 5S上同时运行32位程序和64位程序时，系统同时将32位和64位两套FrameWork载入了内存中，所以消耗的内存也比较多。</p>
+
+<p>如果一台64位的iOS设备上运行的所有程序都是为64位系统编译过的，iOS系统将只载入64位的FrameWork，这将节省好多内存。所以，<strong>如果大家都可以快速将程序传换成64位的，iOS将跑得更快。真的是“大家好才是真的好”。</strong></p>
+
+<p>后面我们来看看一些为64位系统调整程序的技术细节。</p>
+
+<p>32位的iOS系统和64位的iOS系统主要的差别有两个，一个是数据类型的差别，一个是过程调用方法的差别。</p>
+
+<p>在数据类型上，主要的变化是指针类型(<em>Pointer</em>)和长整数类型(<em>long</em>)的长度变化和内存对齐方式的变化，同时也导致了更高级别数据类型的变化，如<em>NSInteger</em>的长度也有变化。</p>
+
+<p>在过程调用方法上，因为ARM V8 和ARM V7具有不同数量的寄存器，具有不同的过程调用约定，所以32位系统和64位系统在汇编层级是不同的。</p>
+
+<h6>根据以上两方面的变化，书中总结了以下要点，开发人员根据以下要点来检查原来的32位代码就差不多可以将应用移植到64位系统上了：</h6>
+
+<ul>
+<li><p>不要将长整型数据(long)赋予整型(int)</p>
+
+<p>这种代码在32位系统上没有问题，因为在32位系统中long和int的长度是一样的，不过在64位系统中就有可能出问题，因为64位系统中long比int长，将long值赋予int将导致数据丢失。</p></li>
+<li><p>不要将指针类型(Pointer)赋予整型(int)</p>
+
+<p>为了方便地址计算，有时程序员会将指针类型赋予整型，这种代码在32位系统上没有问题，因为在32位系统中Pointer和int的长度是一样的，不过在64位系统中就会有问题，因为64位系统中Pointer比int长，将Pointer值赋予int将导致地址数据丢失，最终导致严重问题。</p></li>
+<li><p>留意那些和数位相关的数值计算</p>
+
+<p>比如掩码技术，如果使用一个long类型的掩码，转到64位系统后高位都是0，计算出来的结果可能不符合预期。还有无符号整数和有符号整数的混用等。</p></li>
+<li><p>留意对齐方式带来的变化</p>
+
+<p>如果在32位系统上定义一个结构包含两个long类型，第二个long数值的偏移地址是4，可以通过结构地址+4的方式获取，但是在64位系统上就不行了，因为在64位系统中第二个long数值的偏移地址是8。</p></li>
+<li><p>充分考虑在32位应用和64位应用之间的数据交换</p>
+
+<p>因为用户会通过网络交换数据，同时用户保存的数据也可能通过备份等方式在32位系统和64位系统之间切换，所以应用在保存和发送流数据的时候一定要考虑充分。比如数据在32位系统中保存，在64位系统中能否正常打开，或者反过来，在64位系统中保存，在32位系统中打开是否正常。</p></li>
+<li><p>重写所有汇编代码</p>
+
+<p>这点无需说明，如果你在代码中嵌入了汇编代码，你需要参考64位系统的指令集重写汇编代码。</p></li>
+<li><p>不要将可变参数的过程强制转换为定参过程，也不要将定参过程强制转换为可变参数的过程。</p>
+
+<p>这时因为32位系统和64位系统对于这两种过程调用方式的处理方法不同。</p></li>
+</ul>
+
+
+<p>按以上几个重点去检查程序就差不多了，当然，具体的细节还有很多，需要在实际工作中结合代码和调试结果进行分析。</p>
+
+<p>总之，建议具体负责应用迁移的开发者需要完整阅读<em>《64-Bit transition Guide for Cocoa Touch》。</em></p>
+
+<p>来源：<a href="http://blog.csdn.net/keyboardota/article/details/11993883">keyboardOTA的博客</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">i-chou</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2013-10-16T14:22:10+08:00" pubdate data-updated="true">Oct 16<span>th</span>, 2013</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/ios/'>iOS</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  
+  
+</div>
+<div class="bshare-custom"><a title="分享到QQ空间" class="bshare-qzone"></a><a title="分享到新浪微博" class="bshare-sinaminiblog"></a><a title="分享到人人网" class="bshare-renren"></a><a title="分享到腾讯微博" class="bshare-qqmb"></a><a title="分享到网易微博" class="bshare-neteasemb"></a><a title="更多平台" class="bshare-more bshare-more-icon more-style-addthis"></a><span class="BSHARE_COUNT bshare-share-count">0</span></div><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/buttonLite.js#style=-1&amp;uuid=&amp;pophcol=2&amp;lang=zh"></script><script type="text/javascript" charset="utf-8" src="http://static.bshare.cn/b/bshareC0.js"></script>
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/" title="Previous Post: 自定义返回按钮时，iOS7手势返回遇到的问题">&laquo; 自定义返回按钮时，iOS7手势返回遇到的问题</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/" title="Next Post: iOS 7：隐藏的特性和解决之道">iOS 7：隐藏的特性和解决之道 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+
+
+  <section>
+    <h1>Comments</h1>
+    <div id="comments" aria-live="polite"><!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+  var duoshuoQuery = {short_name:"i-chou"};
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] 
+    || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+<!-- Duoshuo Comment END --></div>
+  </section>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Categories</h1>
+  <ul id="categories">
+    <li class='category'><a href='/blog/categories/android/'>Android (7)</a></li>
+<li class='category'><a href='/blog/categories/design/'>Design (1)</a></li>
+<li class='category'><a href='/blog/categories/tech/'>Tech (1)</a></li>
+<li class='category'><a href='/blog/categories/ios/'>iOS (20)</a></li>
+
+  </ul>
+</section><section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/07/15/ios-sdk-8-symbol-nsurlauthenticationmethodservertrust-not-found/">Ios Sdk 8 Symbol _NSURLAuthenticationMethodServerTrust Not Found</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/">项目协作中Xcode Search Paths问题</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/11/those-pop-plug-ins-for-xcode/">Those Pop Plug-ins for Xcode</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/21/xcode5-dot-1-updated-to-beta5/">Xcode5.1 Updated to Beta5</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian/">ios7.1 Beta版升级事件</a>
+      </li>
+    
+  </ul>
+</section>
+<section>
+  <h1>About Me</h1>
+  <p>新浪微薄: <a href="http://weibo.com/passerbied">@Bluethroat</a><br/>
+  	 Tumblr: <a href="http://passerbied.tumblr.com/">@Passerbied</a>
+  </p>
+</section>
+
+<section>
+<h1>Recent Comments</h1>
+<ul class="ds-recent-comments" data-num-items="10" data-show-avatars="0" data-show-time="0" data-show-title="0" data-show-admin="0" data-excerpt-length="18"></ul>
+
+</section>
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - i-chou -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

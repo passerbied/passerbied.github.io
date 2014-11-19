@@ -19,8 +19,20 @@
         <lastmod>2013-12-25T12:29:10+08:00</lastmod>
     </url>
     <url>
+        <loc>i-chou.com/blog/2012/04/23/dang-eclipseyu-dao-adtsheng-ji/</loc>
+        <lastmod>2013-12-30T15:37:27+08:00</lastmod>
+    </url>
+    <url>
         <loc>i-chou.com/blog/2012/04/26/googlechan-pin-ti-yan-qian-duan-she-ji/</loc>
         <lastmod>2013-12-25T14:02:28+08:00</lastmod>
+    </url>
+    <url>
+        <loc>i-chou.com/blog/2012/06/20/android-popupwindowde-shi-yong/</loc>
+        <lastmod>2013-12-29T14:38:27+08:00</lastmod>
+    </url>
+    <url>
+        <loc>i-chou.com/blog/2012/07/25/xperia-tm-gx-uigua-pei-yu-dao-de-xiao-wen-ti/</loc>
+        <lastmod>2013-12-30T15:47:35+08:00</lastmod>
     </url>
     <url>
         <loc>i-chou.com/blog/2012/12/11/google-api-fang-shi-zhi-zuo-bing-zhuang-tu/</loc>
@@ -46,7 +58,7 @@
     </url>
     <url>
         <loc>i-chou.com/blog/2013/08/13/hide-statusbar-also-work-on-ios7/</loc>
-        <lastmod>2013-12-25T12:29:10+08:00</lastmod>
+        <lastmod>2013-12-27T15:45:57+08:00</lastmod>
     </url>
     <url>
         <loc>i-chou.com/blog/2013/08/15/xcode5dai-lai-de-%5B%3F%5D-ge-xiao-wen-ti/</loc>
@@ -62,13 +74,21 @@
         <loc>
             i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/
         </loc>
-        <lastmod>2013-12-25T12:29:10+08:00</lastmod>
+        <lastmod>2013-12-30T16:23:56+08:00</lastmod>
     </url>
     <url>
         <loc>
             i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/
         </loc>
         <lastmod>2013-12-25T12:29:10+08:00</lastmod>
+    </url>
+    <url>
+        <loc>i-chou.com/blog/2013/10/16/ios-7-ru-he-wei-iphone-5sbian-yi-64wei-ying-yong-./</loc>
+        <lastmod>2013-12-29T14:32:04+08:00</lastmod>
+    </url>
+    <url>
+        <loc>i-chou.com/blog/2013/11/01/ios-7%3Ayin-cang-de-te-xing-he-jie-jue-zhi-dao/</loc>
+        <lastmod>2013-12-29T14:17:25+08:00</lastmod>
     </url>
     <url>
         <loc>
@@ -81,8 +101,40 @@
         <lastmod>2013-12-25T12:29:10+08:00</lastmod>
     </url>
     <url>
-        <loc>i-chou.com/blog/2013/12/25/hide-statusbar-on-ios/</loc>
-        <lastmod>2013-12-25T18:53:07+08:00</lastmod>
+        <loc>i-chou.com/blog/2013/12/29/use-eclipse-style-shortcutkey-on-xcode/</loc>
+        <lastmod>2013-12-30T12:51:31+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            i-chou.com/blog/2013/12/30/unable-to-process-application-info-dot-plist-validation-at-this-time-due-to-a-general-error/
+        </loc>
+        <lastmod>2014-01-06T17:50:26+08:00</lastmod>
+    </url>
+    <url>
+        <loc>i-chou.com/blog/2013/12/30/ios-define-for-coding-faster/</loc>
+        <lastmod>2013-12-30T16:27:47+08:00</lastmod>
+    </url>
+    <url>
+        <loc>i-chou.com/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian/</loc>
+        <lastmod>2014-02-10T16:31:50+08:00</lastmod>
+    </url>
+    <url>
+        <loc>i-chou.com/blog/2014/02/21/xcode5-dot-1-updated-to-beta5/</loc>
+        <lastmod>2014-02-21T17:06:52+08:00</lastmod>
+    </url>
+    <url>
+        <loc>i-chou.com/blog/2014/03/11/those-pop-plug-ins-for-xcode/</loc>
+        <lastmod>2014-03-11T15:51:29+08:00</lastmod>
+    </url>
+    <url>
+        <loc>i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/</loc>
+        <lastmod>2014-03-12T16:28:52+08:00</lastmod>
+    </url>
+    <url>
+        <loc>
+            i-chou.com/blog/2014/07/15/ios-sdk-8-symbol-nsurlauthenticationmethodservertrust-not-found/
+        </loc>
+        <lastmod>2014-07-15T10:38:57+08:00</lastmod>
     </url>
     <url>
         <loc>i-chou.com/404.html</loc>
@@ -90,7 +142,7 @@
     </url>
     <url>
         <loc>i-chou.com/about/</loc>
-        <lastmod>2013-12-26T14:31:25+08:00</lastmod>
+        <lastmod>2014-08-08T15:40:49+08:00</lastmod>
     </url>
     <url>
         <loc>i-chou.com/about/photo.html</loc>
@@ -102,11 +154,11 @@
     </url>
     <url>
         <loc>i-chou.com/blog/archives/</loc>
-        <lastmod>2013-12-25T18:53:07+08:00</lastmod>
+        <lastmod>2014-07-15T10:38:57+08:00</lastmod>
     </url>
     <url>
         <loc>i-chou.com/</loc>
-        <lastmod>2013-12-25T18:53:07+08:00</lastmod>
+        <lastmod>2014-07-15T10:38:57+08:00</lastmod>
     </url>
     <url>
         <loc>i-chou.com/robots.txt</loc>

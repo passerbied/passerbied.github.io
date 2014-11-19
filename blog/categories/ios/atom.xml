@@ -4,7 +4,7 @@
   <title><![CDATA[Category: iOS | i-chou's tech blog]]></title>
   <link href="i-chou.com/blog/categories/ios/atom.xml" rel="self"/>
   <link href="i-chou.com/"/>
-  <updated>2013-12-26T14:31:55+08:00</updated>
+  <updated>2014-11-19T10:14:06+08:00</updated>
   <id>i-chou.com/</id>
   <author>
     <name><![CDATA[i-chou]]></name>
@@ -14,236 +14,221 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Hide StatusBar on iOS]]></title>
-    <link href="i-chou.com/blog/2013/12/25/hide-statusbar-on-ios/"/>
-    <updated>2013-12-25T18:49:05+08:00</updated>
-    <id>i-chou.com/blog/2013/12/25/hide-statusbar-on-ios</id>
-    <content type="html"><![CDATA[<p>在<code>Info.plist</code>中添加如下两行键值对:</p>
+    <title type="html"><![CDATA[项目协作中Xcode Search Paths问题]]></title>
+    <link href="i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti/"/>
+    <updated>2014-03-12T12:23:11+08:00</updated>
+    <id>i-chou.com/blog/2014/03/12/xiang-mu-xie-zuo-zhong-xcode-search-pathswen-ti</id>
+    <content type="html"><![CDATA[<p>Xcode引用库的时候，编译器会自动添加一个库文件的绝对路径进去，这种情况下，如果其他人从repo上pull下来编译项目就容易出问题，因为找不到之前那个人引用路径下存放的文件了嘛。</p>
 
-<ol>
-<li><p><code>Status bar is initially hidden</code>（值设置成<code>YES</code>）</p></li>
-<li><p><code>View controller-based status bar appearance</code>（值设置成<code>NO</code>）</p></li>
-</ol>
+<p>那么，引用库或使用CocoaPods的时候，要注意手动把Build Settings里面的<code>Framework Search Paths</code>,<code>Header Search Paths</code>,<code>Library Search Paths</code>中的绝对路径都删掉，改成相对路径，最简单的办法时，全部删掉，然后加入一个<code>../**</code>即可。</p>
 
+<p>顺便，最近Xcode5.1升级导致诸多在架构编译层面的问题。其中一个就是Xcode5.1默认是64位编译器编译。</p>
+
+<p>手动关闭的方法是：选中<code>Targets</code>—><code>Build Settings</code>—><code>Architectures</code>。双击<code>Architectures</code>，选择<code>other</code>，删除<code>$(ARCHS_STANDARD)</code>，然后增加<code>armv7</code>和<code>armv7s</code>，clean一下再编译。
+官方不推荐将<code>Valid Architectures</code>的内容修改，所以最好使用上面的方法关闭64位编译。</p>
 ]]></content>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[UIKit in Release Notes for iOS 7.1 Beta2]]></title>
-    <link href="i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2/"/>
-    <updated>2013-12-17T12:17:22+08:00</updated>
-    <id>i-chou.com/blog/2013/12/17/uikit-in-release-notes-for-ios-7-dot-1-beta2</id>
-    <content type="html"><![CDATA[<p>Known Issues</p>
-
-<ul>
-<li><p>If a <code>UITextField</code> or a <code>UILabel</code> that is baseline aligned with constraints has attributes that change after the constraints have been added, the layout may be incorrect. The exception to this is <code>-setFont:</code> on <code>UILabel</code>, which should work as expected.</p>
-
-<p>  <strong>Workaround:</strong> Avoid making changes in <code>UITextField</code> or <code>UILabel</code> after adding baseline-alignment constraints. If you must make changes, you should remove the constraints and then reapply them afterward. Note that this is a performance hit, so don’t do it unless it is necessary.</p></li>
-<li><p>The <code>backIndicatorTransitionMask</code> from a storyboard or a xib will not be interpreted correctly at runtime.</p>
-
-<p>  <strong>Workaround:</strong> Set the <code>backIndicatorTransitionMask</code> in code.</p></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[文本自定义行高以后高度自适应的解决方法]]></title>
-    <link href="i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa/"/>
-    <updated>2013-12-13T00:09:36+08:00</updated>
-    <id>i-chou.com/blog/2013/12/13/wen-ben-zi-ding-yi-xing-gao-yi-hou-gao-du-zi-gua-ying-de-jie-jue-fang-fa</id>
-    <content type="html"><![CDATA[<p>本文要说的是，<em>Frame高度</em>根据文本内容自适应，而非<code>UITextView</code>的滚动显示哦～（当然不是滚动显示，那属性就是UITextView继承过来直接用的）</p>
-
-<ul>
-<li><p>iOS7以前的最佳解决方案：</p>
-
-<p>  自定义TextView继承<code>UITextView</code>并加入以下方法。<em>1.5em</em>可修改</p>
-
-<pre><code>  - (id)styleString {
-      return [[super styleString] stringByAppendingString:@"; line-height: 1.5em"];
-  }
-</code></pre>
-
-<p>  然后在通过下面方法给frame赋值</p>
-
-<pre><code>  CGRect frame = _textView.frame;
-  frame.size.height = _textView.contentSize.height;
-  _textView.frame = frame;
-</code></pre>
-
-<p>  需要注意的是<code>contentSize</code>只在<code>UITextView</code>被<strong>addSubview</strong>以后才有效，所以要先把它加到画面上再，给它一个初始的frame，让它先得以计算出自己的<code>contentSize</code>。</p></li>
-<li><p>iOS7的最佳解决方案是：</p>
-
-<p>  自定义TextView继承<code>UITextView</code>实现下面的<code>init</code>方法，给textView设定行高。</p>
-
-<pre><code>  - (id)initWithFrame:(CGRect)frame lineHeigth:(float)lineHeigth font:(UIFont *)font {
-
-       self = [super initWithFrame:frame];
-       if (self) {
-                    NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc] init];
-
-                    paragraphStyle.lineHeightMultiple = lineHeigth;
-                    paragraphStyle.maximumLineHeight = lineHeigth;
-                    paragraphStyle.minimumLineHeight = lineHeigth;
-                    NSDictionary *ats = 
-                               @{NSFontAttributeName:font,NSParagraphStyleAttributeName : paragraphStyle};
-
-                    self.attributedText = [[NSAttributedString alloc] initWithString:@“ “ attributes:ats];
-                    self.lineHeight = lineHeigth;
-                  }
-        return self;
-  }
-</code></pre>
-
-<p>  然后通过以下方法计算出textView的实际高度，继而确定frame的height。
-因为之前有人说<code>UITextView</code>默认的上下左右padding均为8px，也就是下面16的由来。 所以在计算时要考虑进去才能保证文本显示完整。</p>
-
-<pre><code>  + (float) heightForTextView: (UITextView *)textView WithText: (NSString *) strText lineHeight:(float)height
-  {
-    float fPadding = 16.0;
-    CGSize constraint = CGSizeMake(textView.contentSize.width - fPadding, CGFLOAT_MAX);
-
-    CGSize size = [strText sizeWithFont:textView.font
-                      constrainedToSize:constraint
-                          lineBreakMode:UILineBreakModeWordWrap];
-
-    float fHeight = size.height*height/textView.font.lineHeight + 16.0;
-    return fHeight;
-  }
-</code></pre>
-
-<p>  需要注意的是，本文讲的是自定义行高，所以，在下面方法里加上个<strong>lineHeight</strong>参与计算。</p>
-
-<p>  其实从开发文档看，<a href="https://developer.apple.com/library/ios/documentation/Cocoa/Reference/ApplicationKit/Classes/NSMutableParagraphStyle_Class/Reference/Reference.html">NSMutableParagraphStyle</a> 在iOS6.0及以后都是有效的，但是我不知道为什么在iOS7上计算很精确，在iOS6上，结果却不令人满意。原因仍在调查中。</p>
-
-<p>  不过，幸好有上面说的 &lt;iOS7以前的最佳解决方案> ，要不然就要用&lt;稍微差一点的解决方案>了，那么就顺带说一下&lt;稍微差一点的解决方案>是什么吧^_^</p></li>
-<li><p>稍微差一点的解决</p>
-
-<p>  使用开源控件 > <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a></p>
-
-<p>  这个控件之前由于性能问题一度被我遗弃过，后来版本更新以后，性能上来不少，但是仍然有些bug。我发现的bug就是当<em>字体小于12号，或者当行数过多，并且<strong>lineHeightMultiple</strong>>1</em>的时候，计算高度会存在偏差，行数越多偏差越大。</p>
-
-<p>  那么也就是说，如果你一个文本不需要显示数百行，在此基础上对文本其他属性有追求，并且苦逼的要考虑兼容iOS7以下用户的话，可以使用 <a href="https://github.com/mattt/TTTAttributedLabel">TTTAttributedLabel</a> ，因为这个控件在伴随有 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 的iOS7出来之前还是还是相当牛逼的，而更牛逼的 <a href="https://developer.apple.com/library/ios/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/CustomTextProcessing/CustomTextProcessing.html">Text Kit</a> 让我们在文本显示领域看见了曙光！顺便奉劝一句，要是你的iOS7用户群达到95%以上，就果断抛弃那些抱着3年前的iPhone4而不敢升级系统的陈旧用户吧。</p></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[自定义返回按钮时，iOS7手势返回遇到的问题]]></title>
-    <link href="i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-%2Cios7shou-shi-fan-hui-yu-dao-de-wen-ti/"/>
-    <updated>2013-09-12T23:07:27+08:00</updated>
-    <id>i-chou.com/blog/2013/09/12/zi-ding-yi-fan-hui-an-niu-shi-,ios7shou-shi-fan-hui-yu-dao-de-wen-ti</id>
-    <content type="html"><![CDATA[<p>从iOS7的Beta版开始，就着手做兼容工作，到Beta4的時候，应用已经基本兼容，只是偶然发现，iOS样式的手势返回，也就是用<code>interactivePopGestureRecognizer</code>返回的时候,出现下面一些列问题。各方调研，无果，史无前例（废话，刚出来的7，上哪有例去&mdash;#）。</p>
-
-<ul>
-<li><p>我的应用是自定义的返回按钮图标(默认返回按钮样式不会出现问题3)，为了保险，写了这句代码<code>[self.navigationItem setHidesBackButton:YES]</code>。
-由于自定义返回按钮，所以iOS7自带返回手势无效。在需要的页面加上<code>navigationController.interactivePopGestureRecognizer.delegate = self</code>
-返回手势好用了。</p></li>
-<li><p>于是出现了第二个问题。
-在一级视图中，iOS样式返回的手势滑动一下，然后进入二级视图，发现，画面卡住了，按Home键转入后台，再返回应用，发现并没有Crash掉，而是直接跳到了二级视图里，运行正常了，大家知道push和pop的原理是用进栈出栈完成的，可能因为在一级视图中滑动那一下，影响了视图在栈中的位置。
-好，先解决一下这个问题，一级视图中一定要加入<code>self.navigationController.interactivePopGestureRecognizer.enabled = NO;</code>，先把iOS7手势返回屏蔽掉，到二级视图再用<code>self.navigationController.interactivePopGestureRecognizer.enabled = YES</code>打开。就Ok了。</p></li>
-<li><p>好，第三个问题相继出现（其实是跟第二个一起出来的）。
-手势返回拖动一半，放手，<code>navigationBar</code>上会出现三个小蓝点，而且位置不规律，可以肯定这个不是项目代码或者图片搞出来的东西，一定是SDK自己蹦出來的。
-后台尝试发现<code>UIBarButtonItem</code>的<code>title</code>如果是nil的话，就会有这个问题。
-解决方案：把<code>[self.navigationItem setHidesBackButton:YES];</code>去掉，然後把假装成返回按钮的<code>UIBarButtonItem</code>的<code>title</code>设置成<code>@""</code>。</p></li>
-<li><p>大功告成。可见设计要是不按苹果规范来的话，就会遇到各种坑啊。</p></li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Objective-C常用數學常量宏及函數]]></title>
-    <link href="i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu/"/>
-    <updated>2013-08-28T12:12:27+08:00</updated>
-    <id>i-chou.com/blog/2013/08/28/objective-cchang-yong-shu-xue-chang-liang-hong-ji-han-shu</id>
+    <title type="html"><![CDATA[Those Pop Plug-ins for Xcode]]></title>
+    <link href="i-chou.com/blog/2014/03/11/those-pop-plug-ins-for-xcode/"/>
+    <updated>2014-03-11T12:13:47+08:00</updated>
+    <id>i-chou.com/blog/2014/03/11/those-pop-plug-ins-for-xcode</id>
     <content type="html"><![CDATA[<ul>
-<li><p>数学常量：</p>
+<li><h2>Alcatraz</h2>
 
-<p>  #define M_E         2.71828182845904523536028747135266250   // e</p>
+<p>  Alcatraz is an open-source package manager for Xcode 5. It lets you discover and install plugins, templates and color schemes without the need for manually cloning or copying files. It installs itself as a part of Xcode and it feels like home.</p>
 
-<p>  #define M_LOG2E     1.44269504088896340735992468100189214   // log 2e</p>
+<p>  (亲测Xcode5.1可用)</p>
 
-<p>  #define M_LOG10E    0.434294481903251827651128918916605082  // log 10e</p>
+<p>  项目地址： <a href="https://github.com/mneorr/Alcatraz](https://github.com/mneorr/Alcatraz">https://github.com/mneorr/Alcatraz</a>
+  <img src="https://github-camo.global.ssl.fastly.net/f4106ea5018bf4beff4c8625b0f3abe528cceb7d/687474703a2f2f616c63617472617a2e696f2f696d616765732f6865616465724032782e706e67" alt="img" />
+  <img src="https://github-camo.global.ssl.fastly.net/919efe4e1e53237df51d7010c862bd5c04fd6a70/687474703a2f2f616c63617472617a2e696f2f696d616765732f73637265656e73686f744032782e706e67" alt="img" /></p></li>
+<li><h2>Lin</h2>
 
-<p>  #define M_LN2       0.693147180559945309417232121458176568  // log e2</p>
+<p>  Xcode5 plugin showing completion for NSLocalizedString and localizedStringForKey:value:table:</p>
 
-<p>  #define M_LN10      2.30258509299404568401799145468436421   // log e10</p>
+<p>  (兼容到Xcode5，5.1不可用)</p>
 
-<p>  #define M_PI        3.14159265358979323846264338327950288   // pi</p>
+<p>  项目地址： <a href="https://github.com/questbeat/Lin">https://github.com/questbeat/Lin</a></p>
 
-<p>  #define M_PI_2      1.57079632679489661923132169163975144   // pi/2</p>
+<p>  <img src="https://github-camo.global.ssl.fastly.net/6c4fc4630543be9addbb384133d07074866d0a8a/687474703a2f2f61646f746f75742e73616b7572612e6e652e6a702f6769746875622f4c696e2f6c696e5f737330322e706e67" alt="img" /></p></li>
+<li><h2>KFCocoaPodsPlugin</h2>
 
-<p>  #define M_PI_4      0.785398163397448309615660845819875721  // pi/4</p>
+<p>  XcodePlugin for CocoaPods with pod commands/console output, user notifications &amp; code completion.</p>
 
-<p>  #define M_1_PI      0.318309886183790671537767526745028724  // 1/pi</p>
+<p>  (兼容到Xcode5，5.1不可用)</p>
 
-<p>  #define M_2_PI      0.636619772367581343075535053490057448  // 2/pi</p>
+<p>  项目地址： <a href="https://github.com/ricobeck/KFCocoaPodsPlugin">https://github.com/ricobeck/KFCocoaPodsPlugin</a></p>
 
-<p>  #define M_2_SQRTPI  1.12837916709551257389615890312154517   // 2/sqrt(pi)</p>
+<p>  <img src="https://github.com/ricobeck/KFCocoaPodsPlugin/raw/master/Screenshots/Screenshot-Update.png" alt="img" />
+  <img src="https://github.com/ricobeck/KFCocoaPodsPlugin/raw/master/Screenshots/Animation-Completion.gif" alt="img" /></p></li>
+<li><h2>VVDocumenter-Xcode</h2>
 
-<p>  #define M_SQRT2     1.41421356237309504880168872420969808   // sqrt(2)</p>
+<p>  Xcode plug-in which helps you write Javadoc style documents easier.</p>
 
-<p>  #define M_SQRT1_2   0.707106781186547524400844362104849039  // 1/sqrt(2)</p>
+<p>  (亲测Xcode5.1可用)</p>
 
-<p>  </br></p></li>
-<li><p>常用函数：</p>
+<p>  项目地址： <a href="https://github.com/onevcat/VVDocumenter-Xcode">https://github.com/onevcat/VVDocumenter-Xcode</a></p>
 
-<p>  //指数运算</p>
+<p>  <img src="https://raw.github.com/onevcat/VVDocumenter-Xcode/master/ScreenShot.gif" alt="img" /></p></li>
+<li><h2>Fuzzy Autocomplete for Xcode</h2>
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,2) ); //result 9</p>
+<p>  This is a Xcode 5 plugin that patches the autocomplete filter to work the same way the <code>Open Quickly</code> works.</p>
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, pow(3,3) ); //result 27</p>
+<p>  It performs very well, and the fuzzy matching actually uses Xcode&rsquo;s own <code>IDEOpenQuicklyPattern</code>.</p>
 
-<p>  </br>
-  //开平方运算</p>
+<p>  I wrote a blog post on how I used <code>dtrace</code> to figure out what to patch: <a href="http://chen.do/blog/2013/10/22/reverse-engineering-xcode-with-dtrace/?utm_source=github&amp;utm_campaign=fuzzyautocomplete">Reverse engineering Xcode with dtrace</a></p>
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(16) ); //result 4</p>
+<p>  Like nifty tools like this plugin? Check out <a href="https://shortcatapp.com/?utm_source=github&amp;utm_campaign=fuzzyautocomplete">Shortcat</a>, an app that lets you control your Mac more effectively with your keyboard!</p>
 
-<p>  NSLog(@&ldquo;%.f&rdquo;, sqrt(81) ); //result 9</p>
+<p>  (亲测Xcode5.1可用)</p>
 
-<p>  </br>
-  //上舍入</p>
+<p>  项目地址： <a href="https://github.com/chendo/FuzzyAutocompletePlugin">https://github.com/chendo/FuzzyAutocompletePlugin</a></p>
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.000000000001)); //result 4</p>
+<p>  <img src="https://raw.github.com/chendo/FuzzyAutocompletePlugin/master/demo.gif" alt="img" /></p></li>
+<li><h2>ColorSense-for-Xcode</h2>
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, ceil(3.00)); //result 3</p>
+<p>  Plugin for Xcode to make working with colors more visual</p>
 
-<p>  </br>
-  //下舍入</p>
+<p>  (兼容到Xcode4.5)</p>
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.000000000001)); //result 3</p>
+<p>  项目地址： <a href="https://github.com/omz/ColorSense-for-Xcode">https://github.com/omz/ColorSense-for-Xcode</a></p></li>
+<li><h2>Unused</h2>
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, floor(3.9999999)); //result 3</p>
+<p>  A Mac app for checking Xcode projects for unused resources.</p>
 
-<p>  </br>
-  //四舍五入</p>
+<p>  这个虽然不是Xcode插件，但是确实是很有用的东西，他可以把项目中不用的资源文件在可视化窗口中检索出来，以辅助开发人员减少项目中浪费掉的空间。</p>
 
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.5)); //result 4</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(3.46)); //result 3</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, round(-3.5)); //NB: this one returns -4</p>
-
-<p>  </br>
-  //最小值</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmin(5,10)); //result 5</p>
-
-<p>  </br>
-  //最大值</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fmax(5,10)); //result 10</p>
-
-<p>  </br> <br/>
-  //绝对值</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(10)); //result 10</p>
-
-<p>  NSLog(@&ldquo;res: %.f&rdquo;, fabs(-10)); //result 10</p></li>
+<p>  项目地址：<a href="https://github.com/jeffhodnett/Unused">https://github.com/jeffhodnett/Unused</a></p></li>
 </ul>
 
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Xcode5.1 Updated to Beta5]]></title>
+    <link href="i-chou.com/blog/2014/02/21/xcode5-dot-1-updated-to-beta5/"/>
+    <updated>2014-02-21T15:39:49+08:00</updated>
+    <id>i-chou.com/blog/2014/02/21/xcode5-dot-1-updated-to-beta5</id>
+    <content type="html"><![CDATA[<p><code>Xcode5.1 Beta5</code>和<code>iOS7.1Beta5</code>出来有一周时间了，这次更新苹果把Xcode里的64编译变成了默认，而没有了选项，如果你的项目编译时出了问题，请检查一下编码是否支持64位。</p>
+
+<p>下面有一篇介绍如何为64位编译应用的文章，分享出来，多少会了解一些为64位应用编译所需要的基本东西。
+<a href="http://blog.csdn.net/keyboardota/article/details/11993883">iOS 7: 如何为iPhone 5S编译64位应用。 </a></p>
+
+<p>如果您还没有充分准备好为64位编译您的应用，那么请在Xcode5.1项目的Target中<code>Build Settings</code>&ndash;><code>Architectures</code>&ndash;><code>Valid Architectures</code>中的<code>arm64</code>删掉，只保留<code>armv7</code>和<code>armv7s</code>即可。但终究是要兼容64位的，所以，还是抓紧准备吧。</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[ios7.1 Beta版升级事件]]></title>
+    <link href="i-chou.com/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian/"/>
+    <updated>2014-02-10T16:15:03+08:00</updated>
+    <id>i-chou.com/blog/2014/02/10/ios7-dot-1-betaban-sheng-ji-shi-jian</id>
+    <content type="html"><![CDATA[<p>昨晚因为电话找不到了，就在MAC上iCloud里的Find My iPhone呼叫了一下，第二天早上一拿起手机发现让我填写AppleID和密码激活iPhone。我以为是因为昨天呼叫导致的。结果填写时候发现怎么验证都不通过，经查发现，Beta版不让激活。但是不对啊，之前还激活过，就以为是苹果新加的东东。</p>
+
+<p>连上iTunes发现iPhone开着Find My iPhone是无法恢复备份的，但又无法进入系统关掉它。只好再一次进DFU模式刷机。刷成iOS7.0.4系统。可是，我之前的备份是7.1的Beta3的，不让我恢复，只能又固件刷到7.1的beta3（因为Beta4实在无法使用，不知道其他人的怎么样，反正在我的手机上极其不稳定，所以就不打算继续升级Beta版了），然后呢，还是激活不了。</p>
+
+<p>上班以后同事同样出现了无法激活的情况，才发现，是Beta3的测试期限到了。。。20M的宽带下载个1G+的Beta5固件，吃奶的劲都使出来了，还是抓紧分享出来为他人提供方便吧。需要的朋友请自己去百度云下载。</p>
+
+<p>iOS7.1 Beta5固件云盘地址: <a href="http://pan.baidu.com/s/11UoUE">http://pan.baidu.com/s/11UoUE</a></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[iOS Define for Coding Faster]]></title>
+    <link href="i-chou.com/blog/2013/12/30/ios-define-for-coding-faster/"/>
+    <updated>2013-12-30T16:11:06+08:00</updated>
+    <id>i-chou.com/blog/2013/12/30/ios-define-for-coding-faster</id>
+    <content type="html"><![CDATA[<p>以下是我在开发中常用的可以提高开发效率的宏</p>
+
+<pre><code>/* fast make */
+
+#define ccp(__X__,__Y__)             CGPointMake(__X__,__Y__)
+
+#define ccs(__W__,__H__)             CGSizeMake(__W__,__H__)
+
+#define ccr(__X__,__Y__,__W__,__H__) CGRectMake(__X__,__Y__,__W__,__H__)
+
+
+/* fast creation */
+
+#define IMG(name)       [UIImage imageNamed:(name)]
+
+#define IMG_VIEW(name)  [[UIImageView alloc] initWithImage:[UIImage imageNamed:(name)]]
+
+#define LocalStr(key)   NSLocalizedString(key,key)
+
+#define SFONT(size)     [UIFont systemFontOfSize:(size)]
+
+#define FONT(s)         [UIFont fontWithName:@"Arial" size:(s)]
+
+#define BFONT(size)     [UIFont boldSystemFontOfSize:(size)]
+
+#define BUNDLE(name)    [[NSBundle mainBundle] pathForResource:(name)]
+
+#define URL(url)        [NSURL URLWithString:url]
+
+
+/* fast appending */
+
+#define ADD(__x__, __y__) [__x__ stringByAppendingString:__y__]
+
+
+/* iOS_Version */
+
+#define IS_IOS7 ((floor(NSFoundationVersionNumber) &gt; NSFoundationVersionNumber_iOS_6_1))
+
+
+/* Components size */
+
+#define SCREEN_WIDTH         [[UIScreen mainScreen] bounds].size.width
+
+#define SCREEN_HEIGHT        [[UIScreen mainScreen] bounds].size.height
+
+#define NAV_BAR_HEIGHT       44
+
+#define NAV_BAR_HEIGHT_IOS7  64
+
+#define TOOL_BAR_HEIGHT      44
+
+#define TAB_BAR_HEIGHT       49
+
+#define STATUS_BAR_HEIGHT    20
+
+
+/* current language */
+
+#define CN 1
+
+#define ENG 2
+
+#define JAN 3
+
+
+/* color helper */
+
+#define COLORRGBA(c,a) [UIColor colorWithRed:((c&gt;&gt;16)&amp;0xFF)/255.0 \
+                                   green:((c&gt;&gt;8)&amp;0xFF)/255.0   \
+                                    blue:(c&amp;0xFF)/255.0        \
+                                   alpha:a]
+
+#define COLORRGB(c)    [UIColor colorWithRed:((c&gt;&gt;16)&amp;0xFF)/255.0 \
+                                   green:((c&gt;&gt;8)&amp;0xFF)/255.0   \
+                                    blue:(c&amp;0xFF)/255.0        \
+                                   alpha:1.0]
+
+
+/* log helper */
+
+#define LOG_STR(str)     NSLog(@"%@", str)
+
+#define LOG_INT(int)     NSLog(@"%d", int)
+
+#define LOG_FLOAT(float) NSLog(@"%f", float)
+
+#define LOG_ERROR(exception,reason) NSLog(@"function:%s | line:%d | exception:%@ | reason:%@",__func__, __LINE__,exception,reason)
+</code></pre>
 ]]></content>
   </entry>
   
