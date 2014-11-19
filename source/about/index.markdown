@@ -21,6 +21,8 @@ footer: true
 	
 	* 真相：[i-chou.com/about/photo](http://i-chou.com/about/photo)
 	
+	* Github：[github.com/passerbied](https://github.com/passerbied)
+	
 	
 
 - #####教育背景
@@ -36,6 +38,7 @@ footer: true
 		  就职于北京源一博观科技有限公司
 		  
 		  负责约伴网(yueban.com)iOS端的产品研发
+		  装备酷(zhuangbeiku.com)移动端技术负责人
 
 
 	* 2011年 ~ 2012年  *日本*
@@ -73,8 +76,13 @@ footer: true
 		  移动互联网，创业，产品，摇滚乐，日本语，台球，喜静，多感
 
 - #####开发作品展示
+	<img width="50" height="50" src='zbcool_logo.png'> ZBCool（iPhone）：[AppStore](https://itunes.apple.com/cn/app/zhuang-bei-ku/id901263506?ls=1&mt=8) 
 	
 	 <img width="50" height="50" src='logo512.png'> 约伴（iPhone）：[AppStore](https://itunes.apple.com/cn/app/yue-ban-zhen-zheng-neng-zhao/id639508528?mt=8)
+	 
+	 <img width="50" height="50" src='ssg_logo.png'> ソリティア（iPhone）：开发中
+	 
+	 <img width="50" height="50" src='yoga_logo.png'> StretchYoga（iPhone）：[AppStore](https://itunes.apple.com/app/id893951629)
 	
 	 <img width="50" height="50" src='1386873184.jpg'> 歌谱阅读器（iPad & iPhone & Android）：已下架
 	
@@ -93,6 +101,13 @@ footer: true
 	 <img width="50" height="50" src='外派.png'> 外派研修生管理系统（Web）：山东威海国际持有（内部系统非公开）
 	 
 	 <img width="50" height="50" src='报奖金.jpg'> 営業報奨金管理システム（Web）：日本東建集团持有（内部系统非公开）
+	 
+- #####贡献过的开源项目
+	
+	- [DWTagList](https://github.com/domness/DWTagList)
+	
+	- [SAScrollTableViewCell](https://github.com/shams-ahmed/SAScrollTableViewCell)
+	 
 	 
 - #####音乐作品展示
 	
