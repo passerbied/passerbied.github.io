@@ -11,7 +11,7 @@ categories: iOS
 
 `“Unable to process application info.plist validation at this time due to a general error.Please try again later.”`
 
-{% img/images/error.jpg %}
+<img src="img/images/error.jpg">
 <!--![error image](error.jpg)-->
 
 如果你确信你的签名认证文件没有弄错，那么恭喜你，这个错误并不是本地错误，而是苹果服务器方面的错误，只需耐心等待即可。如果只等待不能满足你好动的本性，你就再review一遍吧，也许在review这段时间会有新的发现。
