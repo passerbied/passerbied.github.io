@@ -50,7 +50,7 @@ key是名称，对应的string是对应的一组操作。
 
 copy以后重启Xcode，在Xcode菜单中，打开Preferences，选中Key Binding，在右上方搜索GDI, 会出现类似下图的显示，如果没有的话，请检查上面的每步操作。
 
- {% img/images/key_binding.png %}
+<img width="1072" height="712" src="source/images/key_binding.png"/>
 
 双击右边的空白处，就可以为每个功能设置不同的快捷键。
 
