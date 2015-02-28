@@ -5,6 +5,7 @@ date: 2013-12-17 16:14
 comments: true
 sharing: false
 footer: true
+
 ---
 - #####个人信息
 
@@ -76,27 +77,30 @@ footer: true
 		  移动互联网，创业，产品，摇滚乐，日本语，台球，喜静，多感
 
 - #####开发作品展示
-	<img width="50" height="50" src='zbcool_logo.png'> ZBCool（iPhone）：[AppStore](https://itunes.apple.com/cn/app/zhuang-bei-ku/id901263506?ls=1&mt=8) 
+
+
+
+	<img width="50" height="50" src='zbcool.png'> ZBCool（iPhone）：[AppStore](https://itunes.apple.com/cn/app/zhuang-bei-ku/id901263506?ls=1&mt=8) 
 	
 	 <img width="50" height="50" src='logo512.png'> 约伴（iPhone）：[AppStore](https://itunes.apple.com/cn/app/yue-ban-zhen-zheng-neng-zhao/id639508528?mt=8)
 	 
-	 <img width="50" height="50" src='genpara.png'>現パラダイス（Android）：[GooglePlay](https://play.google.com/store/apps/details?id=jp.hottea.genpara.android) | （iPhone）[AppStore](https://itunes.apple.com/app/id932262009) 审核中
+	 <img width="50" height="50" src='genpara.png'>現パラダイス（Android）：[GooglePlay](https://play.google.com/store/apps/details?id=jp.hottea.genpara.android) （iPhone）[AppStore](https://itunes.apple.com/app/id932262009) 审核中
 	 
-	 <img width="50" height="50" src='ssg_logo.png'> ソリティア（iPhone）：[AppStore](https://itunes.apple.com/app/id901161080) 审核中
+	 <img width="50" height="50" src='ssg.png'> ソリティア（iPhone）：[AppStore](https://itunes.apple.com/app/id901161080) 审核中
 	 
-	 <img width="50" height="50" src='yoga_logo.png'> StretchYoga（iPhone）：[AppStore](https://itunes.apple.com/app/id893951629)
+	 <img width="50" height="50" src='yoga.png'> StretchYoga（iPhone）：[AppStore](https://itunes.apple.com/app/id893951629)
 	
 	 <img width="50" height="50" src='1386873184.jpg'> 歌谱阅读器（iPad & iPhone & Android）：已下架
 	
-	 <img width="50" height="50" src='ic_launcher.png'> 電池ウィジェット（Android）：[日本Au/Docomo/Softbank会员制](http://love-suzyszoo.jp/PDL000/?product_id=3)
+	 <img width="50" height="50" src='ic.png'> 電池ウィジェット（Android）：[日本Au/Docomo/Softbank会员制](http://love-suzyszoo.jp/PDL000/?product_id=3)
 	
-	 <img width="50" height="50" src='calculator_icon.png'> 電卓アプリ（iPhone & Android）：[日本Au/Docomo/Softbank会员制](http://love-suzyszoo.jp/PDL000/?product_id=6)
+	 <img width="50" height="50" src='calculator.png'> 電卓アプリ（iPhone & Android）：[日本Au/Docomo/Softbank会员制](http://love-suzyszoo.jp/PDL000/?product_id=6)
 	
-	 <img width="50" height="50" src='ic_launcher_memo.png'> メモ帳アプリ（Android）：[日本Au/Docomo/Softbank会员制](http://usavich-sptime.jp/PDL000/?product_id=6)
+	 <img width="50" height="50" src='memo.png'> メモ帳アプリ（Android）：[日本Au/Docomo/Softbank会员制](http://usavich-sptime.jp/PDL000/?product_id=6)
 	
 	 <img width="50" height="50" src='mediaresister.png'> MediaRegister（Android）：日本大洋持有（内部系统非公开商品）
 	
-	 <img width="50" height="50" src='ic_launcher_marionette.png'> Marionette（Android）：日本大洋持有（内部系统非公开商品）
+	 <img width="50" height="50" src='marionette.png'> Marionette（Android）：日本大洋持有（内部系统非公开商品）
 	
 	 <img width="50" height="50" src='連絡帳.jpg'> 連絡帳（Android）：[GooglePlay](https://play.google.com/store/apps/details?id=com.taiyo.contactmanager.activity)
 	 
