@@ -37,8 +37,8 @@ footer: true
 		  
 		  就职于北京源一博观科技有限公司
 		  
-		  负责约伴网(yueban.com)iOS端的产品研发
-		  装备酷(zhuangbeiku.com)移动端技术负责人
+		  约伴网 (http://yueban.com) iOS App Developer
+		  装备酷 (http://zhuangbeiku.com) iOS App Developer && 项目负责人
 
 
 	* 2011年 ~ 2012年  *日本*
@@ -80,7 +80,9 @@ footer: true
 	
 	 <img width="50" height="50" src='logo512.png'> 约伴（iPhone）：[AppStore](https://itunes.apple.com/cn/app/yue-ban-zhen-zheng-neng-zhao/id639508528?mt=8)
 	 
-	 <img width="50" height="50" src='ssg_logo.png'> ソリティア（iPhone）：开发中
+	 <img width="50" height="50" src='genpara.png'>現パラダイス（Android）：[GooglePlay](https://play.google.com/store/apps/details?id=jp.hottea.genpara.android) | （iPhone）[AppStore](https://itunes.apple.com/app/id932262009) 审核中
+	 
+	 <img width="50" height="50" src='ssg_logo.png'> ソリティア（iPhone）：[AppStore](https://itunes.apple.com/app/id901161080) 审核中
 	 
 	 <img width="50" height="50" src='yoga_logo.png'> StretchYoga（iPhone）：[AppStore](https://itunes.apple.com/app/id893951629)
 	
