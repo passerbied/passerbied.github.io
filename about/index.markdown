@@ -63,13 +63,13 @@
 	* iOS应用：
 	
 	
-		<a href='zbcool.com'><img width="50" height="50" src='zbcool_logo.png'></a> [装备酷](https://itunes.apple.com/cn/app/zhuang-bei-ku/id901263506?ls=1&mt=8)		
+		<a href='http://zbcool.com'><img width="50" height="50" src='zbcool_logo.png'></a> [装备酷](https://itunes.apple.com/cn/app/zhuang-bei-ku/id901263506?ls=1&mt=8)		
 		<img width="110" src='5-article.png'>
 		<img width="110" src='5-club.png'>
 		<img width="110" src='5-reivew.png'>
 		<img width="110" src='5-outdoor.png'>
 	
-		<a href='yueban.com'><img width="50" height="50" src='logo512.png'></a> [约伴](https://itunes.apple.com/cn/app/yue-ban-zhen-zheng-neng-zhao/id639508528?mt=8)		
+		<a href='http://yueban.com'><img width="50" height="50" src='logo512.png'></a> [约伴](https://itunes.apple.com/cn/app/yue-ban-zhen-zheng-neng-zhao/id639508528?mt=8)		
 		<img width="110" src='yueban5-01.png'>
 		<img width="110" src='yueban5-02.png'>
 		<img width="110" src='yueban5-03.png'>
