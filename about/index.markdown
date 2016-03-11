@@ -64,37 +64,37 @@
 	
 	
 		<a href='http://zbcool.com'><img width="50" height="50" src='zbcool_logo.png'></a> [装备酷](https://itunes.apple.com/cn/app/zhuang-bei-ku/id901263506?ls=1&mt=8)		
-		<img width="110" src='5-article.png'>
-		<img width="110" src='5-club.png'>
-		<img width="110" src='5-reivew.png'>
-		<img width="110" src='5-outdoor.png'>
+		<img width="150" src='5-article.png'>
+		<img width="150" src='5-club.png'>
+		<img width="150" src='5-reivew.png'>
+		<img width="150" src='5-outdoor.png'>
 	
 		<a href='http://yueban.com'><img width="50" height="50" src='logo512.png'></a> [约伴](https://itunes.apple.com/cn/app/yue-ban-zhen-zheng-neng-zhao/id639508528?mt=8)		
-		<img width="110" src='yueban5-01.png'>
-		<img width="110" src='yueban5-02.png'>
-		<img width="110" src='yueban5-03.png'>
-		<img width="110" src='yueban5-04.png'>
+		<img width="150" src='yueban5-01.png'>
+		<img width="150" src='yueban5-02.png'>
+		<img width="150" src='yueban5-03.png'>
+		<img width="150" src='yueban5-04.png'>
 
 		
 		<a href='http://www.kupaocar.cn/'><img width="50" height="50" src='dudu_logo.png'></a> [嘟嘟出行](https://itunes.apple.com/us/app/du-du-chu-xing/id1077979411)
 	 
-	 	<img width="110" src='dudu5-1.png'>
-		<img width="110" src='dudu5-2.png'>
-		<img width="110" src='dudu5-3.png'>
-		<img width="110" src='dudu5-4.png'>		
+	 	<img width="150" src='dudu5-1.png'>
+		<img width="150" src='dudu5-2.png'>
+		<img width="150" src='dudu5-3.png'>
+		<img width="150" src='dudu5-4.png'>		
 	 	<img width="50" height="50" src='ssg_logo.png'> [Sarariman Soritia](https://itunes.apple.com/us/app/sararimansoritia-mengwo-baoita/id901161080?mt=8)
 	 	
-	 	<img width="110" src='sarariman01.jpeg'>
-		<img width="110" src='sarariman02.jpeg'>
-		<img width="110" src='sarariman03.jpeg'>
-		<img width="110" src='sarariman04.jpeg'>
+	 	<img width="150" src='sarariman01.jpeg'>
+		<img width="150" src='sarariman02.jpeg'>
+		<img width="150" src='sarariman03.jpeg'>
+		<img width="150" src='sarariman04.jpeg'>
 	 
 	 	<img width="50" height="50" src='yoga_logo.jpeg'> [7days Diet!Yoga & Stretch](https://itunes.apple.com/app/id893951629)
 	 	
-	 	<img width="110" src='yoga01.jpeg'>
-		<img width="110" src='yoga02.jpeg'>
-		<img width="110" src='yoga03.jpeg'>
-		<img width="110" src='yoga04.jpeg'>
+	 	<img width="150" src='yoga01.jpeg'>
+		<img width="150" src='yoga02.jpeg'>
+		<img width="150" src='yoga03.jpeg'>
+		<img width="150" src='yoga04.jpeg'>
 
 	
 	 	<img width="50" height="50" src='1386873184.jpg'> 歌谱阅读器
@@ -106,37 +106,37 @@
 	
 	 	<img width="50" height="50" src='ic_launcher.png'> [电池小部件](http://love-suzyszoo.jp/PDL000/?product_id=3)
 	 	
-	 	<img width="110" src='battery1.jpeg'>
-		<img width="110" src='battery2.jpeg'>
-		<img width="110" src='battery3.jpeg'>
+	 	<img width="150" src='battery1.jpeg'>
+		<img width="150" src='battery2.jpeg'>
+		<img width="150" src='battery3.jpeg'>
 	
 	 	<img width="50" height="50" src='calculator_icon.png'> [计算器APP](http://love-suzyszoo.jp/PDL000/?product_id=6)
 		
-		<img width="110" src='cal1.png'>
-		<img width="110" src='cal2.png'>
-		<img width="110" src='cal3.png'>
-		<img width="110" src='cal4.png'>
+		<img width="150" src='cal1.png'>
+		<img width="150" src='cal2.png'>
+		<img width="150" src='cal3.png'>
+		<img width="150" src='cal4.png'>
 	
 	 	<img width="50" height="50" src='ic_launcher_memo.png'> [记事本APP](http://usavich-sptime.jp/PDL000/?product_id=6)
 	 	
-		<img width="110" src='note1.jpeg'>
-		<img width="110" src='note2.jpeg'>
-		<img width="110" src='note3.jpeg'>
-		<img width="110" src='note4.jpeg'>
+		<img width="150" src='note1.jpeg'>
+		<img width="150" src='note2.jpeg'>
+		<img width="150" src='note3.jpeg'>
+		<img width="150" src='note4.jpeg'>
 	
 	 	<img width="50" height="50" src='mediaresister.png'> MediaRegister（二维码扫码，NFC近场通信）
 	 	
-	 	<img width="110" src='media1.png'>
-		<img width="110" src='media2.png'>
-		<img width="110" src='media3.png'>
-		<img width="110" src='media4.png'>
+	 	<img width="150" src='media1.png'>
+		<img width="150" src='media2.png'>
+		<img width="150" src='media3.png'>
+		<img width="150" src='media4.png'>
 	
 	 	<img width="50" height="50" src='連絡帳.jpg'> [通讯录APP](https://play.google.com/store/apps/details?id=com.taiyo.contactmanager.activity)
 	 	
-	 	<img width="110" src='contact1.png'>
-		<img width="110" src='contact2.png'>
-		<img width="110" src='contact3.png'>
-		<img width="110" src='contact4.png'>
+	 	<img width="150" src='contact1.png'>
+		<img width="150" src='contact2.png'>
+		<img width="150" src='contact3.png'>
+		<img width="150" src='contact4.png'>
 
 		<img width="50" height="50" src='ic_launcher_marionette.png'> Marionette（平板电脑远程控制桌面系统）
 
